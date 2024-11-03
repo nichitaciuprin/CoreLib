@@ -1,8 +1,10 @@
 @echo off
 setlocal
 
-call %~dp0..\..\buildlib
+set scripts=%~dp0..\..\scripts
+
+call %scripts%\buildlib
 
 set input=%~dp0main.cpp
 set output=%~dp0build/level.exe
-call %~dp0..\..\buildtest
+call %scripts%\buildtest
