@@ -1,12 +1,12 @@
 @echo off
 setlocal
 
-echo building library
+echo building library to %~dp0build
 
-set include=%~dp0include
-set src=%~dp0src
-set build=%~dp0build
-set buildtemp=%~dp0buildtemp
+set include=%~dp0..\include
+set src=%~dp0..\src
+set build=%~dp0..\build
+set buildtemp=%~dp0..\buildtemp
 
 set mingw=C:\User1\Programs\mingw\x86_64-12.2.0-release-posix-seh-ucrt-rt_v10-rev2\mingw64
 

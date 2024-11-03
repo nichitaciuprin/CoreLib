@@ -3,7 +3,7 @@ setlocal
 
 echo building test
 
-set corelib=%~dp0build
+set corelib=%~dp0..\build
 
 set include=%corelib%\include
 set lib=%corelib%\lib
