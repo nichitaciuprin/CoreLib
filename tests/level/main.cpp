@@ -1,13 +1,8 @@
-#include "BaseExt.h"
 #include "SysHelper.h"
-#include "Subgen.h"
+#include "BaseExt.h"
 #include "HelperExt.h"
-#include "Models.h"
-#include "Clipping.h"
 #include "Bitmap.h"
-#include "SysWindow.h"
 #include "Window.h"
-#include "SysNet.h"
 
 void Draw(Bitmap& bitmap, Camera camera, long time)
 {
@@ -52,7 +47,7 @@ void Draw(Bitmap& bitmap, Camera camera, long time)
     }
 }
 
-void main2()
+int main()
 {
     auto size = 512;
 
@@ -75,18 +70,6 @@ void main2()
         window->Update();
 
         FixedTimeEnd();
-    }
-}
-
-int main()
-{
-    try
-    {
-        main2();
-    }
-    catch (const exception& e)
-    {
-        cerr << e.what() << endl;
     }
 
     return 0;

@@ -3,6 +3,9 @@
 
 #pragma once
 
+#include "Clipping.h"
+#include "Models.h"
+
 // TOOD maybe find better place for colors
 
 typedef uint32_t Pixel;
