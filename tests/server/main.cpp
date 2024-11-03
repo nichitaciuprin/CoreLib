@@ -1,37 +1,38 @@
+#include "BaseExt.h"
 #include "SysHelper.h"
 #include "SysNet.h"
-#include "BaseExt.h"
-#include "Subgen.h"
-#include "Helper.h"
-#include "Models.h"
-#include "Clipping.h"
-#include "Bitmap.h"
 
-#include "ServerClient.h"
-#include "Server.h"
-
-// #include "SysWindow.h"
-
-int main(int argc, char** argv)
+int main()
 {
-    printf("PID %ld\n", (long)GetPid());
+    SysNetUsePort(27015);
 
-    NetInitServer(argc, argv);
-
-    Halt(3000);
-
-    InitGame();
+    char bytes[1024];
+    uint64_t serverAddr;
+    int messageSize;
 
     while (true)
     {
-        FixedTimeStart();
+        SysNetRecv(&serverAddr, bytes, &messageSize);
 
-        // TestRender();
+        if (messageSize < 0)
+        {
+            Halt(1000);
+            continue;
+        }
 
-        RenderGame();
-        UpdateGame(0.010f);
+        for (int i = 0; i < messageSize; i++)
+            printf("%c", bytes[i]);
+        printf("\n");
 
-        FixedTimeEnd();
+        Halt(1000);
+
+        const char* message = "fromserver";
+        int messageSize = strlen(message);
+        strcpy(bytes, message);
+
+        SysNetSend(&serverAddr, bytes, &messageSize);
+
+        Halt(1000);
     }
 
     return 0;

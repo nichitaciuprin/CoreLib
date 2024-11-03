@@ -1,51 +1,38 @@
 #include "BaseExt.h"
 #include "SysHelper.h"
-#include "Window.h"
-#include "ServerClient.h"
+#include "SysNet.h"
 
-int main(int argc, char** argv)
+int main()
 {
-    printf("PID %ld\n", (long)GetPid());
+    SysNetUseAnyPort();
 
-    NetInitClient(argc, argv);
-
-    int x, y;
-    GetConsolePosition(&x, &y);
-
-    auto window = make_unique<Window>(x, y, 512, 512);
-
-    // missing memset to render stack, for fun
-    char frame[1024];
+    char bytes[1024];
+    uint64_t serverAddr = SysNetCreateAddr(127, 0, 0, 1, 27015);
+    int messageSize;
 
     while (true)
     {
-        FixedTimeStart();
+        const char* message = "fromclient";
+        messageSize = strlen(message);
+        strcpy(bytes, message);
 
-        if (!window->Exists()) break;
+        SysNetSend(&serverAddr, bytes, &messageSize);
 
-        window->Update();
-        window->SetPixelsScaled2((uint8_t*)frame, 32, 32, 16);
+        Halt(1000);
 
-        while (SysNetRecvFrame(frame)) {}
+        SysNetRecv(&serverAddr, bytes, &messageSize);
 
-        NetInput netInput = {};
+        if (messageSize < 0)
+        {
+            Halt(1000);
+            continue;
+        }
 
-        netInput.w = window->KeyDown_W();
-        netInput.a = window->KeyDown_A();
-        netInput.s = window->KeyDown_S();
-        netInput.d = window->KeyDown_D();
+        for (int i = 0; i < messageSize; i++)
+            printf("%c", bytes[i]);
+        printf("\n");
 
-        netInput.up = window->KeyDown_UP();
-        netInput.left = window->KeyDown_LEFT();
-        netInput.down = window->KeyDown_DOWN();
-        netInput.right = window->KeyDown_RIGHT();
-
-        netInput.q = window->KeyDown_Q();
-        netInput.e = window->KeyDown_E();
-
-        SysNetSendInput(&netInput);
-
-        FixedTimeEnd();
+        Halt(1000);
     }
 
     return 0;

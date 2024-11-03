@@ -79,7 +79,7 @@ int main(int argc, char** argv)
     int buffSize = frames * channels * 2;
     char* buff = (char*)malloc(buffSize);
 
-    size_t loops = (seconds * 1000000) / periodTime;
+    // size_t loops = (seconds * 1000000) / periodTime;
 
     for (size_t i = 0; i < 30; i++)
     {

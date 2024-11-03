@@ -1,4 +1,1 @@
-# TODO skip confirmation
-# echo y | gdb -q -ex=run -ex=backtrace -ex=quit --args ./build/main
-gdb -q -ex=run -ex=backtrace -ex=quit --args ./build/CampfireServer $1 $2
-# ./build/main
+gdb -q -ex=run -ex=backtrace -ex=quit --args ./build/server
