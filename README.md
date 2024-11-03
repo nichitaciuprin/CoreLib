@@ -1,5 +1,10 @@
 ![](.gif)
 
 ```
-TODO
+try tests
+
+cd tests/level
+build
+run
 ```
+
