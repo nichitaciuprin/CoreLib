@@ -1,7 +1,7 @@
 @echo off
 setlocal
 
-echo building library to %~dp0build
+echo building library
 
 set include=%~dp0..\include
 set src=%~dp0..\src
