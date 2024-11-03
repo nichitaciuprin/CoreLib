@@ -1,6 +1,8 @@
 @echo off
 setlocal
 
+echo building test
+
 set include=%~dp0..\..\include
 set src=%~dp0..\..\src
 

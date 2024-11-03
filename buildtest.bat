@@ -1,6 +1,8 @@
 @echo off
 setlocal
 
+echo building test
+
 set corelib=%~dp0build
 
 set include=%corelib%\include
