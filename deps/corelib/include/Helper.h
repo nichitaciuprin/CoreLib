@@ -911,6 +911,8 @@ inline void UpdateCameraPosition(Camera* camera, float deltaTime, bool w, bool a
     Vector3 up = Vector3Up();
     Vector3 right = Vector3Cross(up, forward);
 
+    right = Vector3Normalize(right);
+
     float speed = 50.0f;
     float speedDelta = speed * deltaTime;
 
