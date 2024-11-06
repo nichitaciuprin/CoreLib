@@ -929,19 +929,19 @@ inline void UpdateCameraPosition(Camera* camera, float deltaTime, bool w, bool a
 }
 inline void UpdateCameraPosition2(Camera* camera, Vector3 move)
 {
-    Vector3 forward = GetAxisZ(camera);
-    Vector3 up = GetAxisY(camera);
-    Vector3 right = Vector3Cross(up, forward);
-    right = Vector3Normalize(right);
-    up = Vector3Cross(forward, right);
+    // TODO double check it works
 
-    forward = (Vector3){ forward.x * move.z, forward.y * move.z, forward.z * move.z };
-    up      = (Vector3){ up.x      * move.y, up.y      * move.y, up.z      * move.y };
-    right   = (Vector3){ right.x   * move.x, right.y   * move.x, right.z   * move.x };
+    Vector3 x = GetAxisX(camera);
+    Vector3 y = GetAxisY(camera);
+    Vector3 z = GetAxisZ(camera);
 
-    camera->position = Vector3Add(camera->position, forward)    ;
-    camera->position = Vector3Add(camera->position, up);
-    camera->position = Vector3Add(camera->position, right);
+    x.x *= move.x; x.y *= move.x; x.z *= move.x;
+    y.x *= move.y; y.y *= move.y; y.z *= move.y;
+    z.x *= move.z; z.y *= move.z; z.z *= move.z;
+
+    camera->position = Vector3Add(camera->position, z);
+    camera->position = Vector3Add(camera->position, y);
+    camera->position = Vector3Add(camera->position, x);
 }
 
 inline void UpdateCameraFpsRotation(Camera* camera, Vector2 rot)
