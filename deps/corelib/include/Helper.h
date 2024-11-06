@@ -909,14 +909,14 @@ inline void UpdateCameraPosition(Camera* camera, float deltaTime, bool w, bool a
 
     Vector3 forward = { matrix.m[0][2], matrix.m[1][2], matrix.m[2][2] };
     Vector3 up = Vector3Up();
-    Vector3 right = Vector3Cross(up,forward);
+    Vector3 right = Vector3Cross(up, forward);
 
     float speed = 50.0f;
     float speedDelta = speed * deltaTime;
 
     forward = Vector3Multiply(forward, speedDelta);
-    right   = Vector3Multiply(right, speedDelta);
-    up      = Vector3Multiply(up, speedDelta);
+    right   = Vector3Multiply(right,   speedDelta);
+    up      = Vector3Multiply(up,      speedDelta);
 
     if (w) camera->position = Vector3Add      (camera->position, forward);
     if (s) camera->position = Vector3Subtract (camera->position, forward);
