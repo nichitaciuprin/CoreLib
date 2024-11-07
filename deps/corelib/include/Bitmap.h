@@ -5,6 +5,7 @@
 
 #include "Clipping.h"
 #include "Models.h"
+#include "float.h"
 
 // TOOD maybe find better place for colors
 
@@ -72,7 +73,7 @@ public:
         auto size = width * height;
 
         pixels = vector<uint32_t>(size, 0);
-        zbuffer = vector<float>(size, 100000000.0f); // TODO
+        zbuffer = vector<float>(size, FLT_MAX);
     }
 
     int Width() const
@@ -293,7 +294,7 @@ public:
     void Fill(Pixel pixel)
     {
         // TODO move to BeginDraw()
-        fill(zbuffer.begin(), zbuffer.end(), 100000000.0f);
+        fill(zbuffer.begin(), zbuffer.end(), FLT_MAX);
         fill(pixels.begin(), pixels.end(), pixel);
     }
     void ApplyBlackWhiteColorDepth()
