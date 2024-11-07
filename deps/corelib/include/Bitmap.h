@@ -189,7 +189,7 @@ public:
         ClipPoligonBottom    (v0, v1); if (v1.size() < 3) return;
 
         for (auto& x : v1)
-            ToScreenSpace(x);
+            ToScreenSpace(&x);
 
         for (size_t i = 1; i < v1.size() - 1; i++)
             DrawTriangle(v1[0], v1[i], v1[i + 1], pixel);
@@ -223,7 +223,7 @@ public:
         ClipPoligonBottom (v0, v1); if (v1.size() < 3) return;
 
         for (auto& x : v1)
-            ToScreenSpace(x);
+            ToScreenSpace(&x);
 
         for (size_t i = 1; i < v1.size() - 1; i++)
             DrawTriangle(v1[0], v1[i], v1[i + 1], pixel);
@@ -245,7 +245,7 @@ public:
         if (!Vector3TriangleIsClockwise(v1[0], v1[1], v1[2])) return;
 
         for (auto& x : v1)
-            ToScreenSpace(x);
+            ToScreenSpace(&x);
 
         for (size_t i = 1; i < v1.size() - 1; i++)
             DrawTriangle(v1[0], v1[i], v1[i + 1], pixel);
@@ -262,8 +262,8 @@ public:
         if (ClipLineTop(v0, v1)) return;
         if (ClipLineBottom(v0, v1)) return;
 
-        ToScreenSpace(v0);
-        ToScreenSpace(v1);
+        ToScreenSpace(&v0);
+        ToScreenSpace(&v1);
 
         DrawLine(v0, v1, pixel);
     }
@@ -274,20 +274,20 @@ public:
         if (ClipLineTop(v0, v1)) return;
         if (ClipLineBottom(v0, v1)) return;
 
-        ToScreenSpace(v0);
-        ToScreenSpace(v1);
+        ToScreenSpace(&v0);
+        ToScreenSpace(&v1);
 
         DrawLine(v0, v1, pixel);
     }
-    void ToScreenSpace(Vector3& point)
+    void ToScreenSpace(Vector3* point)
     {
-        point.y = -point.y;
-        point.x += 1.0f;
-        point.y += 1.0f;
-        point.x /= 2;
-        point.y /= 2;
-        point.x = widthMin1 * point.x;
-        point.y = heightMin1 * point.y;
+        point->y = -point->y;
+        point->x += 1.0f;
+        point->y += 1.0f;
+        point->x /= 2;
+        point->y /= 2;
+        point->x = widthMin1 * point->x;
+        point->y = heightMin1 * point->y;
     }
 
     void Fill(Pixel pixel)
