@@ -41,15 +41,15 @@ public:
         return height;
     }
 
-    void DrawCube(Vector3 position, Vector3 rotation, Camera camera, Pixel pixel)
+    void DrawCube(Vector3 position, Vector3 rotation, Camera camera, Color color)
     {
         Vector3 scale = { 1, 1, 1 };
         auto world = MatrixWorld2(position, rotation, scale);
         auto view = MatrixView3(&camera);
-        DrawCube(world * view, pixel);
+        DrawCube(world * view, color);
     }
 
-    void DrawCubeWireframe(Matrix modelView, Pixel pixel)
+    void DrawCubeWireframe(Matrix modelView, Color color)
     {
         for (size_t i = 0; i < 12; i++)
         {
@@ -57,7 +57,7 @@ public:
             auto i1 = ModelCubeIndecesLine[i][1];
             auto v0 = ModelCubeVerteces[i0] * modelView;
             auto v1 = ModelCubeVerteces[i1] * modelView;
-            DrawLine1(v0, v1, pixel);
+            DrawLine1(v0, v1, color);
         }
     }
     void DrawCubeColored(Matrix modelView)
@@ -88,7 +88,7 @@ public:
 
         #undef DRAW
     }
-    void DrawCube(Matrix modelView, Pixel color)
+    void DrawCube(Matrix modelView, Color color)
     {
         #define DRAW(INDEX, COLOR)                        \
         {                                                 \
@@ -116,7 +116,7 @@ public:
 
         #undef DRAW
     }
-    void DrawPoligon1(Vector3 p0, Vector3 p1, Vector3 p2, Vector3 p3, Pixel pixel)
+    void DrawPoligon1(Vector3 p0, Vector3 p1, Vector3 p2, Vector3 p3, Color color)
     {
         auto v0 = vector<Vector3>();
         auto v1 = vector<Vector3>();
@@ -149,9 +149,9 @@ public:
             ToScreenSpace(&x);
 
         for (size_t i = 1; i < v1.size() - 1; i++)
-            DrawTriangle(v1[0], v1[i], v1[i + 1], pixel);
+            DrawTriangle(v1[0], v1[i], v1[i + 1], color);
     }
-    void DrawTriangle1(Vector3 p0, Vector3 p1, Vector3 p2, Pixel pixel)
+    void DrawTriangle1(Vector3 p0, Vector3 p1, Vector3 p2, Color color)
     {
         auto v0 = vector<Vector3>();
         auto v1 = vector<Vector3>();
@@ -183,9 +183,9 @@ public:
             ToScreenSpace(&x);
 
         for (size_t i = 1; i < v1.size() - 1; i++)
-            DrawTriangle(v1[0], v1[i], v1[i + 1], pixel);
+            DrawTriangle(v1[0], v1[i], v1[i + 1], color);
     }
-    void DrawTriangle2(Vector3 p0, Vector3 p1, Vector3 p2, Pixel pixel)
+    void DrawTriangle2(Vector3 p0, Vector3 p1, Vector3 p2, Color color)
     {
         auto v0 = vector<Vector3>();
         auto v1 = vector<Vector3>();
@@ -205,9 +205,9 @@ public:
             ToScreenSpace(&x);
 
         for (size_t i = 1; i < v1.size() - 1; i++)
-            DrawTriangle(v1[0], v1[i], v1[i + 1], pixel);
+            DrawTriangle(v1[0], v1[i], v1[i + 1], color);
     }
-    void DrawLine1(Vector3 v0, Vector3 v1, Pixel pixel)
+    void DrawLine1(Vector3 v0, Vector3 v1, Color color)
     {
         if (ClipLineBack(v0, v1)) return;
 
@@ -222,9 +222,9 @@ public:
         ToScreenSpace(&v0);
         ToScreenSpace(&v1);
 
-        DrawLine(v0, v1, pixel);
+        DrawLine(v0, v1, color);
     }
-    void DrawLine2(Vector3 v0, Vector3 v1, Pixel pixel)
+    void DrawLine2(Vector3 v0, Vector3 v1, Color color)
     {
         if (ClipLineLeft(v0, v1)) return;
         if (ClipLineRight(v0, v1)) return;
@@ -234,7 +234,7 @@ public:
         ToScreenSpace(&v0);
         ToScreenSpace(&v1);
 
-        DrawLine(v0, v1, pixel);
+        DrawLine(v0, v1, color);
     }
     void ToScreenSpace(Vector3* point)
     {
@@ -247,11 +247,11 @@ public:
         point->y = maxY * point->y;
     }
 
-    void Fill(Pixel pixel)
+    void Fill(Color color)
     {
         // TODO move to BeginDraw()
         fill(zbuffer.begin(), zbuffer.end(), FLT_MAX);
-        fill(pixels.begin(), pixels.end(), pixel);
+        fill(pixels.begin(), pixels.end(), color);
     }
     void ApplyBlackWhiteColorDepth()
     {
@@ -263,16 +263,16 @@ public:
             factor = 1 - factor;
             auto byte = (int)(factor * 255);
 
-            uint32_t pixel = 0;
-            pixel += byte; pixel = pixel << 8;
-            pixel += byte; pixel = pixel << 8;
-            pixel += byte; pixel = pixel << 8;
-            pixel += byte;
+            uint32_t color = 0;
+            color += byte; color = color << 8;
+            color += byte; color = color << 8;
+            color += byte; color = color << 8;
+            color += byte;
 
-            pixels[i] = pixel;
+            pixels[i] = color;
         }
     }
-    void DrawTriangle(Vector3 v0, Vector3 v1, Vector3 v2, Pixel pixel)
+    void DrawTriangle(Vector3 v0, Vector3 v1, Vector3 v2, Color color)
     {
         // TODO not accurate, improve
 
@@ -329,7 +329,7 @@ public:
         {
             while (err1 < 0) { err1 += dy1; x1 += dir1; }
             while (err2 < 0) { err2 += dy2; x2 += dir2; }
-            DrawLineHorizontal(y, *xl, *xr, *zl, *zr, pixel);
+            DrawLineHorizontal(y, *xl, *xr, *zl, *zr, color);
             y++;
             err1 -= dx1abs;
             err2 -= dx2abs;
@@ -340,16 +340,16 @@ public:
         {
             while (err1 < 0) { err1 += dy1; x1 += dir1; }
             while (err3 < 0) { err3 += dy3; x2 += dir3; }
-            DrawLineHorizontal(y, *xl, *xr, *zl, *zr, pixel);
+            DrawLineHorizontal(y, *xl, *xr, *zl, *zr, color);
             y++;
             err1 -= dx1abs;
             err3 -= dx3abs;
             z1 += offset1;
             z2 += offset3;
         }
-        DrawLineHorizontal(y, *xl, *xr, *zl, *zr, pixel);
+        DrawLineHorizontal(y, *xl, *xr, *zl, *zr, color);
     }
-    void DrawLine(Vector3 v0, Vector3 v1, Pixel pixel)
+    void DrawLine(Vector3 v0, Vector3 v1, Color color)
     {
         int x0 = (int)v0.x;
         int y0 = (int)v0.y;
@@ -377,14 +377,14 @@ public:
 
         for (int i = 0; i < max; i++)
         {
-            SetPixelZ(x0, y0, z, pixel);
+            SetPixelZ(x0, y0, z, color);
             if (err < 0) { err += max; (*axis1) += val1; }
                          { err -= min; (*axis2) += val2; }
             z += offset;
         }
-        SetPixelZ(x0, y0, z, pixel);
+        SetPixelZ(x0, y0, z, color);
     }
-    void DrawLineHorizontal(int y, int xLeft, int xRight, float zLeft, float zRight, Pixel pixel)
+    void DrawLineHorizontal(int y, int xLeft, int xRight, float zLeft, float zRight, Color color)
     {
         int count = xRight - xLeft;
         float diff = zRight - zLeft;
@@ -393,38 +393,38 @@ public:
         for (int i = 0; i < count + 1; i++)
         {
             auto x = xLeft + i;
-            SetPixelZ(x, y, zLeft, pixel);
+            SetPixelZ(x, y, zLeft, color);
             zLeft += offset;
         }
     }
-    void DrawBorder(Pixel pixel)
+    void DrawBorder(Color color)
     {
         int x = maxX;
         int y = maxY;
-        for (int i = 0; i < width;  i++) SetPixel(i, 0, pixel);
-        for (int i = 0; i < width;  i++) SetPixel(i, y, pixel);
-        for (int i = 0; i < height; i++) SetPixel(0, i, pixel);
-        for (int i = 0; i < height; i++) SetPixel(x, i, pixel);
+        for (int i = 0; i < width;  i++) SetPixel(i, 0, color);
+        for (int i = 0; i < width;  i++) SetPixel(i, y, color);
+        for (int i = 0; i < height; i++) SetPixel(0, i, color);
+        for (int i = 0; i < height; i++) SetPixel(x, i, color);
     }
-    void DrawCross(Pixel pixel)
+    void DrawCross(Color color)
     {
         int centerX = width / 2;
         int centerY = height / 2;
-        for (int i = 0; i < width;  i++) SetPixel(i, centerY, pixel);
-        for (int i = 0; i < height; i++) SetPixel(centerX, i, pixel);
+        for (int i = 0; i < width;  i++) SetPixel(i, centerY, color);
+        for (int i = 0; i < height; i++) SetPixel(centerX, i, color);
     }
-    void SetPixel(int x, int y, Pixel pixel)
+    void SetPixel(int x, int y, Color color)
     {
         auto i = x + y * width;
-        pixels[i] = pixel;
+        pixels[i] = color;
     }
-    void SetPixelZ(int x, int y, float z, Pixel pixel)
+    void SetPixelZ(int x, int y, float z, Color color)
     {
         auto i = x + y * width;
         if (zbuffer[i] >= z)
         {
             zbuffer[i] = z;
-            pixels[i] = pixel;
+            pixels[i] = color;
         }
     }
 

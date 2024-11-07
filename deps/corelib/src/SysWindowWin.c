@@ -267,7 +267,6 @@ void SysWindow_SetPixelsScaled(SysWindow* instance, uint32_t* pixels, int width,
     for (int x = 0; x < width; x++)
     {
         uint32_t pixel = pixels[x + y * width];
-        // pixel = PixelToBwPixel(pixel);
         int x2 = x * scale;
         int y2 = y * scale;
         for (int i = 0; i < scale; i++)
