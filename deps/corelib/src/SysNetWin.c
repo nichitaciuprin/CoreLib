@@ -1,6 +1,7 @@
 #include "SysNet.h"
 
 #include <stdio.h>
+#include <stdbool.h>
 #include <stdint.h>
 #include <assert.h>
 
@@ -21,6 +22,7 @@ static void InitNetHelper()
         printf("WSAStartup failed with error %d\n", result);
 }
 
+// TODO remove?
 // static SOCKADDR CreateSocketAddress(const char* ip, short port)
 // {
 //     struct sockaddr_in addr;
@@ -29,6 +31,7 @@ static void InitNetHelper()
 //     addr.sin_addr.s_addr = inet_addr(ip);
 //     return *((SOCKADDR*)&addr);
 // }
+
 static SOCKET CreateSocketNoBind()
 {
     SOCKET sock = INVALID_SOCKET;
@@ -69,12 +72,12 @@ static SOCKET CreateSocket(int port)
 
     return sock;
 }
-static void SendMessage(SOCKET sock, SOCKADDR* addr, char* buffer, int messageSize)
+static void SysNetSendMessage(SOCKET sock, SOCKADDR* addr, char* buffer, int messageSize)
 {
     int addrSize = (sizeof(*addr));
     sendto(sock, buffer, messageSize, 0, addr, addrSize);
 }
-static void RecvMessage(SOCKET sock, SOCKADDR* addr, char* buffer, int* messageSize)
+static void SysNetRecvMessage(SOCKET sock, SOCKADDR* addr, char* buffer, int* messageSize)
 {
     int addrSize = (sizeof(*addr));
     int byteCount = recvfrom(sock, buffer, 1024, 0, addr, &addrSize);
@@ -148,7 +151,7 @@ void SysNetSend(uint64_t* addr, char* buffer, int* messageSize)
     assert(*addr != 0);
     assert(*messageSize >= 0);
 
-    sockaddr_in sockAddrIn;
+    struct sockaddr_in sockAddrIn;
 
     uint64_t id = *addr;
 
@@ -178,17 +181,17 @@ void SysNetSend(uint64_t* addr, char* buffer, int* messageSize)
 
     SOCKADDR* sockAddr = (SOCKADDR*)&sockAddrIn;
 
-    SendMessage(netsock, sockAddr, buffer, *messageSize);
+    SysNetSendMessage(netsock, sockAddr, buffer, *messageSize);
 }
 void SysNetRecv(uint64_t* addr, char* buffer, int* messageSize)
 {
     SOCKADDR sockAddr;
 
-    RecvMessage(netsock, &sockAddr, buffer, messageSize);
+    SysNetRecvMessage(netsock, &sockAddr, buffer, messageSize);
 
     if (*messageSize < 0) return;
 
-    sockaddr_in* sockAddrIn = (sockaddr_in*)&sockAddr;
+    struct sockaddr_in* sockAddrIn = (struct sockaddr_in*)&sockAddr;
 
     // char* ip = inet_ntoa(sockAddrIn->sin_addr);
     // cout << ip << endl;
