@@ -733,6 +733,8 @@ inline Matrix MatrixView(Vector3 eye, float yaw, float pitch)
 }
 inline Matrix MatrixView2(Vector3 eye, Vector3 target, Vector3 up)
 {
+    // it almost works, try fixing it
+    /*
     Vector3 zAxis = Vector3Subtract(target, eye);
             zAxis = Vector3Normalize(zAxis);
 
@@ -752,6 +754,33 @@ inline Matrix MatrixView2(Vector3 eye, Vector3 target, Vector3 up)
         zAxis.x, zAxis.y, zAxis.z, 0.0f,
               x,       y,       z, 1.0f
     };
+    */
+
+    Vector3 zAxis = Vector3Subtract(target, eye);
+            zAxis = Vector3Normalize(zAxis);
+
+    Vector3 xAxis = Vector3Cross(up, zAxis);
+            xAxis = Vector3Normalize(xAxis);
+
+    Vector3 yAxis = Vector3Cross(zAxis, xAxis);
+
+    eye = Vector3Negative(eye);
+
+    Matrix mat1 = MatrixTranslate(eye);
+
+    Matrix mat2 =
+    {
+        xAxis.x, xAxis.y, xAxis.z, 0,
+        yAxis.x, yAxis.y, yAxis.z, 0,
+        zAxis.x, zAxis.y, zAxis.z, 0,
+              0,       0,       0, 1
+    };
+
+    mat2 = MatrixInvert(mat2);
+
+    Matrix mat3 = MatrixMultiply(mat1, mat2);
+
+    return mat3;
 }
 inline Matrix MatrixView3(const Camera* camera)
 {
