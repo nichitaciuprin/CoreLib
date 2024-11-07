@@ -94,26 +94,10 @@ public:
 
     void DrawCubeWireframe(Matrix modelView, Pixel pixel)
     {
-        int indices[12][2] =
-        {
-            0, 1,
-            1, 5,
-            5, 4,
-            4, 0,
-            2, 3,
-            3, 7,
-            7, 6,
-            6, 2,
-            0, 2,
-            1, 3,
-            5, 7,
-            4, 6
-        };
-
         for (size_t i = 0; i < 12; i++)
         {
-            auto i0 = indices[i][0];
-            auto i1 = indices[i][1];
+            auto i0 = ModelCubeIndecesLine[i][0];
+            auto i1 = ModelCubeIndecesLine[i][1];
             auto v0 = ModelCubeVerteces[i0] * modelView;
             auto v1 = ModelCubeVerteces[i1] * modelView;
             DrawLine1(v0, v1, pixel);
@@ -121,32 +105,22 @@ public:
     }
     void DrawCubeColored(Matrix modelView)
     {
-        int indexData[6][4] =
-        {
-            2, 6, 4, 0,
-            6, 7, 5, 4,
-            7, 3, 1, 5,
-            3, 2, 0, 1,
-            1, 0, 4, 5,
-            3, 7, 6, 2,
-        };
-
-        #define DRAW(INDEX, COLOR)                \
-        {                                         \
-            auto i0 = indexData[INDEX][0];        \
-            auto i1 = indexData[INDEX][1];        \
-            auto i2 = indexData[INDEX][2];        \
-            auto i3 = indexData[INDEX][3];        \
-            auto p0 = ModelCubeVerteces[i0];      \
-            auto p1 = ModelCubeVerteces[i1];      \
-            auto p2 = ModelCubeVerteces[i2];      \
-            auto p3 = ModelCubeVerteces[i3];      \
-            p0 *= modelView;                      \
-            p1 *= modelView;                      \
-            p2 *= modelView;                      \
-            p3 *= modelView;                      \
-            DrawPoligon1(p0, p1, p2, p3, COLOR);  \
-        }                                         \
+        #define DRAW(INDEX, COLOR)                        \
+        {                                                 \
+            auto i0 = ModelCubeIndecesQuad[INDEX][0];     \
+            auto i1 = ModelCubeIndecesQuad[INDEX][1];     \
+            auto i2 = ModelCubeIndecesQuad[INDEX][2];     \
+            auto i3 = ModelCubeIndecesQuad[INDEX][3];     \
+            auto p0 = ModelCubeVerteces[i0];              \
+            auto p1 = ModelCubeVerteces[i1];              \
+            auto p2 = ModelCubeVerteces[i2];              \
+            auto p3 = ModelCubeVerteces[i3];              \
+            p0 *= modelView;                              \
+            p1 *= modelView;                              \
+            p2 *= modelView;                              \
+            p3 *= modelView;                              \
+            DrawPoligon1(p0, p1, p2, p3, COLOR);          \
+        }                                                 \
 
         DRAW(0, CYAN)
         DRAW(1, GREEN)
@@ -159,32 +133,22 @@ public:
     }
     void DrawCube(Matrix modelView, Pixel color)
     {
-        int indexData[6][4] =
-        {
-            2, 6, 4, 0,
-            6, 7, 5, 4,
-            7, 3, 1, 5,
-            3, 2, 0, 1,
-            1, 0, 4, 5,
-            3, 7, 6, 2,
-        };
-
-        #define DRAW(INDEX, COLOR)                \
-        {                                         \
-            auto i0 = indexData[INDEX][0];        \
-            auto i1 = indexData[INDEX][1];        \
-            auto i2 = indexData[INDEX][2];        \
-            auto i3 = indexData[INDEX][3];        \
-            auto p0 = ModelCubeVerteces[i0];      \
-            auto p1 = ModelCubeVerteces[i1];      \
-            auto p2 = ModelCubeVerteces[i2];      \
-            auto p3 = ModelCubeVerteces[i3];      \
-            p0 *= modelView;                      \
-            p1 *= modelView;                      \
-            p2 *= modelView;                      \
-            p3 *= modelView;                      \
-            DrawPoligon1(p0, p1, p2, p3, COLOR);  \
-        }                                         \
+        #define DRAW(INDEX, COLOR)                        \
+        {                                                 \
+            auto i0 = ModelCubeIndecesQuad[INDEX][0];     \
+            auto i1 = ModelCubeIndecesQuad[INDEX][1];     \
+            auto i2 = ModelCubeIndecesQuad[INDEX][2];     \
+            auto i3 = ModelCubeIndecesQuad[INDEX][3];     \
+            auto p0 = ModelCubeVerteces[i0];              \
+            auto p1 = ModelCubeVerteces[i1];              \
+            auto p2 = ModelCubeVerteces[i2];              \
+            auto p3 = ModelCubeVerteces[i3];              \
+            p0 *= modelView;                              \
+            p1 *= modelView;                              \
+            p2 *= modelView;                              \
+            p3 *= modelView;                              \
+            DrawPoligon1(p0, p1, p2, p3, COLOR);          \
+        }                                                 \
 
         DRAW(0, color)
         DRAW(1, color)
