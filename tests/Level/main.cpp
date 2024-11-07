@@ -45,6 +45,23 @@ void Draw(Bitmap& bitmap, Camera camera, long time)
         auto world = MatrixWorld2(position, rotation, scale);
         bitmap.DrawCubeColored(world * view);
     }
+
+    {
+        float size = 5;
+        Vector3 p0 = { -size, 0, -size }; p0 *= view;
+        Vector3 p1 = { -size, 0,  size }; p1 *= view;
+        Vector3 p2 = {  size, 0,  size }; p2 *= view;
+        Vector3 p3 = {  size, 0, -size }; p3 *= view;
+        bitmap.DrawPoligon1(p0, p1, p2, p3, WHITE);
+    }
+    {
+        auto time2 = (float)time / 300;
+        Vector3 position = { 0, 1, 0 };
+        Vector3 rotation = { 0, time2, 0 };
+        Vector3 scale = { 1, 1, 1 };
+        auto world = MatrixWorld2(position, rotation, scale);
+        bitmap.DrawCubeColored(world * view);
+    }
 }
 
 int main()
@@ -54,7 +71,7 @@ int main()
     auto bitmap = make_unique<Bitmap>(size, size);
     auto window = make_unique<Window>(700, 100, size, size);
 
-    Camera camera = { 0, 1, 95 };
+    Camera camera = { 0, 1.70f, -10 };
 
     while (window->Exists())
     {
