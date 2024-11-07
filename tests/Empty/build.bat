@@ -3,6 +3,7 @@ setlocal
 
 set deps=%~dp0..\..\deps
 set build=%~dp0build
+set main=%~dp0main.c
 
 set flags=
 set flags=%flags% -g3 -Og -std=c17 -pthread -m64
@@ -24,4 +25,4 @@ set lib=%lib% -lWs2_32
 if exist %build% rmdir /S /Q %build%
    mkdir %build%
 
-gcc main.c %src% -o build/level.exe %include% %lib% %flags%
+gcc %main% %src% -o build/level.exe %include% %lib% %flags%

@@ -2,6 +2,7 @@
 setlocal
 
 set deps=%~dp0..\..\deps
+set main=%~dp0main.cpp
 
 set flags=
 set flags=%flags% -g3 -Og -std=c++17 -pthread -m64
@@ -18,4 +19,4 @@ set lib=%lib% -lglmf32 -lgdi32 -lwinmm
 if exist build rmdir /S /Q build
    mkdir build
 
-g++ main.cpp %src% -o build/main.exe %include% %lib% %flags%
+g++ %main% %src% -o build/main.exe %include% %lib% %flags%

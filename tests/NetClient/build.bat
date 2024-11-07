@@ -2,6 +2,7 @@
 setlocal
 
 set scripts=%~dp0..\..\scripts
+set main=%~dp0main.cpp
 
 call %scripts%\buildlib
 
