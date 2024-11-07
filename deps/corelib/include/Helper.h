@@ -933,27 +933,23 @@ inline void UpdateCameraRotation2(Camera* camera, float rotX, float rotY)
 }
 inline void UpdateCameraPosition(Camera* camera, float deltaTime, bool w, bool a, bool s, bool d, bool e, bool q)
 {
-    Matrix matrix = MatrixView3(camera);
-
-    Vector3 forward = { matrix.m[0][2], matrix.m[1][2], matrix.m[2][2] };
-    Vector3 up = Vector3Up();
-    Vector3 right = Vector3Cross(up, forward);
-
-    right = Vector3Normalize(right);
+    Vector3 x = GetAxisX(camera);
+    Vector3 y = GetAxisY(camera);
+    Vector3 z = GetAxisZ(camera);
 
     float speed = 50.0f;
     float speedDelta = speed * deltaTime;
 
-    forward = Vector3Multiply(forward, speedDelta);
-    right   = Vector3Multiply(right,   speedDelta);
-    up      = Vector3Multiply(up,      speedDelta);
+    x = Vector3Multiply(x, speedDelta);
+    y = Vector3Multiply(y, speedDelta);
+    z = Vector3Multiply(z, speedDelta);
 
-    if (w) camera->position = Vector3Add      (camera->position, forward);
-    if (s) camera->position = Vector3Subtract (camera->position, forward);
-    if (d) camera->position = Vector3Add      (camera->position, right);
-    if (a) camera->position = Vector3Subtract (camera->position, right);
-    if (e) camera->position = Vector3Add      (camera->position, up);
-    if (q) camera->position = Vector3Subtract (camera->position, up);
+    if (d) camera->position = Vector3Add      (camera->position, x);
+    if (a) camera->position = Vector3Subtract (camera->position, x);
+    if (e) camera->position = Vector3Add      (camera->position, y);
+    if (q) camera->position = Vector3Subtract (camera->position, y);
+    if (w) camera->position = Vector3Add      (camera->position, z);
+    if (s) camera->position = Vector3Subtract (camera->position, z);
 }
 inline void UpdateCameraPosition2(Camera* camera, Vector3 move)
 {
