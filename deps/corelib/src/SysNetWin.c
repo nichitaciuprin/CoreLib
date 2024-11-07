@@ -32,7 +32,7 @@ static void InitNetHelper()
 //     return *((SOCKADDR*)&addr);
 // }
 
-static SOCKET CreateSocketNoBind()
+static SOCKET SysNetCreateSocketNoBind()
 {
     SOCKET sock = INVALID_SOCKET;
     sock = socket(AF_INET, SOCK_DGRAM, IPPROTO_UDP);
@@ -46,7 +46,7 @@ static SOCKET CreateSocketNoBind()
 
     return sock;
 }
-static SOCKET CreateSocket(int port)
+static SOCKET SysNetCreateSocket(int port)
 {
     SOCKET sock = INVALID_SOCKET;
     sock = socket(AF_INET, SOCK_DGRAM, IPPROTO_UDP);
@@ -91,12 +91,12 @@ static void SysNetRecvMessage(SOCKET sock, SOCKADDR* addr, char* buffer, int* me
     *messageSize = byteCount;
 }
 
-static SOCKET netsock;
-static bool NetInitCalled = false;
-static void NetInit()
+static SOCKET SysNetSocket;
+static bool SysNetInitCalled = false;
+static void SysNetInit()
 {
-    if (NetInitCalled) return;
-        NetInitCalled = true;
+    if (SysNetInitCalled) return;
+        SysNetInitCalled = true;
 
     InitNetHelper();
 }
@@ -135,13 +135,13 @@ void SysNetPrintAddr(uint64_t addr)
 
 void SysNetUseAnyPort()
 {
-    NetInit();
-    netsock = CreateSocketNoBind();
+    SysNetInit();
+    SysNetSocket = SysNetCreateSocketNoBind();
 }
 void SysNetUsePort(int port)
 {
-    NetInit();
-    netsock = CreateSocket(port);
+    SysNetInit();
+    SysNetSocket = SysNetCreateSocket(port);
 }
 void SysNetSend(uint64_t* addr, char* buffer, int* messageSize)
 {
@@ -181,13 +181,13 @@ void SysNetSend(uint64_t* addr, char* buffer, int* messageSize)
 
     SOCKADDR* sockAddr = (SOCKADDR*)&sockAddrIn;
 
-    SysNetSendMessage(netsock, sockAddr, buffer, *messageSize);
+    SysNetSendMessage(SysNetSocket, sockAddr, buffer, *messageSize);
 }
 void SysNetRecv(uint64_t* addr, char* buffer, int* messageSize)
 {
     SOCKADDR sockAddr;
 
-    SysNetRecvMessage(netsock, &sockAddr, buffer, messageSize);
+    SysNetRecvMessage(SysNetSocket, &sockAddr, buffer, messageSize);
 
     if (*messageSize < 0) return;
 

@@ -21,7 +21,7 @@ typedef struct sockaddr SOCKADDR;
 //     return *((SOCKADDR*)&addr);
 // }
 
-static SOCKET CreateSocketNoBind()
+static SOCKET SysNetCreateSocketNoBind()
 {
     SOCKET sock = socket(AF_INET, SOCK_DGRAM, IPPROTO_UDP);
     if (sock == -1)
@@ -32,7 +32,7 @@ static SOCKET CreateSocketNoBind()
 
     return sock;
 }
-static SOCKET CreateSocket(int port)
+static SOCKET SysNetCreateSocket(int port)
 {
     SOCKET sock = socket(AF_INET, SOCK_DGRAM, IPPROTO_UDP);
     if (sock == -1)
@@ -66,7 +66,7 @@ static void SysNetRecvMessage(SOCKET sock, SOCKADDR* addr, char* buffer, int* me
     *messageSize = byteCount;
 }
 
-static SOCKET netsock;
+static SOCKET SysNetSocket;
 
 uint64_t SysNetCreateAddr(uint8_t b1, uint8_t b2, uint8_t b3, uint8_t b4, uint16_t port)
 {
@@ -102,11 +102,11 @@ void SysNetPrintAddr(uint64_t addr)
 
 void SysNetUseAnyPort()
 {
-    netsock = CreateSocketNoBind();
+    SysNetSocket = SysNetCreateSocketNoBind();
 }
 void SysNetUsePort(int port)
 {
-    netsock = CreateSocket(port);
+    SysNetSocket = SysNetCreateSocket(port);
 }
 void SysNetSend(uint64_t* addr, char* buffer, int* messageSize)
 {
@@ -147,13 +147,13 @@ void SysNetSend(uint64_t* addr, char* buffer, int* messageSize)
     SOCKADDR* sockAddr = (SOCKADDR*)&sockAddrIn;
     // int sockAddrSize = (sizeof(*sockAddr));
 
-    SysNetSendMessage(netsock, sockAddr, buffer, *messageSize);
+    SysNetSendMessage(SysNetSocket, sockAddr, buffer, *messageSize);
 }
 void SysNetRecv(uint64_t* addr, char* buffer, int* messageSize)
 {
     struct sockaddr sockAddr = {};
 
-    SysNetRecvMessage(netsock, &sockAddr, buffer, messageSize);
+    SysNetRecvMessage(SysNetSocket, &sockAddr, buffer, messageSize);
 
     if (*messageSize < 0) return;
 
