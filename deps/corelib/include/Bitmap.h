@@ -6,6 +6,7 @@
 #include "Clipping.h"
 #include "Models.h"
 #include "float.h"
+#include "assert.h"
 
 // TOOD maybe find better place for colors
 
@@ -61,8 +62,8 @@ public:
 
     Bitmap(int width, int height)
     {
-        if (width < 1) throw "width < 1";
-        if (height < 1) throw "height < 1";
+        assert(width > 0);
+        assert(height > 0);
 
         this->width = width;
         this->height = height;
