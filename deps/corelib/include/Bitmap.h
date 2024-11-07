@@ -68,8 +68,8 @@ public:
         this->width = width;
         this->height = height;
 
-        widthMin1 = width - 1;
-        heightMin1 = height - 1;
+        maxX = width - 1;
+        maxY = height - 1;
 
         auto size = width * height;
 
@@ -288,8 +288,8 @@ public:
         point->y += 1.0f;
         point->x /= 2;
         point->y /= 2;
-        point->x = widthMin1 * point->x;
-        point->y = heightMin1 * point->y;
+        point->x = maxX * point->x;
+        point->y = maxY * point->y;
     }
 
     void Fill(Pixel pixel)
@@ -444,8 +444,8 @@ public:
     }
     void DrawBorder(Pixel pixel)
     {
-        int x = widthMin1;
-        int y = heightMin1;
+        int x = maxX;
+        int y = maxY;
         for (int i = 0; i < width;  i++) SetPixel(i, 0, pixel);
         for (int i = 0; i < width;  i++) SetPixel(i, y, pixel);
         for (int i = 0; i < height; i++) SetPixel(0, i, pixel);
@@ -476,6 +476,6 @@ public:
 private:
     int width = 0;
     int height = 0;
-    int widthMin1 = 0;
-    int heightMin1 = 0;
+    int maxX = 0;
+    int maxY = 0;
 };
