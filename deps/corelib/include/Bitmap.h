@@ -114,8 +114,8 @@ public:
         {
             auto i0 = indices[i][0];
             auto i1 = indices[i][1];
-            auto v0 = Model::Cube::vertices[i0] * modelView;
-            auto v1 = Model::Cube::vertices[i1] * modelView;
+            auto v0 = ModelCubeVerteces[i0] * modelView;
+            auto v1 = ModelCubeVerteces[i1] * modelView;
             DrawLine1(v0, v1, pixel);
         }
     }
@@ -137,10 +137,10 @@ public:
             auto i1 = indexData[INDEX][1];        \
             auto i2 = indexData[INDEX][2];        \
             auto i3 = indexData[INDEX][3];        \
-            auto p0 = Model::Cube::vertices[i0];  \
-            auto p1 = Model::Cube::vertices[i1];  \
-            auto p2 = Model::Cube::vertices[i2];  \
-            auto p3 = Model::Cube::vertices[i3];  \
+            auto p0 = ModelCubeVerteces[i0];      \
+            auto p1 = ModelCubeVerteces[i1];      \
+            auto p2 = ModelCubeVerteces[i2];      \
+            auto p3 = ModelCubeVerteces[i3];      \
             p0 *= modelView;                      \
             p1 *= modelView;                      \
             p2 *= modelView;                      \
@@ -175,10 +175,10 @@ public:
             auto i1 = indexData[INDEX][1];        \
             auto i2 = indexData[INDEX][2];        \
             auto i3 = indexData[INDEX][3];        \
-            auto p0 = Model::Cube::vertices[i0];  \
-            auto p1 = Model::Cube::vertices[i1];  \
-            auto p2 = Model::Cube::vertices[i2];  \
-            auto p3 = Model::Cube::vertices[i3];  \
+            auto p0 = ModelCubeVerteces[i0];      \
+            auto p1 = ModelCubeVerteces[i1];      \
+            auto p2 = ModelCubeVerteces[i2];      \
+            auto p3 = ModelCubeVerteces[i3];      \
             p0 *= modelView;                      \
             p1 *= modelView;                      \
             p2 *= modelView;                      \
