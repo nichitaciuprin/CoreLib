@@ -10,20 +10,20 @@
 
 typedef uint32_t Pixel;
 
-const Pixel BLACK      = 0x00000000;
-const Pixel WHITE      = 0x00FFFFFF;
-const Pixel RED        = 0x00FF0000;
-const Pixel GREEN      = 0x0000FF00;
-const Pixel BLUE       = 0x000000FF;
-const Pixel YELLOW     = 0x00FFFF00;
-const Pixel MAGENTA    = 0x00FF00FF;
-const Pixel CYAN       = 0x0000FFFF;
-const Pixel ORANGE     = 0x00FF8000;
-const Pixel PINK       = 0x00FF0080;
-const Pixel LIME       = 0x0080FF00;
-const Pixel GREENCOLD  = 0x0000FF80;
-const Pixel VIOLET     = 0x008000FF;
-const Pixel LIGHTBLUE  = 0x000080FF;
+const Pixel COLOR_BLACK      = 0x00000000;
+const Pixel COLOR_WHITE      = 0x00FFFFFF;
+const Pixel COLOR_RED        = 0x00FF0000;
+const Pixel COLOR_GREEN      = 0x0000FF00;
+const Pixel COLOR_BLUE       = 0x000000FF;
+const Pixel COLOR_YELLOW     = 0x00FFFF00;
+const Pixel COLOR_MAGENTA    = 0x00FF00FF;
+const Pixel COLOR_CYAN       = 0x0000FFFF;
+const Pixel COLOR_ORANGE     = 0x00FF8000;
+const Pixel COLOR_PINK       = 0x00FF0080;
+const Pixel COLOR_LIME       = 0x0080FF00;
+const Pixel COLOR_GREENCOLD  = 0x0000FF80;
+const Pixel COLOR_VIOLET     = 0x008000FF;
+const Pixel COLOR_LIGHTBLUE  = 0x000080FF;
 
 uint32_t PixelToBwPixel(uint32_t pixel)
 {
@@ -122,12 +122,12 @@ public:
             DrawPoligon1(p0, p1, p2, p3, COLOR);          \
         }                                                 \
 
-        DRAW(0, CYAN)
-        DRAW(1, GREEN)
-        DRAW(2, BLUE)
-        DRAW(3, YELLOW)
-        DRAW(4, MAGENTA)
-        DRAW(5, RED)
+        DRAW(0, COLOR_CYAN)
+        DRAW(1, COLOR_GREEN)
+        DRAW(2, COLOR_BLUE)
+        DRAW(3, COLOR_YELLOW)
+        DRAW(4, COLOR_MAGENTA)
+        DRAW(5, COLOR_RED)
 
         #undef DRAW
     }

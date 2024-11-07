@@ -14,7 +14,7 @@ int main()
 
     while (window->Exists())
     {
-        bitmap->Fill(BLACK);
+        bitmap->Fill(COLOR_BLACK);
 
         Camera camera = { 0, 0, 0 };
         auto view = MatrixView3(&camera);
@@ -35,7 +35,7 @@ int main()
             bitmap->DrawCubeColored(world * view);
         }
 
-        bitmap->DrawBorder(GREEN);
+        bitmap->DrawBorder(COLOR_GREEN);
         window->SetPixels(bitmap->pixels.data(), bitmap->Width(), bitmap->Height());
         window->Update();
     }
