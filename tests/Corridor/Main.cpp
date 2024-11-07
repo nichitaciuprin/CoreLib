@@ -14,7 +14,7 @@ void main2()
 
     while (window->Exists())
     {
-        bitmap->Fill(BLACK);
+        bitmap->Fill(COLOR_BLACK);
 
         auto time = (float)clock() / 1000;
         Camera camera = { Vector3Zero(), time, 0 };
@@ -24,10 +24,10 @@ void main2()
             Vector3 rotation = { 0, 0, 0 };
             Vector3 scale = { 1, 1, 4 };
             auto world = MatrixWorld2(position, rotation, scale);
-            bitmap->DrawCubeWireframe(world * view, RED);
+            bitmap->DrawCubeWireframe(world * view, COLOR_RED);
         }
 
-        bitmap->DrawBorder(GREEN);
+        bitmap->DrawBorder(COLOR_GREEN);
         window->SetPixels(bitmap->pixels.data(), bitmap->Width(), bitmap->Height());
         window->Update();
     }

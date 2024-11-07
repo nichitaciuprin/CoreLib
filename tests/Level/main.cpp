@@ -6,7 +6,7 @@
 
 void Draw(Bitmap& bitmap, Camera camera, long time)
 {
-    bitmap.Fill(BLACK);
+    bitmap.Fill(COLOR_BLACK);
 
     auto view = MatrixView3(&camera);
 
@@ -15,7 +15,7 @@ void Draw(Bitmap& bitmap, Camera camera, long time)
         Vector3 p1 = { -1, 0, 95 }; p1 *= view;
         Vector3 p2 = {  1, 0, 95 }; p2 *= view;
         Vector3 p3 = {  1, 0,  2 }; p3 *= view;
-        bitmap.DrawPoligon1(p0, p1, p2, p3, WHITE);
+        bitmap.DrawPoligon1(p0, p1, p2, p3, COLOR_WHITE);
     }
     {
         float size = 5;
@@ -23,7 +23,7 @@ void Draw(Bitmap& bitmap, Camera camera, long time)
         Vector3 p1 = { -size, 0,  size + 100 }; p1 *= view;
         Vector3 p2 = {  size, 0,  size + 100 }; p2 *= view;
         Vector3 p3 = {  size, 0, -size + 100 }; p3 *= view;
-        bitmap.DrawPoligon1(p0, p1, p2, p3, WHITE);
+        bitmap.DrawPoligon1(p0, p1, p2, p3, COLOR_WHITE);
     }
 
     // TODO fix this
@@ -52,7 +52,7 @@ void Draw(Bitmap& bitmap, Camera camera, long time)
         Vector3 p1 = { -size, 0,  size }; p1 *= view;
         Vector3 p2 = {  size, 0,  size }; p2 *= view;
         Vector3 p3 = {  size, 0, -size }; p3 *= view;
-        bitmap.DrawPoligon1(p0, p1, p2, p3, WHITE);
+        bitmap.DrawPoligon1(p0, p1, p2, p3, COLOR_WHITE);
     }
     {
         auto time2 = (float)time / 300;

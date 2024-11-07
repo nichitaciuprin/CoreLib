@@ -71,14 +71,14 @@ void UpdatePlayer(uint64_t playerAddr, NetInput& input)
 
 void Draw(Bitmap& bitmap, Player& player, long time)
 {
-    bitmap.Fill(BLACK);
+    bitmap.Fill(COLOR_BLACK);
 
     auto view = MatrixView3(&player.camera);
 
     for (auto& i : players)
     {
         if (player.id == i.id) continue;
-        bitmap.DrawCube(i.camera.position, {}, player.camera, RED);
+        bitmap.DrawCube(i.camera.position, {}, player.camera, COLOR_RED);
     }
 
     {
@@ -86,7 +86,7 @@ void Draw(Bitmap& bitmap, Player& player, long time)
         Vector3 p1 = { -1, 0, 95 }; p1 *= view;
         Vector3 p2 = {  1, 0, 95 }; p2 *= view;
         Vector3 p3 = {  1, 0,  2 }; p3 *= view;
-        bitmap.DrawPoligon1(p0, p1, p2, p3, WHITE);
+        bitmap.DrawPoligon1(p0, p1, p2, p3, COLOR_WHITE);
     }
     {
         float size = 5;
@@ -94,7 +94,7 @@ void Draw(Bitmap& bitmap, Player& player, long time)
         Vector3 p1 = { -size, 0,  size + 100 }; p1 *= view;
         Vector3 p2 = {  size, 0,  size + 100 }; p2 *= view;
         Vector3 p3 = {  size, 0, -size + 100 }; p3 *= view;
-        bitmap.DrawPoligon1(p0, p1, p2, p3, WHITE);
+        bitmap.DrawPoligon1(p0, p1, p2, p3, COLOR_WHITE);
     }
 
     // TODO fix this
@@ -119,10 +119,10 @@ void Draw(Bitmap& bitmap, Player& player, long time)
 }
 void Draw(Bitmap& bitmap, Camera camera, long time)
 {
-    bitmap.Fill(BLACK);
+    bitmap.Fill(COLOR_BLACK);
 
     for (auto& i : players)
-        bitmap.DrawCube(i.camera.position, {}, camera, RED);
+        bitmap.DrawCube(i.camera.position, {}, camera, COLOR_RED);
 
     auto view = MatrixView3(&camera);
 
@@ -131,7 +131,7 @@ void Draw(Bitmap& bitmap, Camera camera, long time)
         Vector3 p1 = { -1, 0, 95 }; p1 *= view;
         Vector3 p2 = {  1, 0, 95 }; p2 *= view;
         Vector3 p3 = {  1, 0,  2 }; p3 *= view;
-        bitmap.DrawPoligon1(p0, p1, p2, p3, WHITE);
+        bitmap.DrawPoligon1(p0, p1, p2, p3, COLOR_WHITE);
     }
     {
         float size = 5;
@@ -139,7 +139,7 @@ void Draw(Bitmap& bitmap, Camera camera, long time)
         Vector3 p1 = { -size, 0,  size + 100 }; p1 *= view;
         Vector3 p2 = {  size, 0,  size + 100 }; p2 *= view;
         Vector3 p3 = {  size, 0, -size + 100 }; p3 *= view;
-        bitmap.DrawPoligon1(p0, p1, p2, p3, WHITE);
+        bitmap.DrawPoligon1(p0, p1, p2, p3, COLOR_WHITE);
     }
 
     // TODO fix this
@@ -222,7 +222,7 @@ void UpdateGame(float deltaTime)
 
 //     Camera camera = { 0, 1, 95 };
 //     Draw(*testBitmap, camera, GetTime());
-//     // testBitmap->DrawBorder(GREEN);
+//     // testBitmap->DrawBorder(COLOR_GREEN);
 //     testWindow->SetPixels(testBitmap->pixels.data(), 32*16, 32*16);
 //     testWindow->Update();
 // }

@@ -15,7 +15,7 @@ void main2()
 
     while (window->Exists())
     {
-        bitmap->Fill(BLACK);
+        bitmap->Fill(COLOR_BLACK);
 
         float zFar = 0;
         float zClose = -10;
@@ -23,22 +23,22 @@ void main2()
         {
             Vector3 p0 = { 1, 2, zFar };
             Vector3 p1 = { 8, 2, zClose };
-            bitmap->DrawLine(p0, p1, RED);
+            bitmap->DrawLine(p0, p1, COLOR_RED);
         }
         {
             Vector3 p0 = { 7, 1, zFar };
             Vector3 p1 = { 7, 8, zClose };
-            bitmap->DrawLine(p0, p1, GREEN);
+            bitmap->DrawLine(p0, p1, COLOR_GREEN);
         }
         {
             Vector3 p1 = { 8, 7, zFar };
             Vector3 p0 = { 1, 7, zClose };
-            bitmap->DrawLine(p0, p1, BLUE);
+            bitmap->DrawLine(p0, p1, COLOR_BLUE);
         }
         {
             Vector3 p1 = { 2, 8, zFar };
             Vector3 p0 = { 2, 1, zClose };
-            bitmap->DrawLine(p0, p1, YELLOW);
+            bitmap->DrawLine(p0, p1, COLOR_YELLOW);
         }
 
         window->SetPixelsScaled(bitmap->pixels.data(), bitmap->Width(), bitmap->Height(), scale);
