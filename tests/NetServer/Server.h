@@ -71,7 +71,7 @@ void UpdatePlayer(uint64_t playerAddr, NetInput& input)
 
 void Draw(Bitmap& bitmap, Player& player, long time)
 {
-    bitmap.Fill(COLOR_BLACK);
+    bitmap.Reset();
 
     auto view = MatrixView3(&player.camera);
 
@@ -119,7 +119,7 @@ void Draw(Bitmap& bitmap, Player& player, long time)
 }
 void Draw(Bitmap& bitmap, Camera camera, long time)
 {
-    bitmap.Fill(COLOR_BLACK);
+    bitmap.Reset();
 
     for (auto& i : players)
         bitmap.DrawCube(i.camera.position, {}, camera, COLOR_RED);

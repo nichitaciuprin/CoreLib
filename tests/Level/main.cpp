@@ -6,7 +6,7 @@
 
 void Draw(Bitmap& bitmap, Camera camera, long time)
 {
-    bitmap.Fill(COLOR_BLACK);
+    bitmap.Reset();
 
     auto view = MatrixView3(&camera);
 

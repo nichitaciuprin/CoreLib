@@ -14,7 +14,7 @@ void main2()
 
     while (window->Exists())
     {
-        bitmap->Fill(COLOR_BLACK);
+        bitmap->Reset();
 
         auto time = (float)clock() / 1000;
         Camera camera = { Vector3Zero(), time, 0 };

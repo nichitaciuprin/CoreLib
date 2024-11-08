@@ -252,13 +252,18 @@ public:
         point->y = maxY * point->y;
     }
 
-    void Fill(Color color)
+    void Reset()
     {
-        // TODO move to BeginDraw()
-        int size = width * height * sizeof(uint32_t);
-        memset((void*)pixels, color, size);
+        memset((void*)pixels, 0, zbufferSize * sizeof(uint32_t));
+
+        // can we, somehow, do memset here?
         for (size_t i = 0; i < zbufferSize; i++)
             zbuffer[i] = FLT_MAX;
+    }
+    void Fill(Color color)
+    {
+        for (size_t i = 0; i < pixelsSize; i++)
+            pixels[i] = color;
     }
     void ApplyBlackWhiteColorDepth()
     {
