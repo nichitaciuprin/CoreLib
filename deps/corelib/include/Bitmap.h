@@ -137,7 +137,7 @@ public:
         v0.push_back(p2);
         v0.push_back(p3);
 
-        ClipPoligonBack      (v0, v1); if (v1.size() < 3) return; v0.clear();
+        ClipPoligonBack      (v0, v1, v0.size()); if (v1.size() < 3) return; v0.clear();
 
         for (auto& x : v1)
         {
@@ -148,10 +148,10 @@ public:
 
         if (!Vector3TriangleIsClockwise(v1[0], v1[1], v1[2])) return;
 
-        ClipPoligonLeft      (v1, v0); if (v0.size() < 3) return; v1.clear();
-        ClipPoligonRight     (v0, v1); if (v1.size() < 3) return; v0.clear();
-        ClipPoligonTop       (v1, v0); if (v0.size() < 3) return; v1.clear();
-        ClipPoligonBottom    (v0, v1); if (v1.size() < 3) return;
+        ClipPoligonLeft      (v1, v0, v1.size()); if (v0.size() < 3) return; v1.clear();
+        ClipPoligonRight     (v0, v1, v0.size()); if (v1.size() < 3) return; v0.clear();
+        ClipPoligonTop       (v1, v0, v1.size()); if (v0.size() < 3) return; v1.clear();
+        ClipPoligonBottom    (v0, v1, v0.size()); if (v1.size() < 3) return;
 
         for (auto& x : v1)
             ToScreenSpace(&x);
@@ -171,7 +171,7 @@ public:
         v0.push_back(p1);
         v0.push_back(p2);
 
-        ClipPoligonBack   (v0, v1); if (v1.size() < 3) return; v0.clear();
+        ClipPoligonBack   (v0, v1, v0.size()); if (v1.size() < 3) return; v0.clear();
 
         for (auto& x : v1)
         {
@@ -182,10 +182,10 @@ public:
 
         if (!Vector3TriangleIsClockwise(v1[0], v1[1], v1[2])) return;
 
-        ClipPoligonLeft   (v1, v0); if (v0.size() < 3) return; v1.clear();
-        ClipPoligonRight  (v0, v1); if (v1.size() < 3) return; v0.clear();
-        ClipPoligonTop    (v1, v0); if (v0.size() < 3) return; v1.clear();
-        ClipPoligonBottom (v0, v1); if (v1.size() < 3) return;
+        ClipPoligonLeft   (v1, v0, v1.size()); if (v0.size() < 3) return; v1.clear();
+        ClipPoligonRight  (v0, v1, v0.size()); if (v1.size() < 3) return; v0.clear();
+        ClipPoligonTop    (v1, v0, v1.size()); if (v0.size() < 3) return; v1.clear();
+        ClipPoligonBottom (v0, v1, v0.size()); if (v1.size() < 3) return;
 
         for (auto& x : v1)
             ToScreenSpace(&x);
@@ -205,7 +205,7 @@ public:
         v0.push_back(p1);
         v0.push_back(p2);
 
-        ClipPoligonBack(v0, v1); if (v1.size() < 3) return; v0.clear();
+        ClipPoligonBack(v0, v1, v0.size()); if (v1.size() < 3) return; v0.clear();
 
         if (!Vector3TriangleIsClockwise(v1[0], v1[1], v1[2])) return;
 
