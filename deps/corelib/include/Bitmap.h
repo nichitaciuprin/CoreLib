@@ -31,10 +31,13 @@ public:
         pixelsSize = size;
         zbufferSize = size;
 
-        // TODO free
         pixels = (uint32_t*)malloc(sizeof(uint32_t) * pixelsSize);
         zbuffer = (float*)malloc(sizeof(float) * zbufferSize);
-        // zbuffer = vector<float>(pixelsSize, FLT_MAX);
+    }
+    ~Bitmap()
+    {
+        free(pixels);
+        free(zbuffer);
     }
 
     int Width() const
