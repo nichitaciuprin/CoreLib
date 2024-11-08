@@ -14,7 +14,7 @@ int main()
 
     while (window->Exists())
     {
-        bitmap->Fill(COLOR_BLACK);
+        bitmap->Reset();
 
         Vector3 p0;
         Vector3 p1;

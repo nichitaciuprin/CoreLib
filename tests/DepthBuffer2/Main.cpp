@@ -14,7 +14,7 @@ int main()
 
     while (window->Exists())
     {
-        bitmap->Fill(COLOR_BLACK);
+        bitmap->Reset();
 
         Camera camera = { 0, 0, 0 };
         auto view = MatrixView3(&camera);

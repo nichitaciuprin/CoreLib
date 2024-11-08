@@ -15,7 +15,7 @@ void main2()
 
     while (window->Exists())
     {
-        bitmap->Fill(COLOR_BLACK);
+        bitmap->Reset();
 
         float zFar = 0;
         float zClose = -10;
