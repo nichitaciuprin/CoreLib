@@ -13,7 +13,7 @@ class Bitmap
 {
 public:
     uint32_t* pixels;
-    vector<float> zbuffer;
+    float* zbuffer;
 
     Bitmap(int width, int height)
     {
@@ -26,11 +26,15 @@ public:
         maxX = width - 1;
         maxY = height - 1;
 
-        pixelsSize = width * height;
+        size_t size = width * height;
+
+        pixelsSize = size;
+        zbufferSize = size;
 
         // TODO free
         pixels = (uint32_t*)malloc(sizeof(uint32_t) * pixelsSize);
-        zbuffer = vector<float>(pixelsSize, FLT_MAX);
+        zbuffer = (float*)malloc(sizeof(float) * zbufferSize);
+        // zbuffer = vector<float>(pixelsSize, FLT_MAX);
     }
 
     int Width() const
@@ -253,7 +257,8 @@ public:
         // TODO move to BeginDraw()
         int size = width * height * sizeof(uint32_t);
         memset((void*)pixels, color, size);
-        fill(zbuffer.begin(), zbuffer.end(), FLT_MAX);
+        for (size_t i = 0; i < zbufferSize; i++)
+            zbuffer[i] = FLT_MAX;
     }
     void ApplyBlackWhiteColorDepth()
     {
@@ -436,4 +441,5 @@ private:
     int maxX = 0;
     int maxY = 0;
     size_t pixelsSize = 0;
+    size_t zbufferSize = 0;
 };
