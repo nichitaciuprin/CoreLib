@@ -139,7 +139,7 @@ public:
 
         int vertextCount = 4;
 
-        ClipPoligonBack      (v0, v1, &vertextCount); if (vertextCount < 3) return; v0.clear();
+        ClipPoligonBack      (v0.data(), v1.data(), &vertextCount); if (vertextCount < 3) return; v0.clear();
 
         for (auto& x : v1)
         {
@@ -175,7 +175,7 @@ public:
 
         int vertextCount = 3;
 
-        ClipPoligonBack   (v0, v1, &vertextCount); if (vertextCount < 3) return; v0.clear();
+        ClipPoligonBack   (v0.data(), v1.data(), &vertextCount); if (vertextCount < 3) return; v0.clear();
 
         for (auto& x : v1)
         {
@@ -211,7 +211,7 @@ public:
 
         int vertextCount = 3;
 
-        ClipPoligonBack(v0, v1, &vertextCount); if (vertextCount < 3) return; v0.clear();
+        ClipPoligonBack(v0.data(), v1.data(), &vertextCount); if (vertextCount < 3) return; v0.clear();
 
         if (!Vector3TriangleIsClockwise(v1[0], v1[1], v1[2])) return;
 
