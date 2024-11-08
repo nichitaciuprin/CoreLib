@@ -444,10 +444,10 @@ public:
     }
 
 private:
-    int width = 0;
-    int height = 0;
-    int maxX = 0;
-    int maxY = 0;
-    size_t pixelsSize = 0;
-    size_t zbufferSize = 0;
+    int width;
+    int height;
+    int maxX;
+    int maxY;
+    size_t pixelsSize;
+    size_t zbufferSize;
 };
