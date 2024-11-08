@@ -162,15 +162,15 @@ inline bool ClipLineBottom(Vector3* v0, Vector3* v1)
     }
 }
 
-inline void ClipPoligonBack(vector<Vector3>& input, vector<Vector3>& output)
+inline void ClipPoligonBack(vector<Vector3>& input, vector<Vector3>& output, int vertexCount)
 {
     float offset = 0.1f;
     int flags = 0;
 
-    Vector3 p0 = input[input.size() - 1];
+    Vector3 p0 = input[vertexCount - 1];
     if (p0.z < offset) flags += 2;
 
-    for (size_t i = 0; i < input.size(); i++)
+    for (int i = 0; i < vertexCount; i++)
     {
         flags = flags >> 1;
 
@@ -207,15 +207,15 @@ inline void ClipPoligonBack(vector<Vector3>& input, vector<Vector3>& output)
         p0 = p1;
     }
 }
-inline void ClipPoligonLeft(vector<Vector3>& input, vector<Vector3>& output)
+inline void ClipPoligonLeft(vector<Vector3>& input, vector<Vector3>& output, int vertexCount)
 {
     float offset = -1;
     int flags = 0;
 
-    Vector3 p0 = input[input.size() - 1];
+    Vector3 p0 = input[vertexCount - 1];
     if (p0.x < offset) flags += 2;
 
-    for (size_t i = 0; i < input.size(); i++)
+    for (int i = 0; i < vertexCount; i++)
     {
         flags = flags >> 1;
 
@@ -252,15 +252,15 @@ inline void ClipPoligonLeft(vector<Vector3>& input, vector<Vector3>& output)
         p0 = p1;
     }
 }
-inline void ClipPoligonRight(vector<Vector3>& input, vector<Vector3>& output)
+inline void ClipPoligonRight(vector<Vector3>& input, vector<Vector3>& output, int vertexCount)
 {
     float offset = 1;
     int flags = 0;
 
-    Vector3 p0 = input[input.size() - 1];
+    Vector3 p0 = input[vertexCount - 1];
     if (p0.x > offset) flags += 2;
 
-    for (size_t i = 0; i < input.size(); i++)
+    for (int i = 0; i < vertexCount; i++)
     {
         flags = flags >> 1;
 
@@ -297,15 +297,15 @@ inline void ClipPoligonRight(vector<Vector3>& input, vector<Vector3>& output)
         p0 = p1;
     }
 }
-inline void ClipPoligonTop(vector<Vector3>& input, vector<Vector3>& output)
+inline void ClipPoligonTop(vector<Vector3>& input, vector<Vector3>& output, int vertexCount)
 {
     float offset = 1;
     int flags = 0;
 
-    Vector3 p0 = input[input.size() - 1];
+    Vector3 p0 = input[vertexCount - 1];
     if (p0.y > offset) flags += 2;
 
-    for (size_t i = 0; i < input.size(); i++)
+    for (int i = 0; i < vertexCount; i++)
     {
         flags = flags >> 1;
 
@@ -342,15 +342,15 @@ inline void ClipPoligonTop(vector<Vector3>& input, vector<Vector3>& output)
         p0 = p1;
     }
 }
-inline void ClipPoligonBottom(vector<Vector3>& input, vector<Vector3>& output)
+inline void ClipPoligonBottom(vector<Vector3>& input, vector<Vector3>& output, int vertexCount)
 {
     float offset = -1;
     int flags = 0;
 
-    Vector3 p0 = input[input.size() - 1];
+    Vector3 p0 = input[vertexCount - 1];
     if (p0.y < offset) flags += 2;
 
-    for (size_t i = 0; i < input.size(); i++)
+    for (int i = 0; i < vertexCount; i++)
     {
         flags = flags >> 1;
 
