@@ -764,23 +764,17 @@ inline Matrix MatrixView2(Vector3 eye, Vector3 target, Vector3 up)
 
     Vector3 yAxis = Vector3Cross(zAxis, xAxis);
 
-    eye = Vector3Negative(eye);
-
-    Matrix mat1 = MatrixTranslate(eye);
-
-    Matrix mat2 =
+    Matrix result =
     {
         xAxis.x, xAxis.y, xAxis.z, 0,
         yAxis.x, yAxis.y, yAxis.z, 0,
         zAxis.x, zAxis.y, zAxis.z, 0,
-              0,       0,       0, 1
+          eye.x,   eye.y,   eye.z, 1
     };
 
-    mat2 = MatrixInvert(mat2);
+    result = MatrixInvert(result);
 
-    Matrix mat3 = MatrixMultiply(mat1, mat2);
-
-    return mat3;
+    return result;
 }
 inline Matrix MatrixView3(const Camera* camera)
 {
