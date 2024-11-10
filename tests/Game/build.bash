@@ -1,38 +1,30 @@
-# makes execution stop on error
-# set -e
+deps=./../../deps
+main=./main.cpp
 
-# libs='-lraylib -lGL -lm -lpthread -ldl -lrt -lX11'
+flags=
+flags="$flags -g3 -Og -std=c++17 -pthread -m64"
+flags="$flags -Werror -Wall -Wno-missing-braces"
 
-# warnings='
-# -pedantic -Werror -Wshadow -Wall -Wextra -Wcast-align -Wcast-qual
-# -Wdisabled-optimization -Wformat=2 -Winit-self -Wlogical-op
-# -Wmissing-include-dirs -Wredundant-decls -Wstrict-overflow=5
-# -Wno-unused -Wno-variadic-macros -Wno-parentheses
-# -Wundef -fdiagnostics-show-option'
+include=
+include="$include -I./src"
+include="$include -I$deps/corelib/include"
+include="$include -I$deps/raylib/include"
+include="$include -I$deps/raylibWrap/include"
+include="$include -I$deps/ReactPhysics3D/include"
+include="$include -I$deps/ReactPhysics3DWrap/include"
 
-# -pedantic
-# -Wshadow
-# -Wundef
-# -Wextra
+src=
+src="$src $deps/corelib/src/SysHelper.c"
+src="$src $deps/corelib/src/SysWindow.c"
+src="$src $deps/corelib/src/SysNet.c"
+src="$src $deps/raylibWrap/src/RaylibWrap.cpp"
 
-# include=../../include
+lib=
+lib="$lib -L$deps/raylib/lib -lraylib_linux"
+lib="$lib -L$deps/ReactPhysics3D/lib -lreactphysics3d_linux"
+lib="$lib -lX11 -ldl"
 
-root=./../..
-deps=$root/deps2
+rm -rf ./build
+mkdir ./build
 
-flags="-g3 -O0 -Wall -std=c++17 -Wno-missing-braces -pthread -m64"
-
-dep1="-I$deps/Base/include"
-dep2="-I$deps/raylib/include          -L$deps/raylib/lib          -lraylib"
-dep3="-I$deps/ReactPhysics3D/include  -L$deps/ReactPhysics3D/lib  -lreactphysics3d"
-depX="$dep1 $dep2 $dep3 $dep4"
-
-rm -rf build
-mkdir build
-
-# g++ main.cpp -o build/main -g -I$include $libs $warnings
-# g++ main.cpp RaylibWrap.cpp -o build/main $flags $depX -lGL -lm -lpthread -ldl -lrt -lX11
-# g++ main.cpp -o build/main $flags $depX
-g++ main.cpp RaylibWrap.cpp -o build/main $flags $depX -ldl $warnings
-
-# ./main
+g++ $main $src -o ./build/main $include $lib $flags
