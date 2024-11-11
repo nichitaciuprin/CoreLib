@@ -136,17 +136,17 @@ public:
         v0[2] = p2;
         v0[3] = p3;
 
-        ClipPoligonBack      (v0, v1, &vertextCount, +0.1f); if (vertextCount < 3) return;
+        ClipPoligonBack   (v0, v1, &vertextCount, +0.1f); if (vertextCount < 3) return;
 
         for (int i = 0; i < vertextCount; i++)
             ApplyPerspective(&v1[i]);
 
         if (!Vector3TriangleIsClockwise(v1[0], v1[1], v1[2])) return;
 
-        ClipPoligonLeft      (v1, v0, &vertextCount, -1.0f); if (vertextCount < 3) return;
-        ClipPoligonRight     (v0, v1, &vertextCount, +1.0f); if (vertextCount < 3) return;
-        ClipPoligonUp       (v1, v0, &vertextCount, +1.0f); if (vertextCount < 3) return;
-        ClipPoligonDown    (v0, v1, &vertextCount, -1.0f); if (vertextCount < 3) return;
+        ClipPoligonLeft   (v1, v0, &vertextCount, -1.0f); if (vertextCount < 3) return;
+        ClipPoligonRight  (v0, v1, &vertextCount, +1.0f); if (vertextCount < 3) return;
+        ClipPoligonUp     (v1, v0, &vertextCount, +1.0f); if (vertextCount < 3) return;
+        ClipPoligonDown   (v0, v1, &vertextCount, -1.0f); if (vertextCount < 3) return;
 
         for (int i = 0; i < vertextCount; i++)
             ToScreenSpace(&v1[i]);
@@ -172,10 +172,10 @@ public:
 
         if (!Vector3TriangleIsClockwise(v1[0], v1[1], v1[2])) return;
 
-        ClipPoligonLeft   (v1, v0, &vertextCount, -1); if (vertextCount < 3) return;
-        ClipPoligonRight  (v0, v1, &vertextCount, +1); if (vertextCount < 3) return;
-        ClipPoligonUp    (v1, v0, &vertextCount, +1); if (vertextCount < 3) return;
-        ClipPoligonDown (v0, v1, &vertextCount, -1); if (vertextCount < 3) return;
+        ClipPoligonLeft   (v1, v0, &vertextCount, -1.0f); if (vertextCount < 3) return;
+        ClipPoligonRight  (v0, v1, &vertextCount, +1.0f); if (vertextCount < 3) return;
+        ClipPoligonUp     (v1, v0, &vertextCount, +1.0f); if (vertextCount < 3) return;
+        ClipPoligonDown   (v0, v1, &vertextCount, -1.0f); if (vertextCount < 3) return;
 
         for (int i = 0; i < vertextCount; i++)
             ToScreenSpace(&v1[i]);
@@ -206,15 +206,15 @@ public:
     }
     void DrawLine1(Vector3 v0, Vector3 v1, Color color)
     {
-        if (ClipLineBack(&v0, &v1)) return;
+        if (ClipLineBack   (&v0, &v1)) return;
 
         ApplyPerspective(&v0);
         ApplyPerspective(&v1);
 
-        if (ClipLineLeft(&v0, &v1)) return;
-        if (ClipLineRight(&v0, &v1)) return;
-        if (ClipLineUp(&v0, &v1)) return;
-        if (ClipLineDown(&v0, &v1)) return;
+        if (ClipLineLeft   (&v0, &v1)) return;
+        if (ClipLineRight  (&v0, &v1)) return;
+        if (ClipLineDown   (&v0, &v1)) return;
+        if (ClipLineUp     (&v0, &v1)) return;
 
         ToScreenSpace(&v0);
         ToScreenSpace(&v1);
@@ -223,10 +223,10 @@ public:
     }
     void DrawLine2(Vector3 v0, Vector3 v1, Color color)
     {
-        if (ClipLineLeft(&v0, &v1)) return;
-        if (ClipLineRight(&v0, &v1)) return;
-        if (ClipLineUp(&v0, &v1)) return;
-        if (ClipLineDown(&v0, &v1)) return;
+        if (ClipLineLeft   (&v0, &v1)) return;
+        if (ClipLineRight  (&v0, &v1)) return;
+        if (ClipLineDown   (&v0, &v1)) return;
+        if (ClipLineUp     (&v0, &v1)) return;
 
         ToScreenSpace(&v0);
         ToScreenSpace(&v1);
