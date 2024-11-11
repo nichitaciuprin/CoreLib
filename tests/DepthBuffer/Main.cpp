@@ -40,7 +40,7 @@ int main()
         }
 
         bitmap->DrawBorder(COLOR_GREEN);
-        window->SetPixels(bitmap->pixels.data(), bitmap->Width(), bitmap->Height());
+        window->SetPixels(bitmap->pixels, bitmap->Width(), bitmap->Height());
         window->Update();
     }
 
