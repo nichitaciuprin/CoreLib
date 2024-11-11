@@ -139,12 +139,7 @@ public:
         ClipPoligonBack      (v0, v1, &vertextCount, +0.1f); if (vertextCount < 3) return;
 
         for (int i = 0; i < vertextCount; i++)
-        {
-            Vector3* x = &v1[i];
-            if (x->z == 0) continue;
-            x->x /= x->z;
-            x->y /= x->z;
-        }
+            ApplyPerspective(&v1[i]);
 
         if (!Vector3TriangleIsClockwise(v1[0], v1[1], v1[2])) return;
 
@@ -173,12 +168,7 @@ public:
         ClipPoligonBack   (v0, v1, &vertextCount, +0.1f); if (vertextCount < 3) return;
 
         for (int i = 0; i < vertextCount; i++)
-        {
-            Vector3* x = &v1[i];
-            if (x->z == 0) continue;
-            x->x /= x->z;
-            x->y /= x->z;
-        }
+            ApplyPerspective(&v1[i]);
 
         if (!Vector3TriangleIsClockwise(v1[0], v1[1], v1[2])) return;
 
@@ -218,8 +208,8 @@ public:
     {
         if (ClipLineBack(&v0, &v1)) return;
 
-        if (v0.z != 0) { v0.x /= v0.z; v0.y /= v0.z; };
-        if (v1.z != 0) { v1.x /= v1.z; v1.y /= v1.z; };
+        ApplyPerspective(&v0);
+        ApplyPerspective(&v1);
 
         if (ClipLineLeft(&v0, &v1)) return;
         if (ClipLineRight(&v0, &v1)) return;
@@ -252,6 +242,12 @@ public:
         point->y /= 2;
         point->x = maxX * point->x;
         point->y = maxY * point->y;
+    }
+    void ApplyPerspective(Vector3* v)
+    {
+        if (v->z == 0) return;
+        v->x /= v->z;
+        v->y /= v->z;
     }
 
     void Reset()
