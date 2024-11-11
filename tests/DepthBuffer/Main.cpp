@@ -39,7 +39,7 @@ int main()
             }
         }
 
-        bitmap->DrawBorder(COLOR_GREEN);
+        bitmap->FillBorder(COLOR_GREEN);
         window->SetPixels(bitmap->pixels, bitmap->Width(), bitmap->Height());
         window->Update();
     }

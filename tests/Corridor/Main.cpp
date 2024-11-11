@@ -27,7 +27,7 @@ void main2()
             bitmap->DrawCubeWireframe(world * view, COLOR_RED);
         }
 
-        bitmap->DrawBorder(COLOR_GREEN);
+        bitmap->FillBorder(COLOR_GREEN);
         window->SetPixels(bitmap->pixels, bitmap->Width(), bitmap->Height());
         window->Update();
     }

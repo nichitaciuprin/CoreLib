@@ -27,7 +27,7 @@ int main()
         bitmap->pixels[i2] = 0;
         iteration++;
 
-        bitmap->DrawBorder(COLOR_GREEN);
+        bitmap->FillBorder(COLOR_GREEN);
         window->SetPixels(bitmap->pixels.data(), bitmap->Width(), bitmap->Height());
         window->Update();
     }
