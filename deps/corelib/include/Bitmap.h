@@ -26,7 +26,7 @@ public:
         maxX = width - 1;
         maxY = height - 1;
 
-        size_t size = width * height;
+        int size = width * height;
 
         pixelsSize = size;
         zbufferSize = size;
@@ -115,7 +115,7 @@ public:
     }
     void DrawCubeWireframe(Matrix modelView, Color color)
     {
-        for (size_t i = 0; i < 12; i++)
+        for (int i = 0; i < 12; i++)
         {
             int i0 = ModelCubeIndecesLine[i][0];
             int i1 = ModelCubeIndecesLine[i][1];
@@ -351,7 +351,7 @@ public:
 
     void ApplyBlackWhiteColorDepth()
     {
-        for (size_t i = 0; i < pixelsSize; i++)
+        for (int i = 0; i < pixelsSize; i++)
         {
             float depthLength = 100;
             float factor = MathClampFloat(zbuffer[i], 0.0f, depthLength);
@@ -403,7 +403,7 @@ public:
     }
     void FillAll(Color color)
     {
-        for (size_t i = 0; i < pixelsSize; i++)
+        for (int i = 0; i < pixelsSize; i++)
             pixels[i] = color;
     }
 
@@ -441,7 +441,7 @@ public:
         memset((void*)pixels, 0, zbufferSize * sizeof(uint32_t));
 
         // can we, somehow, do memset here?
-        for (size_t i = 0; i < zbufferSize; i++)
+        for (int i = 0; i < zbufferSize; i++)
             zbuffer[i] = FLT_MAX;
     }
 
@@ -450,6 +450,6 @@ private:
     int height;
     int maxX;
     int maxY;
-    size_t pixelsSize;
-    size_t zbufferSize;
+    int pixelsSize;
+    int zbufferSize;
 };
