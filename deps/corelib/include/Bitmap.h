@@ -152,7 +152,7 @@ public:
             ToScreenSpace(&v1[i]);
 
         for (int i = 1; i < vertextCount - 1; i++)
-            DrawTriangle(v1[0], v1[i], v1[i + 1], color);
+            DrawTriangle3(v1[0], v1[i], v1[i + 1], color);
     }
 
     void DrawTriangle1(Vector3 p0, Vector3 p1, Vector3 p2, Color color)
@@ -182,7 +182,7 @@ public:
             ToScreenSpace(&v1[i]);
 
         for (int i = 1; i < vertextCount - 1; i++)
-            DrawTriangle(v1[0], v1[i], v1[i + 1], color);
+            DrawTriangle3(v1[0], v1[i], v1[i + 1], color);
     }
     void DrawTriangle2(Vector3 p0, Vector3 p1, Vector3 p2, Color color)
     {
@@ -203,9 +203,9 @@ public:
             ToScreenSpace(&v1[i]);
 
         for (int i = 1; i < vertextCount - 1; i++)
-            DrawTriangle(v1[0], v1[i], v1[i + 1], color);
+            DrawTriangle3(v1[0], v1[i], v1[i + 1], color);
     }
-    void DrawTriangle(Vector3 v0, Vector3 v1, Vector3 v2, Color color)
+    void DrawTriangle3(Vector3 v0, Vector3 v1, Vector3 v2, Color color)
     {
         // TODO not accurate, improve
 
@@ -298,7 +298,7 @@ public:
         ToScreenSpace(&v0);
         ToScreenSpace(&v1);
 
-        DrawLine(v0, v1, color);
+        DrawLine3(v0, v1, color);
     }
     void DrawLine2(Vector3 v0, Vector3 v1, Color color)
     {
@@ -310,9 +310,9 @@ public:
         ToScreenSpace(&v0);
         ToScreenSpace(&v1);
 
-        DrawLine(v0, v1, color);
+        DrawLine3(v0, v1, color);
     }
-    void DrawLine(Vector3 v0, Vector3 v1, Color color)
+    void DrawLine3(Vector3 v0, Vector3 v1, Color color)
     {
         int x0 = (int)v0.x;
         int y0 = (int)v0.y;
@@ -373,18 +373,18 @@ public:
         v->x /= v->z;
         v->y /= v->z;
     }
-    void ToScreenSpace(Vector3* point)
+    void ToScreenSpace(Vector3* v)
     {
-        point->y = -point->y;
-        point->x += 1.0f;
-        point->y += 1.0f;
-        point->x /= 2;
-        point->y /= 2;
-        point->x = maxX * point->x;
-        point->y = maxY * point->y;
+        v->y = -v->y;
+        v->x += 1.0f;
+        v->y += 1.0f;
+        v->x /= 2;
+        v->y /= 2;
+        v->x = maxX * v->x;
+        v->y = maxY * v->y;
     }
 
-    void DrawBorder(Color color)
+    void FillBorder(Color color)
     {
         int x = maxX;
         int y = maxY;
@@ -393,14 +393,14 @@ public:
         for (int i = 0; i < height; i++) SetPixel(0, i, color);
         for (int i = 0; i < height; i++) SetPixel(x, i, color);
     }
-    void DrawCross(Color color)
+    void FillCross(Color color)
     {
         int centerX = width / 2;
         int centerY = height / 2;
         for (int i = 0; i < width;  i++) SetPixel(i, centerY, color);
         for (int i = 0; i < height; i++) SetPixel(centerX, i, color);
     }
-    void Fill(Color color)
+    void FillAll(Color color)
     {
         for (size_t i = 0; i < pixelsSize; i++)
             pixels[i] = color;

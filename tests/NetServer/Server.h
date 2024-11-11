@@ -222,7 +222,7 @@ void UpdateGame(float deltaTime)
 
 //     Camera camera = { 0, 1, 95 };
 //     Draw(*testBitmap, camera, GetTime());
-//     // testBitmap->DrawBorder(COLOR_GREEN);
+//     // testBitmap->FillBorder(COLOR_GREEN);
 //     testWindow->SetPixels(testBitmap->pixels.data(), 32*16, 32*16);
 //     testWindow->Update();
 // }
