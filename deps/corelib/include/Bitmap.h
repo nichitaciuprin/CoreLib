@@ -56,7 +56,6 @@ public:
         auto view = MatrixView3(&camera);
         DrawCube(world * view, color);
     }
-
     void DrawCubeWireframe(Matrix modelView, Color color)
     {
         for (size_t i = 0; i < 12; i++)
@@ -124,6 +123,7 @@ public:
 
         #undef DRAW
     }
+
     void DrawPoligon1(Vector3 p0, Vector3 p1, Vector3 p2, Vector3 p3, Color color)
     {
         int vertextCount = 4;
@@ -154,6 +154,7 @@ public:
         for (int i = 1; i < vertextCount - 1; i++)
             DrawTriangle(v1[0], v1[i], v1[i + 1], color);
     }
+
     void DrawTriangle1(Vector3 p0, Vector3 p1, Vector3 p2, Color color)
     {
         int vertextCount = 3;
@@ -203,84 +204,6 @@ public:
 
         for (int i = 1; i < vertextCount - 1; i++)
             DrawTriangle(v1[0], v1[i], v1[i + 1], color);
-    }
-    void DrawLine1(Vector3 v0, Vector3 v1, Color color)
-    {
-        if (ClipLineBack   (&v0, &v1)) return;
-
-        ApplyPerspective(&v0);
-        ApplyPerspective(&v1);
-
-        if (ClipLineLeft   (&v0, &v1)) return;
-        if (ClipLineRight  (&v0, &v1)) return;
-        if (ClipLineDown   (&v0, &v1)) return;
-        if (ClipLineUp     (&v0, &v1)) return;
-
-        ToScreenSpace(&v0);
-        ToScreenSpace(&v1);
-
-        DrawLine(v0, v1, color);
-    }
-    void DrawLine2(Vector3 v0, Vector3 v1, Color color)
-    {
-        if (ClipLineLeft   (&v0, &v1)) return;
-        if (ClipLineRight  (&v0, &v1)) return;
-        if (ClipLineDown   (&v0, &v1)) return;
-        if (ClipLineUp     (&v0, &v1)) return;
-
-        ToScreenSpace(&v0);
-        ToScreenSpace(&v1);
-
-        DrawLine(v0, v1, color);
-    }
-    void ToScreenSpace(Vector3* point)
-    {
-        point->y = -point->y;
-        point->x += 1.0f;
-        point->y += 1.0f;
-        point->x /= 2;
-        point->y /= 2;
-        point->x = maxX * point->x;
-        point->y = maxY * point->y;
-    }
-    void ApplyPerspective(Vector3* v)
-    {
-        if (v->z == 0) return;
-        v->x /= v->z;
-        v->y /= v->z;
-    }
-
-    void Reset()
-    {
-        memset((void*)pixels, 0, zbufferSize * sizeof(uint32_t));
-
-        // can we, somehow, do memset here?
-        for (size_t i = 0; i < zbufferSize; i++)
-            zbuffer[i] = FLT_MAX;
-    }
-    void Fill(Color color)
-    {
-        for (size_t i = 0; i < pixelsSize; i++)
-            pixels[i] = color;
-    }
-    void ApplyBlackWhiteColorDepth()
-    {
-        for (size_t i = 0; i < pixelsSize; i++)
-        {
-            float depthLength = 100;
-            float factor = MathClampFloat(zbuffer[i], 0.0f, depthLength);
-            factor /= depthLength;
-            factor = 1 - factor;
-            auto byte = (int)(factor * 255);
-
-            uint32_t color = 0;
-            color += byte; color = color << 8;
-            color += byte; color = color << 8;
-            color += byte; color = color << 8;
-            color += byte;
-
-            pixels[i] = color;
-        }
     }
     void DrawTriangle(Vector3 v0, Vector3 v1, Vector3 v2, Color color)
     {
@@ -359,6 +282,36 @@ public:
         }
         DrawLineHorizontal(y, *xl, *xr, *zl, *zr, color);
     }
+
+    void DrawLine1(Vector3 v0, Vector3 v1, Color color)
+    {
+        if (ClipLineBack   (&v0, &v1)) return;
+
+        ApplyPerspective(&v0);
+        ApplyPerspective(&v1);
+
+        if (ClipLineLeft   (&v0, &v1)) return;
+        if (ClipLineRight  (&v0, &v1)) return;
+        if (ClipLineDown   (&v0, &v1)) return;
+        if (ClipLineUp     (&v0, &v1)) return;
+
+        ToScreenSpace(&v0);
+        ToScreenSpace(&v1);
+
+        DrawLine(v0, v1, color);
+    }
+    void DrawLine2(Vector3 v0, Vector3 v1, Color color)
+    {
+        if (ClipLineLeft   (&v0, &v1)) return;
+        if (ClipLineRight  (&v0, &v1)) return;
+        if (ClipLineDown   (&v0, &v1)) return;
+        if (ClipLineUp     (&v0, &v1)) return;
+
+        ToScreenSpace(&v0);
+        ToScreenSpace(&v1);
+
+        DrawLine(v0, v1, color);
+    }
     void DrawLine(Vector3 v0, Vector3 v1, Color color)
     {
         int x0 = (int)v0.x;
@@ -394,19 +347,43 @@ public:
         }
         SetPixelZ(x0, y0, z, color);
     }
-    void DrawLineHorizontal(int y, int xLeft, int xRight, float zLeft, float zRight, Color color)
-    {
-        int count = xRight - xLeft;
-        float diff = zRight - zLeft;
-        float offset = diff / count;
 
-        for (int i = 0; i < count + 1; i++)
+    void ApplyBlackWhiteColorDepth()
+    {
+        for (size_t i = 0; i < pixelsSize; i++)
         {
-            auto x = xLeft + i;
-            SetPixelZ(x, y, zLeft, color);
-            zLeft += offset;
+            float depthLength = 100;
+            float factor = MathClampFloat(zbuffer[i], 0.0f, depthLength);
+            factor /= depthLength;
+            factor = 1 - factor;
+            auto byte = (int)(factor * 255);
+
+            uint32_t color = 0;
+            color += byte; color = color << 8;
+            color += byte; color = color << 8;
+            color += byte; color = color << 8;
+            color += byte;
+
+            pixels[i] = color;
         }
     }
+    void ApplyPerspective(Vector3* v)
+    {
+        if (v->z == 0) return;
+        v->x /= v->z;
+        v->y /= v->z;
+    }
+    void ToScreenSpace(Vector3* point)
+    {
+        point->y = -point->y;
+        point->x += 1.0f;
+        point->y += 1.0f;
+        point->x /= 2;
+        point->y /= 2;
+        point->x = maxX * point->x;
+        point->y = maxY * point->y;
+    }
+
     void DrawBorder(Color color)
     {
         int x = maxX;
@@ -423,6 +400,26 @@ public:
         for (int i = 0; i < width;  i++) SetPixel(i, centerY, color);
         for (int i = 0; i < height; i++) SetPixel(centerX, i, color);
     }
+    void Fill(Color color)
+    {
+        for (size_t i = 0; i < pixelsSize; i++)
+            pixels[i] = color;
+    }
+
+    void DrawLineHorizontal(int y, int xLeft, int xRight, float zLeft, float zRight, Color color)
+    {
+        int count = xRight - xLeft;
+        float diff = zRight - zLeft;
+        float offset = diff / count;
+
+        for (int i = 0; i < count + 1; i++)
+        {
+            auto x = xLeft + i;
+            SetPixelZ(x, y, zLeft, color);
+            zLeft += offset;
+        }
+    }
+
     void SetPixel(int x, int y, Color color)
     {
         auto i = x + y * width;
@@ -436,6 +433,15 @@ public:
             zbuffer[i] = z;
             pixels[i] = color;
         }
+    }
+
+    void Reset()
+    {
+        memset((void*)pixels, 0, zbufferSize * sizeof(uint32_t));
+
+        // can we, somehow, do memset here?
+        for (size_t i = 0; i < zbufferSize; i++)
+            zbuffer[i] = FLT_MAX;
     }
 
 private:
