@@ -129,8 +129,8 @@ public:
         auto v0 = vector<Vector3>();
         auto v1 = vector<Vector3>();
 
-        v0.reserve(6);
-        v1.reserve(6);
+        v0.reserve(8);
+        v1.reserve(8);
 
         v0.push_back(p0);
         v0.push_back(p1);
