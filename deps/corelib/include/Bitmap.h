@@ -145,8 +145,8 @@ public:
 
         ClipPoligonLeft      (v1, v0, &vertextCount, -1.0f); if (vertextCount < 3) return;
         ClipPoligonRight     (v0, v1, &vertextCount, +1.0f); if (vertextCount < 3) return;
-        ClipPoligonTop       (v1, v0, &vertextCount, +1.0f); if (vertextCount < 3) return;
-        ClipPoligonBottom    (v0, v1, &vertextCount, -1.0f); if (vertextCount < 3) return;
+        ClipPoligonUp       (v1, v0, &vertextCount, +1.0f); if (vertextCount < 3) return;
+        ClipPoligonDown    (v0, v1, &vertextCount, -1.0f); if (vertextCount < 3) return;
 
         for (int i = 0; i < vertextCount; i++)
             ToScreenSpace(&v1[i]);
@@ -174,8 +174,8 @@ public:
 
         ClipPoligonLeft   (v1, v0, &vertextCount, -1); if (vertextCount < 3) return;
         ClipPoligonRight  (v0, v1, &vertextCount, +1); if (vertextCount < 3) return;
-        ClipPoligonTop    (v1, v0, &vertextCount, +1); if (vertextCount < 3) return;
-        ClipPoligonBottom (v0, v1, &vertextCount, -1); if (vertextCount < 3) return;
+        ClipPoligonUp    (v1, v0, &vertextCount, +1); if (vertextCount < 3) return;
+        ClipPoligonDown (v0, v1, &vertextCount, -1); if (vertextCount < 3) return;
 
         for (int i = 0; i < vertextCount; i++)
             ToScreenSpace(&v1[i]);
@@ -213,8 +213,8 @@ public:
 
         if (ClipLineLeft(&v0, &v1)) return;
         if (ClipLineRight(&v0, &v1)) return;
-        if (ClipLineTop(&v0, &v1)) return;
-        if (ClipLineBottom(&v0, &v1)) return;
+        if (ClipLineUp(&v0, &v1)) return;
+        if (ClipLineDown(&v0, &v1)) return;
 
         ToScreenSpace(&v0);
         ToScreenSpace(&v1);
@@ -225,8 +225,8 @@ public:
     {
         if (ClipLineLeft(&v0, &v1)) return;
         if (ClipLineRight(&v0, &v1)) return;
-        if (ClipLineTop(&v0, &v1)) return;
-        if (ClipLineBottom(&v0, &v1)) return;
+        if (ClipLineUp(&v0, &v1)) return;
+        if (ClipLineDown(&v0, &v1)) return;
 
         ToScreenSpace(&v0);
         ToScreenSpace(&v1);

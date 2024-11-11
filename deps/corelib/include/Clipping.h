@@ -99,7 +99,7 @@ inline bool ClipLineRight(Vector3* v0, Vector3* v1)
         default /* 11 */ : return true;
     }
 }
-inline bool ClipLineTop(Vector3* v0, Vector3* v1)
+inline bool ClipLineUp(Vector3* v0, Vector3* v1)
 {
     float offset = 1;
 
@@ -130,7 +130,7 @@ inline bool ClipLineTop(Vector3* v0, Vector3* v1)
         default /* 11 */ : return true;
     }
 }
-inline bool ClipLineBottom(Vector3* v0, Vector3* v1)
+inline bool ClipLineDown(Vector3* v0, Vector3* v1)
 {
     float offset = -1;
 
@@ -321,7 +321,7 @@ inline void ClipPoligonRight(Vector3* input, Vector3* output, int* vertexCount, 
 
     *vertexCount = finalCount;
 }
-inline void ClipPoligonTop(Vector3* input, Vector3* output, int* vertexCount, float offset)
+inline void ClipPoligonUp(Vector3* input, Vector3* output, int* vertexCount, float offset)
 {
     int flags = 0;
     int index = 0;
@@ -374,7 +374,7 @@ inline void ClipPoligonTop(Vector3* input, Vector3* output, int* vertexCount, fl
 
     *vertexCount = finalCount;
 }
-inline void ClipPoligonBottom(Vector3* input, Vector3* output, int* vertexCount, float offset)
+inline void ClipPoligonDown(Vector3* input, Vector3* output, int* vertexCount, float offset)
 {
     int flags = 0;
     int index = 0;
