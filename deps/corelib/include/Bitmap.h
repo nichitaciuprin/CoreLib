@@ -52,22 +52,22 @@ public:
     void DrawCubeTemp(Vector3 position, Vector3 rotation, Camera camera, Color color)
     {
         Vector3 scale = { 1, 1, 1 };
-        auto world = MatrixWorld2(position, rotation, scale);
-        auto view = MatrixView3(&camera);
+        Matrix world = MatrixWorld2(position, rotation, scale);
+        Matrix view = MatrixView3(&camera);
         DrawCube1(world * view, color);
     }
     void DrawCubeColored(Matrix modelView)
     {
         #define DRAW(INDEX, COLOR)                        \
         {                                                 \
-            auto i0 = ModelCubeIndecesQuad[INDEX][0];     \
-            auto i1 = ModelCubeIndecesQuad[INDEX][1];     \
-            auto i2 = ModelCubeIndecesQuad[INDEX][2];     \
-            auto i3 = ModelCubeIndecesQuad[INDEX][3];     \
-            auto p0 = ModelCubeVerteces[i0];              \
-            auto p1 = ModelCubeVerteces[i1];              \
-            auto p2 = ModelCubeVerteces[i2];              \
-            auto p3 = ModelCubeVerteces[i3];              \
+            int i0 = ModelCubeIndecesQuad[INDEX][0];      \
+            int i1 = ModelCubeIndecesQuad[INDEX][1];      \
+            int i2 = ModelCubeIndecesQuad[INDEX][2];      \
+            int i3 = ModelCubeIndecesQuad[INDEX][3];      \
+            Vector3 p0 = ModelCubeVerteces[i0];           \
+            Vector3 p1 = ModelCubeVerteces[i1];           \
+            Vector3 p2 = ModelCubeVerteces[i2];           \
+            Vector3 p3 = ModelCubeVerteces[i3];           \
             p0 *= modelView;                              \
             p1 *= modelView;                              \
             p2 *= modelView;                              \
@@ -89,14 +89,14 @@ public:
     {
         #define DRAW(INDEX, COLOR)                        \
         {                                                 \
-            auto i0 = ModelCubeIndecesQuad[INDEX][0];     \
-            auto i1 = ModelCubeIndecesQuad[INDEX][1];     \
-            auto i2 = ModelCubeIndecesQuad[INDEX][2];     \
-            auto i3 = ModelCubeIndecesQuad[INDEX][3];     \
-            auto p0 = ModelCubeVerteces[i0];              \
-            auto p1 = ModelCubeVerteces[i1];              \
-            auto p2 = ModelCubeVerteces[i2];              \
-            auto p3 = ModelCubeVerteces[i3];              \
+            int i0 = ModelCubeIndecesQuad[INDEX][0];      \
+            int i1 = ModelCubeIndecesQuad[INDEX][1];      \
+            int i2 = ModelCubeIndecesQuad[INDEX][2];      \
+            int i3 = ModelCubeIndecesQuad[INDEX][3];      \
+            Vector3 p0 = ModelCubeVerteces[i0];           \
+            Vector3 p1 = ModelCubeVerteces[i1];           \
+            Vector3 p2 = ModelCubeVerteces[i2];           \
+            Vector3 p3 = ModelCubeVerteces[i3];           \
             p0 *= modelView;                              \
             p1 *= modelView;                              \
             p2 *= modelView;                              \
@@ -117,10 +117,10 @@ public:
     {
         for (size_t i = 0; i < 12; i++)
         {
-            auto i0 = ModelCubeIndecesLine[i][0];
-            auto i1 = ModelCubeIndecesLine[i][1];
-            auto v0 = ModelCubeVerteces[i0] * modelView;
-            auto v1 = ModelCubeVerteces[i1] * modelView;
+            int i0 = ModelCubeIndecesLine[i][0];
+            int i1 = ModelCubeIndecesLine[i][1];
+            Vector3 v0 = ModelCubeVerteces[i0] * modelView;
+            Vector3 v1 = ModelCubeVerteces[i1] * modelView;
             DrawLine1(v0, v1, color);
         }
     }
@@ -357,7 +357,7 @@ public:
             float factor = MathClampFloat(zbuffer[i], 0.0f, depthLength);
             factor /= depthLength;
             factor = 1 - factor;
-            auto byte = (int)(factor * 255);
+            int byte = (int)(factor * 255);
 
             uint32_t color = 0;
             color += byte; color = color << 8;
@@ -415,7 +415,7 @@ public:
 
         for (int i = 0; i < count + 1; i++)
         {
-            auto x = xLeft + i;
+            int x = xLeft + i;
             SetPixelZ(x, y, zLeft, color);
             zLeft += offset;
         }
@@ -423,12 +423,12 @@ public:
 
     void SetPixel(int x, int y, Color color)
     {
-        auto i = x + y * width;
+        int i = x + y * width;
         pixels[i] = color;
     }
     void SetPixelZ(int x, int y, float z, Color color)
     {
-        auto i = x + y * width;
+        int i = x + y * width;
         if (zbuffer[i] >= z)
         {
             zbuffer[i] = z;
