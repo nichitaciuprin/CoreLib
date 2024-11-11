@@ -136,7 +136,7 @@ public:
         v0[2] = p2;
         v0[3] = p3;
 
-        ClipPoligonBack      (v0, v1, &vertextCount); if (vertextCount < 3) return;
+        ClipPoligonBack      (v0, v1, &vertextCount, +0.1f); if (vertextCount < 3) return;
 
         for (int i = 0; i < vertextCount; i++)
         {
@@ -148,10 +148,10 @@ public:
 
         if (!Vector3TriangleIsClockwise(v1[0], v1[1], v1[2])) return;
 
-        ClipPoligonLeft      (v1, v0, &vertextCount); if (vertextCount < 3) return;
-        ClipPoligonRight     (v0, v1, &vertextCount); if (vertextCount < 3) return;
-        ClipPoligonTop       (v1, v0, &vertextCount); if (vertextCount < 3) return;
-        ClipPoligonBottom    (v0, v1, &vertextCount); if (vertextCount < 3) return;
+        ClipPoligonLeft      (v1, v0, &vertextCount, -1.0f); if (vertextCount < 3) return;
+        ClipPoligonRight     (v0, v1, &vertextCount, +1.0f); if (vertextCount < 3) return;
+        ClipPoligonTop       (v1, v0, &vertextCount, +1.0f); if (vertextCount < 3) return;
+        ClipPoligonBottom    (v0, v1, &vertextCount, -1.0f); if (vertextCount < 3) return;
 
         for (int i = 0; i < vertextCount; i++)
             ToScreenSpace(&v1[i]);
@@ -170,7 +170,7 @@ public:
         v0[1] = p1;
         v0[2] = p2;
 
-        ClipPoligonBack   (v0, v1, &vertextCount); if (vertextCount < 3) return;
+        ClipPoligonBack   (v0, v1, &vertextCount, +0.1f); if (vertextCount < 3) return;
 
         for (int i = 0; i < vertextCount; i++)
         {
@@ -182,10 +182,10 @@ public:
 
         if (!Vector3TriangleIsClockwise(v1[0], v1[1], v1[2])) return;
 
-        ClipPoligonLeft   (v1, v0, &vertextCount); if (vertextCount < 3) return;
-        ClipPoligonRight  (v0, v1, &vertextCount); if (vertextCount < 3) return;
-        ClipPoligonTop    (v1, v0, &vertextCount); if (vertextCount < 3) return;
-        ClipPoligonBottom (v0, v1, &vertextCount); if (vertextCount < 3) return;
+        ClipPoligonLeft   (v1, v0, &vertextCount, -1); if (vertextCount < 3) return;
+        ClipPoligonRight  (v0, v1, &vertextCount, +1); if (vertextCount < 3) return;
+        ClipPoligonTop    (v1, v0, &vertextCount, +1); if (vertextCount < 3) return;
+        ClipPoligonBottom (v0, v1, &vertextCount, -1); if (vertextCount < 3) return;
 
         for (int i = 0; i < vertextCount; i++)
             ToScreenSpace(&v1[i]);
@@ -204,7 +204,7 @@ public:
         v0[1] = p1;
         v0[2] = p2;
 
-        ClipPoligonBack(v0, v1, &vertextCount); if (vertextCount < 3) return;
+        ClipPoligonBack(v0, v1, &vertextCount, +0.1f); if (vertextCount < 3) return;
 
         if (!Vector3TriangleIsClockwise(v1[0], v1[1], v1[2])) return;
 

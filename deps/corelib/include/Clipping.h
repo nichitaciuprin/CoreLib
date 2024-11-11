@@ -162,14 +162,12 @@ inline bool ClipLineBottom(Vector3* v0, Vector3* v1)
     }
 }
 
-inline void ClipPoligonBack(Vector3* input, Vector3* output, int* vertexCount)
+inline void ClipPoligonBack(Vector3* input, Vector3* output, int* vertexCount, float offset)
 {
     int flags = 0;
     int index = 0;
     int initCount = *vertexCount;
     int finalCount = 0;
-
-    float offset = 0.1f;
 
     Vector3 p0 = input[initCount - 1];
 
@@ -217,14 +215,12 @@ inline void ClipPoligonBack(Vector3* input, Vector3* output, int* vertexCount)
 
     *vertexCount = finalCount;
 }
-inline void ClipPoligonLeft(Vector3* input, Vector3* output, int* vertexCount)
+inline void ClipPoligonLeft(Vector3* input, Vector3* output, int* vertexCount, float offset)
 {
     int flags = 0;
     int index = 0;
     int initCount = *vertexCount;
     int finalCount = 0;
-
-    float offset = -1;
 
     Vector3 p0 = input[initCount - 1];
 
@@ -272,14 +268,12 @@ inline void ClipPoligonLeft(Vector3* input, Vector3* output, int* vertexCount)
 
     *vertexCount = finalCount;
 }
-inline void ClipPoligonRight(Vector3* input, Vector3* output, int* vertexCount)
+inline void ClipPoligonRight(Vector3* input, Vector3* output, int* vertexCount, float offset)
 {
     int flags = 0;
     int index = 0;
     int initCount = *vertexCount;
     int finalCount = 0;
-
-    float offset = 1;
 
     Vector3 p0 = input[initCount - 1];
 
@@ -327,14 +321,12 @@ inline void ClipPoligonRight(Vector3* input, Vector3* output, int* vertexCount)
 
     *vertexCount = finalCount;
 }
-inline void ClipPoligonTop(Vector3* input, Vector3* output, int* vertexCount)
+inline void ClipPoligonTop(Vector3* input, Vector3* output, int* vertexCount, float offset)
 {
     int flags = 0;
     int index = 0;
     int initCount = *vertexCount;
     int finalCount = 0;
-
-    float offset = 1;
 
     Vector3 p0 = input[initCount - 1];
 
@@ -382,14 +374,12 @@ inline void ClipPoligonTop(Vector3* input, Vector3* output, int* vertexCount)
 
     *vertexCount = finalCount;
 }
-inline void ClipPoligonBottom(Vector3* input, Vector3* output, int* vertexCount)
+inline void ClipPoligonBottom(Vector3* input, Vector3* output, int* vertexCount, float offset)
 {
     int flags = 0;
     int index = 0;
     int initCount = *vertexCount;
     int finalCount = 0;
-
-    float offset = -1;
 
     Vector3 p0 = input[initCount - 1];
 
