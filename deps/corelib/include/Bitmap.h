@@ -177,11 +177,12 @@ public:
 
         ClipPoligonBack   (v0, v1, &vertextCount); if (vertextCount < 3) return; v0.clear();
 
-        for (auto& x : v1)
+        for (int i = 0; i < vertextCount; i++)
         {
-            if (x.z == 0) continue;
-            x.x /= x.z;
-            x.y /= x.z;
+            Vector3* x = &v1[i];
+            if (x->z == 0) continue;
+            x->x /= x->z;
+            x->y /= x->z;
         }
 
         if (!Vector3TriangleIsClockwise(v1[0], v1[1], v1[2])) return;
@@ -191,8 +192,8 @@ public:
         ClipPoligonTop    (v1, v0, &vertextCount); if (vertextCount < 3) return; v1.clear();
         ClipPoligonBottom (v0, v1, &vertextCount); if (vertextCount < 3) return;
 
-        for (auto& x : v1)
-            ToScreenSpace(&x);
+        for (int i = 0; i < vertextCount; i++)
+            ToScreenSpace(&v1[i]);
 
         for (int i = 1; i < vertextCount - 1; i++)
             DrawTriangle(v1[0], v1[i], v1[i + 1], color);
