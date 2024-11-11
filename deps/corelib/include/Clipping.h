@@ -162,10 +162,11 @@ inline bool ClipLineBottom(Vector3* v0, Vector3* v1)
     }
 }
 
-inline void ClipPoligonBack(vector<Vector3>& input, vector<Vector3>& output, int* vertexCount)
+inline void ClipPoligonBack(Vector3* input, Vector3* output, int* vertexCount)
 {
     float offset = 0.1f;
     int flags = 0;
+    int index = 0;
 
     int count = *vertexCount;
     *vertexCount = 0;
@@ -184,17 +185,17 @@ inline void ClipPoligonBack(vector<Vector3>& input, vector<Vector3>& output, int
         {
             /* 00 */ case 0:
             {
-                output.push_back(p0);
+                output[index] = p0; index++;
                 *vertexCount += 1;
                 break;
             };
             /* 10 */ case 2:
             {
-                output.push_back(p0);
+                output[index] = p0; index++;
                 auto diff = p1 - p0;
                 auto newPoint = p0 + diff * (offset - p0.z) / diff.z;
                 newPoint.z = offset;
-                output.push_back(newPoint);
+                output[index] = newPoint; index++;
                 *vertexCount += 2;
                 break;
             };
@@ -203,7 +204,7 @@ inline void ClipPoligonBack(vector<Vector3>& input, vector<Vector3>& output, int
                 auto diff = p1 - p0;
                 auto newPoint = p0 + diff * (offset - p0.z) / diff.z;
                 newPoint.z = offset;
-                output.push_back(newPoint);
+                output[index] = newPoint; index++;
                 *vertexCount += 1;
                 break;
             };
@@ -213,10 +214,11 @@ inline void ClipPoligonBack(vector<Vector3>& input, vector<Vector3>& output, int
         p0 = p1;
     }
 }
-inline void ClipPoligonLeft(vector<Vector3>& input, vector<Vector3>& output, int* vertexCount)
+inline void ClipPoligonLeft(Vector3* input, Vector3* output, int* vertexCount)
 {
     float offset = -1;
     int flags = 0;
+    int index = 0;
 
     int count = *vertexCount;
     *vertexCount = 0;
@@ -235,17 +237,17 @@ inline void ClipPoligonLeft(vector<Vector3>& input, vector<Vector3>& output, int
         {
             /* 00 */ case 0:
             {
-                output.push_back(p0);
+                output[index] = p0; index++;
                 *vertexCount += 1;
                 break;
             };
             /* 10 */ case 2:
             {
-                output.push_back(p0);
+                output[index] = p0; index++;
                 auto diff = p1 - p0;
                 auto newPoint = p0 + diff * (offset - p0.x) / diff.x;
                 newPoint.x = offset;
-                output.push_back(newPoint);
+                output[index] = newPoint; index++;
                 *vertexCount += 2;
                 break;
             };
@@ -254,7 +256,7 @@ inline void ClipPoligonLeft(vector<Vector3>& input, vector<Vector3>& output, int
                 auto diff = p1 - p0;
                 auto newPoint = p0 + diff * (offset - p0.x) / diff.x;
                 newPoint.x = offset;
-                output.push_back(newPoint);
+                output[index] = newPoint; index++;
                 *vertexCount += 1;
                 break;
             };
@@ -264,10 +266,11 @@ inline void ClipPoligonLeft(vector<Vector3>& input, vector<Vector3>& output, int
         p0 = p1;
     }
 }
-inline void ClipPoligonRight(vector<Vector3>& input, vector<Vector3>& output, int* vertexCount)
+inline void ClipPoligonRight(Vector3* input, Vector3* output, int* vertexCount)
 {
     float offset = 1;
     int flags = 0;
+    int index = 0;
 
     int count = *vertexCount;
     *vertexCount = 0;
@@ -286,17 +289,17 @@ inline void ClipPoligonRight(vector<Vector3>& input, vector<Vector3>& output, in
         {
             /* 00 */ case 0:
             {
-                output.push_back(p0);
+                output[index] = p0; index++;
                 *vertexCount += 1;
                 break;
             };
             /* 10 */ case 2:
             {
-                output.push_back(p0);
+                output[index] = p0; index++;
                 auto diff = p1 - p0;
                 auto newPoint = p0 + diff * (offset - p0.x) / diff.x;
                 newPoint.x = offset;
-                output.push_back(newPoint);
+                output[index] = newPoint; index++;
                 *vertexCount += 2;
                 break;
             };
@@ -305,7 +308,7 @@ inline void ClipPoligonRight(vector<Vector3>& input, vector<Vector3>& output, in
                 auto diff = p1 - p0;
                 auto newPoint = p0 + diff * (offset - p0.x) / diff.x;
                 newPoint.x = offset;
-                output.push_back(newPoint);
+                output[index] = newPoint; index++;
                 *vertexCount += 1;
                 break;
             };
@@ -315,10 +318,11 @@ inline void ClipPoligonRight(vector<Vector3>& input, vector<Vector3>& output, in
         p0 = p1;
     }
 }
-inline void ClipPoligonTop(vector<Vector3>& input, vector<Vector3>& output, int* vertexCount)
+inline void ClipPoligonTop(Vector3* input, Vector3* output, int* vertexCount)
 {
     float offset = 1;
     int flags = 0;
+    int index = 0;
 
     int count = *vertexCount;
     *vertexCount = 0;
@@ -337,17 +341,17 @@ inline void ClipPoligonTop(vector<Vector3>& input, vector<Vector3>& output, int*
         {
             /* 00 */ case 0:
             {
-                output.push_back(p0);
+                output[index] = p0; index++;
                 *vertexCount += 1;
                 break;
             };
             /* 10 */ case 2:
             {
-                output.push_back(p0);
+                output[index] = p0; index++;
                 auto diff = p1 - p0;
                 auto newPoint = p0 + diff * (offset - p0.y) / diff.y;
                 newPoint.y = offset;
-                output.push_back(newPoint);
+                output[index] = newPoint; index++;
                 *vertexCount += 2;
                 break;
             };
@@ -356,7 +360,7 @@ inline void ClipPoligonTop(vector<Vector3>& input, vector<Vector3>& output, int*
                 auto diff = p1 - p0;
                 auto newPoint = p0 + diff * (offset - p0.y) / diff.y;
                 newPoint.y = offset;
-                output.push_back(newPoint);
+                output[index] = newPoint; index++;
                 *vertexCount += 1;
                 break;
             };
@@ -366,10 +370,11 @@ inline void ClipPoligonTop(vector<Vector3>& input, vector<Vector3>& output, int*
         p0 = p1;
     }
 }
-inline void ClipPoligonBottom(vector<Vector3>& input, vector<Vector3>& output, int* vertexCount)
+inline void ClipPoligonBottom(Vector3* input, Vector3* output, int* vertexCount)
 {
     float offset = -1;
     int flags = 0;
+    int index = 0;
 
     int count = *vertexCount;
     *vertexCount = 0;
@@ -388,17 +393,17 @@ inline void ClipPoligonBottom(vector<Vector3>& input, vector<Vector3>& output, i
         {
             /* 00 */ case 0:
             {
-                output.push_back(p0);
+                output[index] = p0; index++;
                 *vertexCount += 1;
                 break;
             };
             /* 10 */ case 2:
             {
-                output.push_back(p0);
+                output[index] = p0; index++;
                 auto diff = p1 - p0;
                 auto newPoint = p0 + diff * (offset - p0.y) / diff.y;
                 newPoint.y = offset;
-                output.push_back(newPoint);
+                output[index] = newPoint; index++;
                 *vertexCount += 2;
                 break;
             };
@@ -407,7 +412,7 @@ inline void ClipPoligonBottom(vector<Vector3>& input, vector<Vector3>& output, i
                 auto diff = p1 - p0;
                 auto newPoint = p0 + diff * (offset - p0.y) / diff.y;
                 newPoint.y = offset;
-                output.push_back(newPoint);
+                output[index] = newPoint; index++;
                 *vertexCount += 1;
                 break;
             };
