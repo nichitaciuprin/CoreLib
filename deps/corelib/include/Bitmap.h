@@ -126,20 +126,17 @@ public:
     }
     void DrawPoligon1(Vector3 p0, Vector3 p1, Vector3 p2, Vector3 p3, Color color)
     {
-        auto v0 = vector<Vector3>();
-        auto v1 = vector<Vector3>();
-
-        v0.reserve(8);
-        v1.reserve(8);
-
-        v0.push_back(p0);
-        v0.push_back(p1);
-        v0.push_back(p2);
-        v0.push_back(p3);
-
         int vertextCount = 4;
 
-        ClipPoligonBack      (v0, v1, &vertextCount); if (vertextCount < 3) return; v0.clear();
+        Vector3 v0[8];
+        Vector3 v1[8];
+
+        v0[0] = p0;
+        v0[1] = p1;
+        v0[2] = p2;
+        v0[3] = p3;
+
+        ClipPoligonBack      (v0, v1, &vertextCount); if (vertextCount < 3) return;
 
         for (int i = 0; i < vertextCount; i++)
         {
@@ -151,9 +148,9 @@ public:
 
         if (!Vector3TriangleIsClockwise(v1[0], v1[1], v1[2])) return;
 
-        ClipPoligonLeft      (v1, v0, &vertextCount); if (vertextCount < 3) return; v1.clear();
-        ClipPoligonRight     (v0, v1, &vertextCount); if (vertextCount < 3) return; v0.clear();
-        ClipPoligonTop       (v1, v0, &vertextCount); if (vertextCount < 3) return; v1.clear();
+        ClipPoligonLeft      (v1, v0, &vertextCount); if (vertextCount < 3) return;
+        ClipPoligonRight     (v0, v1, &vertextCount); if (vertextCount < 3) return;
+        ClipPoligonTop       (v1, v0, &vertextCount); if (vertextCount < 3) return;
         ClipPoligonBottom    (v0, v1, &vertextCount); if (vertextCount < 3) return;
 
         for (int i = 0; i < vertextCount; i++)
@@ -164,19 +161,16 @@ public:
     }
     void DrawTriangle1(Vector3 p0, Vector3 p1, Vector3 p2, Color color)
     {
-        auto v0 = vector<Vector3>();
-        auto v1 = vector<Vector3>();
-
-        v0.reserve(6);
-        v1.reserve(6);
-
-        v0.push_back(p0);
-        v0.push_back(p1);
-        v0.push_back(p2);
-
         int vertextCount = 3;
 
-        ClipPoligonBack   (v0, v1, &vertextCount); if (vertextCount < 3) return; v0.clear();
+        Vector3 v0[6];
+        Vector3 v1[6];
+
+        v0[0] = p0;
+        v0[1] = p1;
+        v0[2] = p2;
+
+        ClipPoligonBack   (v0, v1, &vertextCount); if (vertextCount < 3) return;
 
         for (int i = 0; i < vertextCount; i++)
         {
@@ -188,9 +182,9 @@ public:
 
         if (!Vector3TriangleIsClockwise(v1[0], v1[1], v1[2])) return;
 
-        ClipPoligonLeft   (v1, v0, &vertextCount); if (vertextCount < 3) return; v1.clear();
-        ClipPoligonRight  (v0, v1, &vertextCount); if (vertextCount < 3) return; v0.clear();
-        ClipPoligonTop    (v1, v0, &vertextCount); if (vertextCount < 3) return; v1.clear();
+        ClipPoligonLeft   (v1, v0, &vertextCount); if (vertextCount < 3) return;
+        ClipPoligonRight  (v0, v1, &vertextCount); if (vertextCount < 3) return;
+        ClipPoligonTop    (v1, v0, &vertextCount); if (vertextCount < 3) return;
         ClipPoligonBottom (v0, v1, &vertextCount); if (vertextCount < 3) return;
 
         for (int i = 0; i < vertextCount; i++)
@@ -201,19 +195,16 @@ public:
     }
     void DrawTriangle2(Vector3 p0, Vector3 p1, Vector3 p2, Color color)
     {
-        auto v0 = vector<Vector3>();
-        auto v1 = vector<Vector3>();
-
-        v0.reserve(6);
-        v1.reserve(6);
-
-        v0.push_back(p0);
-        v0.push_back(p1);
-        v0.push_back(p2);
-
         int vertextCount = 3;
 
-        ClipPoligonBack(v0, v1, &vertextCount); if (vertextCount < 3) return; v0.clear();
+        Vector3 v0[6];
+        Vector3 v1[6];
+
+        v0[0] = p0;
+        v0[1] = p1;
+        v0[2] = p2;
+
+        ClipPoligonBack(v0, v1, &vertextCount); if (vertextCount < 3) return;
 
         if (!Vector3TriangleIsClockwise(v1[0], v1[1], v1[2])) return;
 
