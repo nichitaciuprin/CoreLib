@@ -3,9 +3,6 @@
 #include "BaseExt.h"
 #include "HelperExt.h"
 
-// functions made for specific case
-// maybe remove hardcoded values
-
 inline bool ClipLineBack(Vector3* v0, Vector3* v1)
 {
     float offset = 0.1f;
@@ -178,6 +175,7 @@ inline void ClipPoligonBack(Vector3* input, Vector3* output, int* vertexCount, f
         flags = flags >> 1;
 
         Vector3 p1 = input[i];
+
         if (p1.z < offset) flags += 2;
 
         switch (flags)
@@ -231,6 +229,7 @@ inline void ClipPoligonLeft(Vector3* input, Vector3* output, int* vertexCount, f
         flags = flags >> 1;
 
         Vector3 p1 = input[i];
+
         if (p1.x < offset) flags += 2;
 
         switch (flags)
@@ -284,6 +283,7 @@ inline void ClipPoligonRight(Vector3* input, Vector3* output, int* vertexCount, 
         flags = flags >> 1;
 
         Vector3 p1 = input[i];
+
         if (p1.x > offset) flags += 2;
 
         switch (flags)
@@ -337,6 +337,7 @@ inline void ClipPoligonUp(Vector3* input, Vector3* output, int* vertexCount, flo
         flags = flags >> 1;
 
         Vector3 p1 = input[i];
+
         if (p1.y > offset) flags += 2;
 
         switch (flags)
