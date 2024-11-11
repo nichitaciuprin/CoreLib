@@ -217,8 +217,8 @@ public:
 
         if (!Vector3TriangleIsClockwise(v1[0], v1[1], v1[2])) return;
 
-        for (auto& x : v1)
-            ToScreenSpace(&x);
+        for (int i = 0; i < vertextCount; i++)
+            ToScreenSpace(&v1[i]);
 
         for (int i = 1; i < vertextCount - 1; i++)
             DrawTriangle(v1[0], v1[i], v1[i + 1], color);
