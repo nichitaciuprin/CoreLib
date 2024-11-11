@@ -49,23 +49,12 @@ public:
         return height;
     }
 
-    void DrawCube(Vector3 position, Vector3 rotation, Camera camera, Color color)
+    void DrawCubeTemp(Vector3 position, Vector3 rotation, Camera camera, Color color)
     {
         Vector3 scale = { 1, 1, 1 };
         auto world = MatrixWorld2(position, rotation, scale);
         auto view = MatrixView3(&camera);
-        DrawCube(world * view, color);
-    }
-    void DrawCubeWireframe(Matrix modelView, Color color)
-    {
-        for (size_t i = 0; i < 12; i++)
-        {
-            auto i0 = ModelCubeIndecesLine[i][0];
-            auto i1 = ModelCubeIndecesLine[i][1];
-            auto v0 = ModelCubeVerteces[i0] * modelView;
-            auto v1 = ModelCubeVerteces[i1] * modelView;
-            DrawLine1(v0, v1, color);
-        }
+        DrawCube1(world * view, color);
     }
     void DrawCubeColored(Matrix modelView)
     {
@@ -95,7 +84,8 @@ public:
 
         #undef DRAW
     }
-    void DrawCube(Matrix modelView, Color color)
+
+    void DrawCube1(Matrix modelView, Color color)
     {
         #define DRAW(INDEX, COLOR)                        \
         {                                                 \
@@ -122,6 +112,17 @@ public:
         DRAW(5, color)
 
         #undef DRAW
+    }
+    void DrawCubeWireframe(Matrix modelView, Color color)
+    {
+        for (size_t i = 0; i < 12; i++)
+        {
+            auto i0 = ModelCubeIndecesLine[i][0];
+            auto i1 = ModelCubeIndecesLine[i][1];
+            auto v0 = ModelCubeVerteces[i0] * modelView;
+            auto v1 = ModelCubeVerteces[i1] * modelView;
+            DrawLine1(v0, v1, color);
+        }
     }
 
     void DrawPoligon1(Vector3 p0, Vector3 p1, Vector3 p2, Vector3 p3, Color color)

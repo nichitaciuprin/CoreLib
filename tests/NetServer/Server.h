@@ -78,7 +78,7 @@ void Draw(Bitmap& bitmap, Player& player, long time)
     for (auto& i : players)
     {
         if (player.id == i.id) continue;
-        bitmap.DrawCube(i.camera.position, {}, player.camera, COLOR_RED);
+        bitmap.DrawCubeTemp(i.camera.position, {}, player.camera, COLOR_RED);
     }
 
     {
@@ -122,7 +122,7 @@ void Draw(Bitmap& bitmap, Camera camera, long time)
     bitmap.Reset();
 
     for (auto& i : players)
-        bitmap.DrawCube(i.camera.position, {}, camera, COLOR_RED);
+        bitmap.DrawCubeTemp(i.camera.position, {}, camera, COLOR_RED);
 
     auto view = MatrixView3(&camera);
 
