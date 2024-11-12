@@ -293,7 +293,7 @@ void BitmapDrawTriangle3(Bitmap* instance, Vector3 v0, Vector3 v1, Vector3 v2, C
 }
 void BitmapDrawTriangle2(Bitmap* instance, Vector3 p0, Vector3 p1, Vector3 p2, Color color)
 {
-    int vertextCount = 3;
+    int vertexCount = 3;
 
     Vector3 v0[6];
     Vector3 v1[6];
@@ -302,19 +302,19 @@ void BitmapDrawTriangle2(Bitmap* instance, Vector3 p0, Vector3 p1, Vector3 p2, C
     v0[1] = p1;
     v0[2] = p2;
 
-    ClipPoligonBack(v0, v1, &vertextCount, +0.1f); if (vertextCount < 3) return;
+    ClipPoligonBack(v0, v1, &vertexCount, +0.1f); if (vertexCount < 3) return;
 
     if (!Vector3TriangleIsClockwise(v1[0], v1[1], v1[2])) return;
 
-    for (int i = 0; i < vertextCount; i++)
+    for (int i = 0; i < vertexCount; i++)
         BitmapToScreenSpace(instance, &v1[i]);
 
-    for (int i = 1; i < vertextCount - 1; i++)
+    for (int i = 1; i < vertexCount - 1; i++)
         BitmapDrawTriangle3(instance, v1[0], v1[i], v1[i + 1], color);
 }
 void BitmapDrawTriangle1(Bitmap* instance, Vector3 p0, Vector3 p1, Vector3 p2, Color color)
 {
-    int vertextCount = 3;
+    int vertexCount = 3;
 
     Vector3 v0[6];
     Vector3 v1[6];
@@ -323,28 +323,28 @@ void BitmapDrawTriangle1(Bitmap* instance, Vector3 p0, Vector3 p1, Vector3 p2, C
     v0[1] = p1;
     v0[2] = p2;
 
-    ClipPoligonBack   (v0, v1, &vertextCount, +0.1f); if (vertextCount < 3) return;
+    ClipPoligonBack   (v0, v1, &vertexCount, +0.1f); if (vertexCount < 3) return;
 
-    for (int i = 0; i < vertextCount; i++)
+    for (int i = 0; i < vertexCount; i++)
         BitmapApplyPerspective(&v1[i]);
 
     if (!Vector3TriangleIsClockwise(v1[0], v1[1], v1[2])) return;
 
-    ClipPoligonLeft   (v1, v0, &vertextCount, -1.0f); if (vertextCount < 3) return;
-    ClipPoligonRight  (v0, v1, &vertextCount, +1.0f); if (vertextCount < 3) return;
-    ClipPoligonUp     (v1, v0, &vertextCount, +1.0f); if (vertextCount < 3) return;
-    ClipPoligonDown   (v0, v1, &vertextCount, -1.0f); if (vertextCount < 3) return;
+    ClipPoligonLeft   (v1, v0, &vertexCount, -1.0f); if (vertexCount < 3) return;
+    ClipPoligonRight  (v0, v1, &vertexCount, +1.0f); if (vertexCount < 3) return;
+    ClipPoligonUp     (v1, v0, &vertexCount, +1.0f); if (vertexCount < 3) return;
+    ClipPoligonDown   (v0, v1, &vertexCount, -1.0f); if (vertexCount < 3) return;
 
-    for (int i = 0; i < vertextCount; i++)
+    for (int i = 0; i < vertexCount; i++)
         BitmapToScreenSpace(instance, &v1[i]);
 
-    for (int i = 1; i < vertextCount - 1; i++)
+    for (int i = 1; i < vertexCount - 1; i++)
         BitmapDrawTriangle3(instance, v1[0], v1[i], v1[i + 1], color);
 }
 
 void BitmapDrawPoligon1(Bitmap* instance, Vector3 p0, Vector3 p1, Vector3 p2, Vector3 p3, Color color)
 {
-    int vertextCount = 4;
+    int vertexCount = 4;
 
     Vector3 v0[8];
     Vector3 v1[8];
@@ -354,22 +354,22 @@ void BitmapDrawPoligon1(Bitmap* instance, Vector3 p0, Vector3 p1, Vector3 p2, Ve
     v0[2] = p2;
     v0[3] = p3;
 
-    ClipPoligonBack   (v0, v1, &vertextCount, +0.1f); if (vertextCount < 3) return;
+    ClipPoligonBack   (v0, v1, &vertexCount, +0.1f); if (vertexCount < 3) return;
 
-    for (int i = 0; i < vertextCount; i++)
+    for (int i = 0; i < vertexCount; i++)
         BitmapApplyPerspective(&v1[i]);
 
     if (!Vector3TriangleIsClockwise(v1[0], v1[1], v1[2])) return;
 
-    ClipPoligonLeft   (v1, v0, &vertextCount, -1.0f); if (vertextCount < 3) return;
-    ClipPoligonRight  (v0, v1, &vertextCount, +1.0f); if (vertextCount < 3) return;
-    ClipPoligonUp     (v1, v0, &vertextCount, +1.0f); if (vertextCount < 3) return;
-    ClipPoligonDown   (v0, v1, &vertextCount, -1.0f); if (vertextCount < 3) return;
+    ClipPoligonLeft   (v1, v0, &vertexCount, -1.0f); if (vertexCount < 3) return;
+    ClipPoligonRight  (v0, v1, &vertexCount, +1.0f); if (vertexCount < 3) return;
+    ClipPoligonUp     (v1, v0, &vertexCount, +1.0f); if (vertexCount < 3) return;
+    ClipPoligonDown   (v0, v1, &vertexCount, -1.0f); if (vertexCount < 3) return;
 
-    for (int i = 0; i < vertextCount; i++)
+    for (int i = 0; i < vertexCount; i++)
         BitmapToScreenSpace(instance, &v1[i]);
 
-    for (int i = 1; i < vertextCount - 1; i++)
+    for (int i = 1; i < vertexCount - 1; i++)
         BitmapDrawTriangle3(instance, v1[0], v1[i], v1[i + 1], color);
 }
 
