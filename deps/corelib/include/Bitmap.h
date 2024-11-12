@@ -75,17 +75,17 @@ void BitmapSetPixelZ(Bitmap* instance, int x, int y, float z, Color color)
     instance->pixels[i] = color;
 }
 
-void BitmapDrawLineHorizontal(Bitmap* instance, int y, int xLeft, int xRight, float zLeft, float zRight, Color color)
+void BitmapDrawLineHorizontal(Bitmap* instance, int y, int xl, int xr, float zl, float zr, Color color)
 {
-    int count = xRight - xLeft;
-    float diff = zRight - zLeft;
+    int count = xr - xl;
+    float diff = zr - zl;
     float offset = diff / count;
 
     for (int i = 0; i < count + 1; i++)
     {
-        int x = xLeft + i;
-        BitmapSetPixelZ(instance, x, y, zLeft, color);
-        zLeft += offset;
+        int x = xl + i;
+        BitmapSetPixelZ(instance, x, y, zl, color);
+        zl += offset;
     }
 }
 
@@ -476,7 +476,7 @@ public:
     void FillBorder(Color color)                                                                    { BitmapFillBorder(&bitmap, color); }
     void FillCross(Color color)                                                                     { BitmapFillCross(&bitmap, color); }
     void FillAll(Color color)                                                                       { BitmapFillAll(&bitmap, color); }
-    void DrawLineHorizontal(int y, int xLeft, int xRight, float zLeft, float zRight, Color color)   { BitmapDrawLineHorizontal(&bitmap, y, xLeft, xRight, zLeft, zRight, color); }
+    void DrawLineHorizontal(int y, int xl, int xr, float zl, float zr, Color color)   { BitmapDrawLineHorizontal(&bitmap, y, xl, xr, zl, zr, color); }
     void SetPixel(int x, int y, Color color)                                                        { BitmapSetPixel(&bitmap, x, y, color); }
     void SetPixelZ(int x, int y, float z, Color color)                                              { BitmapSetPixelZ(&bitmap, x, y, z, color); }
     void Reset()                                                                                    { BitmapReset(&bitmap); }
