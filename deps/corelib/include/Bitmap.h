@@ -3,11 +3,12 @@
 
 #pragma once
 
-#include "Clipping.h"
-#include "Models.h"
-#include "Color.h"
 #include "float.h"
 #include "assert.h"
+
+#include "Color.h"
+#include "Clipping.h"
+#include "Models.h"
 
 typedef struct Bitmap
 {
