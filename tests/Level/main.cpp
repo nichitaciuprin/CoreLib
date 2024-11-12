@@ -1,7 +1,7 @@
 #include "SysHelper.h"
 #include "BaseExt.h"
 #include "HelperExt.h"
-#include "Bitmap.h"
+#include "BitmapClass.h"
 #include "Window.h"
 
 void Draw(BitmapClass& bitmap, Camera camera, long time)

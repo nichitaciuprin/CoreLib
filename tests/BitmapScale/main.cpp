@@ -1,6 +1,6 @@
 #include "BaseExt.h"
 #include "HelperExt.h"
-#include "Bitmap.h"
+#include "BitmapClass.h"
 #include "Window.h"
 
 void main2()
