@@ -9,7 +9,7 @@ int main()
     auto width = 200;
     auto height = 200;
 
-    auto bitmap = make_unique<Bitmap>(width, height);
+    auto bitmap = make_unique<BitmapClass>(width, height);
     auto window = make_unique<Window>(700, 100, width, height);
 
     int iteration = 0;

@@ -7,7 +7,7 @@ struct Player
 
 #define PLAYER_MAX_SIZE 16
 
-unique_ptr<Bitmap> bitmapNet;
+unique_ptr<BitmapClass> bitmapNet;
 vector<Player> players;
 
 void DestroyPlayers(float deltaTime)
@@ -69,7 +69,7 @@ void UpdatePlayer(uint64_t playerAddr, NetInput& input)
     players.push_back(player);
 }
 
-void Draw(Bitmap& bitmap, Player& player, long time)
+void Draw(BitmapClass& bitmap, Player& player, long time)
 {
     bitmap.Reset();
 
@@ -117,7 +117,7 @@ void Draw(Bitmap& bitmap, Player& player, long time)
         bitmap.DrawCubeColored(world * view);
     }
 }
-void Draw(Bitmap& bitmap, Camera camera, long time)
+void Draw(BitmapClass& bitmap, Camera camera, long time)
 {
     bitmap.Reset();
 
@@ -169,7 +169,7 @@ void InitGame()
     auto size1 = 32;
     // auto size2 = 32*scale;
 
-    bitmapNet = make_unique<Bitmap>(size1, size1);
+    bitmapNet = make_unique<BitmapClass>(size1, size1);
 
     players = vector<Player>();
     players.reserve(PLAYER_MAX_SIZE);
@@ -202,7 +202,7 @@ void UpdateGame(float deltaTime)
     }
 }
 
-// unique_ptr<Bitmap> testBitmap;
+// unique_ptr<BitmapClass> testBitmap;
 // unique_ptr<Window> testWindow;
 // bool TestRenderCalled = false;
 // void TestRender()
@@ -214,7 +214,7 @@ void UpdateGame(float deltaTime)
 //         int x, y;
 //         GetConsolePosition(&x, &y);
 
-//         testBitmap = make_unique<Bitmap>(512, 512);
+//         testBitmap = make_unique<BitmapClass>(512, 512);
 //         testWindow = make_unique<Window>(x, y, 512, 512);
 
 //         return;
