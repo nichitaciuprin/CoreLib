@@ -9,13 +9,13 @@
 #include "float.h"
 #include "assert.h"
 
-class Bitmap
+class BitmapClass
 {
 public:
     uint32_t* pixels;
     float* zbuffer;
 
-    Bitmap(int width, int height)
+    BitmapClass(int width, int height)
     {
         assert(width > 0);
         assert(height > 0);
@@ -34,7 +34,7 @@ public:
         pixels = (uint32_t*)malloc(sizeof(uint32_t) * pixelsSize);
         zbuffer = (float*)malloc(sizeof(float) * zbufferSize);
     }
-    ~Bitmap()
+    ~BitmapClass()
     {
         free(pixels);
         free(zbuffer);

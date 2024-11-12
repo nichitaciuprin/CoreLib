@@ -10,7 +10,7 @@ void main2()
 
     auto scale = 40;
 
-    auto bitmap = make_unique<Bitmap>(width, height);
+    auto bitmap = make_unique<BitmapClass>(width, height);
     auto window = make_unique<Window>(700, 100, width * scale, height * scale);
 
     while (window->Exists())

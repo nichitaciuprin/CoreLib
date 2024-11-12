@@ -4,7 +4,7 @@
 #include "Bitmap.h"
 #include "Window.h"
 
-void Draw(Bitmap& bitmap, Camera camera, long time)
+void Draw(BitmapClass& bitmap, Camera camera, long time)
 {
     bitmap.Reset();
 
@@ -68,7 +68,7 @@ int main()
 {
     auto size = 512;
 
-    auto bitmap = make_unique<Bitmap>(size, size);
+    auto bitmap = make_unique<BitmapClass>(size, size);
     auto window = make_unique<Window>(700, 100, size, size);
 
     Camera camera = { 0, 1.70f, -10 };
