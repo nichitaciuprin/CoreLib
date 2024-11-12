@@ -112,7 +112,7 @@ void BitmapFillCross(Bitmap* instance, Color color)
     for (int i = 0; i < instance->height; i++) BitmapSetPixel(instance, centerX, i, color);
 }
 
-void BitmapApplyBlackWhiteColorDepth(Bitmap* instance)
+void BitmapApplyFade(Bitmap* instance)
 {
     for (int i = 0; i < instance->pixelsSize; i++)
     {
