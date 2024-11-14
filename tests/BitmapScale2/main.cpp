@@ -2,13 +2,31 @@
 #include "HelperExt.h"
 #include "BitmapClass.h"
 #include "Window.h"
+#include "Subgen1.h"
+
+void DrawPixelSignal(BitmapClass& bitmap, Vector3 point)
+{
+    static long timer = 0;
+    static bool draw = false;
+
+    if (timer > 0)
+        timer--;
+
+    if (timer <= 0)
+    {
+        timer = 500;
+        draw = !draw;
+    }
+
+    if (draw) bitmap.SetPixel(point.x, point.y, COLOR_GREEN);
+}
 
 void main2()
 {
-    auto width = 10;
-    auto height = 10;
+    auto width = 40;
+    auto height = 40;
 
-    auto scale = 40;
+    auto scale = 10;
 
     auto bitmap = make_unique<BitmapClass>(width, height);
     auto window = make_unique<Window>(700, 100, width * scale, height * scale);
@@ -18,28 +36,27 @@ void main2()
         bitmap->Reset();
 
         float zFar = 0;
-        float zClose = -10;
+        float zClose = 0;
 
-        {
-            Vector3 p0 = { 1, 2, zFar };
-            Vector3 p1 = { 8, 2, zClose };
-            bitmap->DrawLine3(p0, p1, COLOR_RED);
-        }
-        {
-            Vector3 p0 = { 7, 1, zFar };
-            Vector3 p1 = { 7, 8, zClose };
-            bitmap->DrawLine3(p0, p1, COLOR_GREEN);
-        }
-        {
-            Vector3 p1 = { 8, 7, zFar };
-            Vector3 p0 = { 1, 7, zClose };
-            bitmap->DrawLine3(p0, p1, COLOR_BLUE);
-        }
-        {
-            Vector3 p1 = { 2, 8, zFar };
-            Vector3 p0 = { 2, 1, zClose };
-            bitmap->DrawLine3(p0, p1, COLOR_YELLOW);
-        }
+        // Vector3 p0 = { 20,  2, zFar };
+        // Vector3 p1 = { 35, 20, zClose };
+        // Vector3 p2 = {  5, 35, zClose };
+
+        Vector3 p0 = { 20,  2, zFar };
+        Vector3 p1 = {  5, 20, zClose };
+        Vector3 p2 = { 35, 35, zClose };
+
+        bitmap->DrawLine3(p2, p0, COLOR_RED);
+        bitmap->DrawLine3(p1, p0, COLOR_RED);
+        bitmap->DrawLine3(p2, p1, COLOR_RED);
+
+        bitmap->DrawLine3(p0, p2, COLOR_BLUE);
+        bitmap->DrawLine3(p0, p1, COLOR_BLUE);
+        bitmap->DrawLine3(p1, p2, COLOR_BLUE);
+
+        DrawPixelSignal(*bitmap, p0);
+        DrawPixelSignal(*bitmap, p1);
+        DrawPixelSignal(*bitmap, p2);
 
         window->SetPixelsScaled(bitmap->pixels, bitmap->Width(), bitmap->Height(), scale);
 
