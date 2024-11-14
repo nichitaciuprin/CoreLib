@@ -176,6 +176,10 @@ inline float MathCos(float f)
 {
     return cosf(f);
 }
+inline float MathLerp(float x, float y, float t)
+{
+    return x + (y - x) * t;
+}
 inline float MathInverseLerp(float x, float y, float value)
 {
     return (value - x) / (y - x);
