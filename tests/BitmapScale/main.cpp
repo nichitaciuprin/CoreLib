@@ -41,7 +41,7 @@ void main2()
             bitmap->DrawLine3(p0, p1, COLOR_YELLOW);
         }
 
-        window->SetPixelsScaled(bitmap->pixels.data(), bitmap->Width(), bitmap->Height(), scale);
+        window->SetPixelsScaled(bitmap->pixels, bitmap->Width(), bitmap->Height(), scale);
 
         window->Update();
     }
