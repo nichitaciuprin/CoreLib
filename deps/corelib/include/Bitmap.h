@@ -108,6 +108,17 @@ void BitmapFillCross(Bitmap* instance, Color color)
     for (int i = 0; i < instance->width;  i++) BitmapSetPixel(instance, i, centerY, color);
     for (int i = 0; i < instance->height; i++) BitmapSetPixel(instance, centerX, i, color);
 }
+void BitmapFillSqare(Bitmap* instance, Color color)
+{
+    int xl = instance->width / 4;
+    int xr = instance->width / 4 * 3;
+    int yl = instance->height / 4;
+    int yr = instance->height / 4 * 3;
+    for (int i = xl; i < xr; i++) BitmapSetPixel(instance, i, yl, color);
+    for (int i = xl; i < xr; i++) BitmapSetPixel(instance, i, yr, color);
+    for (int i = yl; i < yr; i++) BitmapSetPixel(instance, xl, i, color);
+    for (int i = yl; i < yr; i++) BitmapSetPixel(instance, xr, i, color);
+}
 
 void BitmapApplyFade(Bitmap* instance)
 {
