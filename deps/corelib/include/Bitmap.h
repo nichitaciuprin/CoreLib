@@ -60,6 +60,9 @@ void BitmapReset(Bitmap* instance)
 
 void BitmapSetPixel(Bitmap* instance, int x, int y, Color color)
 {
+    assert(0 <= x && x < instance->width);
+    assert(0 <= y && y < instance->height);
+
     int i = x + y * instance->width;
     instance->pixels[i] = color;
 }
