@@ -13,6 +13,18 @@
 // https://groups.csail.mit.edu/graphics/classes/6.837/F04/lectures/07_Pipeline_II.pdf
 // https://gabrielgambetta.com/computer-graphics-from-scratch/11-clipping.html
 // https://www.youtube.com/watch?v=HXSuNxpCzdM&ab_channel=javidx9
+// http://www.sunshine2k.de/coding/java/TriangleRasterization/TriangleRasterization.html
+// https://developer.nvidia.com/gpugems/gpugems2/part-v-image-oriented-computing/chapter-42-conservative-rasterization
+// https://jpcharalambosh.co/posts/blur/
+// https://jpcharalambosh.co/posts/ndc/#update
+// http://www.songho.ca/opengl/gl_projectionmatrix.html#infinite
+// https://rao.im/computer%20graphics/2022/03/03/prospective-projection/
+// https://www.inf.ed.ac.uk/teaching/courses/cg/lectures/cg6_2013.pdf
+// https://www.shadertoy.com/view/lsBSDm
+// https://en.wikipedia.org/wiki/Bilinear_interpolation    inverse bilinear interpolation
+// https://iquilezles.org/articles/ibilinear/
+// https://www.youtube.com/watch?v=VMD7fsCYO9o
+// http://www.cs.ucr.edu/~shinar/courses/cs130-winter-2019/content/clipping.pdf
 
 #ifndef HELPER_H
 #define HELPER_H
