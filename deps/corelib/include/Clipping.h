@@ -17,7 +17,7 @@ inline bool ClipLineBack(Vector3* v0, Vector3* v1)
         case /* 00 */ 0: return false;
         case /* 01 */ 1:
         {
-            Vector3 diff = Vector3Subtract(*v0, *v1);
+            Vector3 diff = Vector3Sub(*v0, *v1);
             diff *= (offset - v0->z) / diff.z;
             *v0 = Vector3Add(*v0, diff);
             v0->z = offset;
@@ -25,7 +25,38 @@ inline bool ClipLineBack(Vector3* v0, Vector3* v1)
         }
         case /* 10 */ 2:
         {
-            Vector3 diff = Vector3Subtract(*v1, *v0);
+            Vector3 diff = Vector3Sub(*v1, *v0);
+            diff *= (offset - v1->z) / diff.z;
+            *v1 = Vector3Add(*v1, diff);
+            v1->z = offset;
+            return false;
+        }
+        default /* 11 */ : return true;
+    }
+}
+inline bool ClipLineFront(Vector3* v0, Vector3* v1)
+{
+    float offset = 0.1f;
+
+    int flags = 0;
+
+    if (v0->z > offset) flags += 1;
+    if (v1->z > offset) flags += 2;
+
+    switch (flags)
+    {
+        case /* 00 */ 0: return false;
+        case /* 01 */ 1:
+        {
+            Vector3 diff = Vector3Sub(*v0, *v1);
+            diff *= (offset - v0->z) / diff.z;
+            *v0 = Vector3Add(*v0, diff);
+            v0->z = offset;
+            return false;
+        }
+        case /* 10 */ 2:
+        {
+            Vector3 diff = Vector3Sub(*v1, *v0);
             diff *= (offset - v1->z) / diff.z;
             *v1 = Vector3Add(*v1, diff);
             v1->z = offset;
@@ -48,7 +79,7 @@ inline bool ClipLineLeft(Vector3* v0, Vector3* v1)
         case /* 00 */ 0: return false;
         case /* 01 */ 1:
         {
-            Vector3 diff = Vector3Subtract(*v0, *v1);
+            Vector3 diff = Vector3Sub(*v0, *v1);
             diff *= (offset - v0->x) / diff.x;
             *v0 = Vector3Add(*v0, diff);
             v0->x = offset;
@@ -56,7 +87,7 @@ inline bool ClipLineLeft(Vector3* v0, Vector3* v1)
         }
         case /* 10 */ 2:
         {
-            Vector3 diff = Vector3Subtract(*v1, *v0);
+            Vector3 diff = Vector3Sub(*v1, *v0);
             diff *= (offset - v1->x) / diff.x;
             *v1 = Vector3Add(*v1, diff);
             v1->x = offset;
@@ -79,7 +110,7 @@ inline bool ClipLineRight(Vector3* v0, Vector3* v1)
         case /* 00 */ 0: return false;
         case /* 01 */ 1:
         {
-            Vector3 diff = Vector3Subtract(*v0, *v1);
+            Vector3 diff = Vector3Sub(*v0, *v1);
             diff *= (offset - v0->x) / diff.x;
             *v0 = Vector3Add(*v0, diff);
             v0->x = offset;
@@ -87,7 +118,7 @@ inline bool ClipLineRight(Vector3* v0, Vector3* v1)
         }
         case /* 10 */ 2:
         {
-            Vector3 diff = Vector3Subtract(*v1, *v0);
+            Vector3 diff = Vector3Sub(*v1, *v0);
             diff *= (offset - v1->x) / diff.x;
             *v1 = Vector3Add(*v1, diff);
             v1->x = offset;
@@ -110,7 +141,7 @@ inline bool ClipLineDown(Vector3* v0, Vector3* v1)
         case /* 00 */ 0: return false;
         case /* 01 */ 1:
         {
-            Vector3 diff = Vector3Subtract(*v0, *v1);
+            Vector3 diff = Vector3Sub(*v0, *v1);
             diff *= (offset - v0->y) / diff.y;
             *v0 = Vector3Add(*v0, diff);
             v0->y = offset;
@@ -118,7 +149,7 @@ inline bool ClipLineDown(Vector3* v0, Vector3* v1)
         }
         case /* 10 */ 2:
         {
-            Vector3 diff = Vector3Subtract(*v1, *v0);
+            Vector3 diff = Vector3Sub(*v1, *v0);
             diff *= (offset - v1->y) / diff.y;
             *v1 = Vector3Add(*v1, diff);
             v1->y = offset;
@@ -141,7 +172,7 @@ inline bool ClipLineUp(Vector3* v0, Vector3* v1)
         case /* 00 */ 0: return false;
         case /* 01 */ 1:
         {
-            Vector3 diff = Vector3Subtract(*v0, *v1);
+            Vector3 diff = Vector3Sub(*v0, *v1);
             diff *= (offset - v0->y) / diff.y;
             *v0 = Vector3Add(*v0, diff);
             v0->y = offset;
@@ -149,7 +180,7 @@ inline bool ClipLineUp(Vector3* v0, Vector3* v1)
         }
         case /* 10 */ 2:
         {
-            Vector3 diff = Vector3Subtract(*v1, *v0);
+            Vector3 diff = Vector3Sub(*v1, *v0);
             diff *= (offset - v1->y) / diff.y;
             *v1 = Vector3Add(*v1, diff);
             v1->y = offset;
@@ -177,6 +208,60 @@ inline void ClipPoligonBack(Vector3* input, Vector3* output, int* vertexCount, f
         Vector3 p1 = input[i];
 
         if (p1.z < offset) flags += 2;
+
+        switch (flags)
+        {
+            /* 00 */ case 0:
+            {
+                output[index] = p0; index++;
+                finalCount += 1;
+                break;
+            };
+            /* 10 */ case 2:
+            {
+                output[index] = p0; index++;
+                auto diff = p1 - p0;
+                auto newPoint = p0 + diff * (offset - p0.z) / diff.z;
+                newPoint.z = offset;
+                output[index] = newPoint; index++;
+                finalCount += 2;
+                break;
+            };
+            /* 01 */ case 1:
+            {
+                auto diff = p1 - p0;
+                auto newPoint = p0 + diff * (offset - p0.z) / diff.z;
+                newPoint.z = offset;
+                output[index] = newPoint; index++;
+                finalCount += 1;
+                break;
+            };
+            default: break;
+        }
+
+        p0 = p1;
+    }
+
+    *vertexCount = finalCount;
+}
+inline void ClipPoligonFront(Vector3* input, Vector3* output, int* vertexCount, float offset)
+{
+    int flags = 0;
+    int index = 0;
+    int initCount = *vertexCount;
+    int finalCount = 0;
+
+    Vector3 p0 = input[initCount - 1];
+
+    if (p0.z > offset) flags += 2;
+
+    for (int i = 0; i < initCount; i++)
+    {
+        flags = flags >> 1;
+
+        Vector3 p1 = input[i];
+
+        if (p1.z > offset) flags += 2;
 
         switch (flags)
         {
