@@ -1,159 +1,63 @@
-#ifndef HELPEREXT_H
-#define HELPEREXT_H
+#pragma once
 
 #include "Helper.h"
 
-inline Vector2 operator -  (Vector2 left, Vector2 right)
-{
-    left.x -= right.x;
-    left.y -= right.y;
-    return left;
-}
-inline Vector2 operator *  (Vector2 v, float f)
-{
-    v.x *= f;
-    v.y *= f;
-    return v;
-}
-inline Vector2 operator /  (Vector2 v, float f)
-{
-    v.x /= f;
-    v.y /= f;
-    return v;
-}
-inline Vector2 operator /= (Vector2& v, float f)
-{
-    v.x /= f;
-    v.y /= f;
-    return v;
-}
+inline bool operator == (Vector2 l, Vector2 r) { return Vector2Equal(l, r); }
+inline bool operator == (Vector3 l, Vector3 r) { return Vector3Equal(l, r); }
+inline bool operator == (Vector4 l, Vector4 r) { return Vector4Equal(l, r); }
 
-inline bool    operator == (Vector3 left, Vector3 right)
-{
-    if (left.x != right.x) { return false; };
-    if (left.y != right.y) { return false; };
-    if (left.z != right.z) { return false; };
-                             return true;
-}
-inline Vector3 operator -  (Vector3 v)
-{
-    return {-v.x, -v.y, -v.z};
-}
-inline Vector3 operator +  (Vector3 left, Vector3 right)
-{
-    left.x += right.x;
-    left.y += right.y;
-    left.z += right.z;
-    return left;
-}
-inline Vector3 operator -  (Vector3 left, Vector3 right)
-{
-    left.x -= right.x;
-    left.y -= right.y;
-    left.z -= right.z;
-    return left;
-}
-inline Vector3 operator *  (Vector3 v, float f)
-{
-    v.x *= f;
-    v.y *= f;
-    v.z *= f;
-    return v;
-}
-inline Vector3 operator /  (Vector3 v, float f)
-{
-    v.x /= f;
-    v.y /= f;
-    v.z /= f;
-    return v;
-}
-inline Vector3 operator *  (Vector3 v, Matrix m)
-{
-    Vector4 col0 = { m.m[0][0], m.m[1][0], m.m[2][0], m.m[3][0] };
-    Vector4 col1 = { m.m[0][1], m.m[1][1], m.m[2][1], m.m[3][1] };
-    Vector4 col2 = { m.m[0][2], m.m[1][2], m.m[2][2], m.m[3][2] };
+inline Vector2 operator - (Vector2 r) { return Vector2Neg(r); }
+inline Vector3 operator - (Vector3 r) { return Vector3Neg(r); }
+inline Vector4 operator - (Vector4 r) { return Vector4Neg(r); }
 
-    Vector4 row0 = { v.x, v.y, v.z, 1 };
+inline Vector2 operator + (Vector2 l, Vector2 r) { return Vector2Add(l, r); }
+inline Vector3 operator + (Vector3 l, Vector3 r) { return Vector3Add(l, r); }
+inline Vector4 operator + (Vector4 l, Vector4 r) { return Vector4Add(l, r); }
 
-    float x = Vector4Dot(row0,col0);
-    float y = Vector4Dot(row0,col1);
-    float z = Vector4Dot(row0,col2);
+inline Vector2 operator - (Vector2 l, Vector2 r) { return Vector2Sub(l, r); }
+inline Vector3 operator - (Vector3 l, Vector3 r) { return Vector3Sub(l, r); }
+inline Vector4 operator - (Vector4 l, Vector4 r) { return Vector4Sub(l, r); }
 
-    return { x, y, z };
-}
-inline Vector3 operator += (Vector3& left, Vector3 right)
-{
-    left.x += right.x;
-    left.y += right.y;
-    left.z += right.z;
-    return left;
-}
-inline Vector3 operator -= (Vector3& left, Vector3 right)
-{
-    left.x -= right.x;
-    left.y -= right.y;
-    left.z -= right.z;
-    return left;
-}
-inline Vector3 operator *= (Vector3& v, float f)
-{
-    v.x *= f;
-    v.y *= f;
-    v.z *= f;
-    return v;
-}
-inline Vector3 operator /= (Vector3& v, float f)
-{
-    v.x /= f;
-    v.y /= f;
-    v.z /= f;
-    return v;
-}
-inline Vector3 operator *= (Vector3& v, Matrix m)
-{
-    Vector4 col0 = { m.m[0][0], m.m[1][0], m.m[2][0], m.m[3][0] };
-    Vector4 col1 = { m.m[0][1], m.m[1][1], m.m[2][1], m.m[3][1] };
-    Vector4 col2 = { m.m[0][2], m.m[1][2], m.m[2][2], m.m[3][2] };
+inline Vector2 operator * (Vector2 l, float r) { return Vector2Mul(l, r); }
+inline Vector3 operator * (Vector3 l, float r) { return Vector3Mul(l, r); }
+inline Vector4 operator * (Vector4 l, float r) { return Vector4Mul(l, r); }
 
-    Vector4 row0 = { v.x, v.y, v.z, 1 };
+inline Vector2 operator / (Vector2 l, float r) { return Vector2Div(l, r); }
+inline Vector3 operator / (Vector3 l, float r) { return Vector3Div(l, r); }
+inline Vector4 operator / (Vector4 l, float r) { return Vector4Div(l, r); }
 
-    float x = Vector4Dot(row0,col0);
-    float y = Vector4Dot(row0,col1);
-    float z = Vector4Dot(row0,col2);
+inline Vector2 operator * (Vector2 v, Matrix m) { return MatrixMultiply2L(v, m); }
+inline Vector3 operator * (Vector3 v, Matrix m) { return MatrixMultiply3L(v, m); }
+inline Vector4 operator * (Vector4 v, Matrix m) { return MatrixMultiply4L(v, m); }
 
-    v = { x, y, z };
+inline Vector2 operator * (Matrix m, Vector2 v) { return MatrixMultiply2R(m, v); }
+inline Vector3 operator * (Matrix m, Vector3 v) { return MatrixMultiply3R(m, v); }
+inline Vector4 operator * (Matrix m, Vector4 v) { return MatrixMultiply4R(m, v); }
 
-    return v;
-}
+inline Matrix operator * (Matrix l, Matrix r) { return MatrixMultiply(l, r); }
 
-inline Vector4 operator * (Vector4 v, Matrix m)
-{
-    Vector4 col0 = { m.m[0][0], m.m[1][0], m.m[2][0], m.m[3][0] };
-    Vector4 col1 = { m.m[0][1], m.m[1][1], m.m[2][1], m.m[3][1] };
-    Vector4 col2 = { m.m[0][2], m.m[1][2], m.m[2][2], m.m[3][2] };
-    Vector4 col3 = { m.m[0][3], m.m[1][3], m.m[2][3], m.m[3][3] };
+inline void operator += (Vector2& l, Vector2 r) { l = Vector2Add(l, r); }
+inline void operator += (Vector3& l, Vector3 r) { l = Vector3Add(l, r); }
+inline void operator += (Vector4& l, Vector4 r) { l = Vector4Add(l, r); }
 
-    Vector4 row0 = { v.x, v.y, v.z, 1 };
+inline void operator -= (Vector2& l, Vector2 r) { l = Vector2Sub(l, r); }
+inline void operator -= (Vector3& l, Vector3 r) { l = Vector3Sub(l, r); }
+inline void operator -= (Vector4& l, Vector4 r) { l = Vector4Sub(l, r); }
 
-    float x = Vector4Dot(row0,col0);
-    float y = Vector4Dot(row0,col1);
-    float z = Vector4Dot(row0,col2);
-    float w = Vector4Dot(row0,col3);
+inline void operator *= (Vector2& l, float r) { l = Vector2Mul(l, r); }
+inline void operator *= (Vector3& l, float r) { l = Vector3Mul(l, r); }
+inline void operator *= (Vector4& l, float r) { l = Vector4Mul(l, r); }
 
-    return { x, y, z, w };
-}
-inline Vector4 operator / (Vector4 v, float f)
-{
-    v.x /= f;
-    v.y /= f;
-    v.z /= f;
-    v.w /= f;
-    return v;
-}
+inline void operator /= (Vector2& l, float r) { l = Vector2Div(l, r); }
+inline void operator /= (Vector3& l, float r) { l = Vector3Div(l, r); }
+inline void operator /= (Vector4& l, float r) { l = Vector4Div(l, r); }
 
-inline Matrix operator * (Matrix left, Matrix right)
-{
-    return MatrixMultiply(left, right);
-}
+inline void operator *= (Vector2& v, Matrix m) { v = MatrixMultiply2L(v, m); }
+inline void operator *= (Vector3& v, Matrix m) { v = MatrixMultiply3L(v, m); }
+inline void operator *= (Vector4& v, Matrix m) { v = MatrixMultiply4L(v, m); }
 
-#endif
+inline void operator *= (Matrix m, Vector2& v) { v = MatrixMultiply2R(m, v); }
+inline void operator *= (Matrix m, Vector3& v) { v = MatrixMultiply3R(m, v); }
+inline void operator *= (Matrix m, Vector4& v) { v = MatrixMultiply4R(m, v); }
+
+inline void operator *= (Matrix& l, Matrix r) { l = MatrixMultiply(l, r); }
