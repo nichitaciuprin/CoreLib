@@ -65,6 +65,9 @@ void BitmapSetPixel(Bitmap* instance, int x, int y, Color color)
 }
 void BitmapSetPixelZ(Bitmap* instance, int x, int y, float z, Color color)
 {
+    assert(0 <= x && x < instance->width);
+    assert(0 <= y && y < instance->height);
+
     int i = x + y * instance->width;
 
     if (instance->zbuffer[i] < z) return;
