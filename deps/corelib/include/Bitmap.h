@@ -1,6 +1,3 @@
-// http://www.sunshine2k.de/coding/java/TriangleRasterization/TriangleRasterization.html
-// https://developer.nvidia.com/gpugems/gpugems2/part-v-image-oriented-computing/chapter-42-conservative-rasterization
-
 #pragma once
 
 #include "float.h"
