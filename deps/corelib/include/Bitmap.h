@@ -432,6 +432,8 @@ void BitmapDrawTriangle(Bitmap* instance, Vector3 p0, Vector3 p1, Vector3 p2, Co
         v0[i] = { _v.x, _v.y, _v.z };
     }
 
+    // if (!Vector3TriangleIsClockwise(v0[0], v0[1], v0[2])) return;
+
     ClipPoligonLeft   (v0, v1, &vertexCount, -1.0f); if (vertexCount < 3) return; swap(v0, v1);
     ClipPoligonRight  (v0, v1, &vertexCount, +1.0f); if (vertexCount < 3) return; swap(v0, v1);
     ClipPoligonDown   (v0, v1, &vertexCount, -1.0f); if (vertexCount < 3) return; swap(v0, v1);
