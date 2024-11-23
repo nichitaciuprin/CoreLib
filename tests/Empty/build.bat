@@ -16,7 +16,7 @@ set src=
 
 set include=
 @REM set include=%include% -I%~dp0src
-@REM set include=%include% -I%deps%\corelib\include
+set include=%include% -I%deps%\corelib\include
 
 set lib=
 @REM set lib=%lib% -lgdi32
