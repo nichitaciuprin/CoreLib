@@ -438,20 +438,38 @@ void BitmapDrawTriangleNdc(Bitmap* instance, Vector3 v0, Vector3 v1, Vector3 v2,
 
 void BitmapDrawLine(Bitmap* instance, Vector3 v0, Vector3 v1, Color color)
 {
-    if (ClipLineBack   (&v0, &v1, -1)) return;
+    float near = instance->near;
+    Matrix view = instance->view;
+    Matrix proj = instance->proj;
 
-    BitmapApplyPerspective(&v0);
-    BitmapApplyPerspective(&v1);
+    v0 = MatrixMultiply3L(v0, view);
+    v1 = MatrixMultiply3L(v1, view);
+
+    if (ClipLineBack(&v0, &v1, near)) return;
+
+    Vector4 _v0 = { v0.x, v0.y, v0.z, 1 };
+    Vector4 _v1 = { v1.x, v1.y, v1.z, 1 };
+
+    _v0 = MatrixMultiply4L(_v0, proj);
+    _v1 = MatrixMultiply4L(_v1, proj);
+
+    // TODO 0 div should not happen here
+    _v0.x /= _v0.w;
+    _v0.y /= _v0.w;
+    _v0.z /= _v0.w;
+    _v1.x /= _v1.w;
+    _v1.y /= _v1.w;
+    _v1.z /= _v1.w;
+
+    v0 = { _v0.x, _v0.y, _v0.z };
+    v1 = { _v1.x, _v1.y, _v1.z };
 
     if (ClipLineLeft   (&v0, &v1, -1)) return;
     if (ClipLineRight  (&v0, &v1, +1)) return;
     if (ClipLineDown   (&v0, &v1, -1)) return;
     if (ClipLineUp     (&v0, &v1, +1)) return;
 
-    BitmapToScreenSpace(instance, &v0);
-    BitmapToScreenSpace(instance, &v1);
-
-    BitmapDrawLineScreenSpace(instance, v0, v1, color);
+    BitmapDrawLineNdc(instance, v0, v1, color);
 }
 void BitmapDrawTriangle(Bitmap* instance, Vector3 p0, Vector3 p1, Vector3 p2, Color color)
 {
