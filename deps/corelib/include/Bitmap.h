@@ -504,10 +504,6 @@ void BitmapDrawCube(Bitmap* instance, Matrix mvp, Color color)
 
     #undef DRAW
 }
-void BitmapDrawSphere(Bitmap* instance, Matrix mvp, Color color)
-{
-    abort();
-}
 void BitmapDrawCubeWireframe(Bitmap* instance, Matrix mvp, Color color)
 {
     for (int i = 0; i < 12; i++)
@@ -520,6 +516,10 @@ void BitmapDrawCubeWireframe(Bitmap* instance, Matrix mvp, Color color)
         v1 *= mvp;
         BitmapDrawLine(instance, v0, v1, color);
     }
+}
+void BitmapDrawSphere(Bitmap* instance, Matrix mvp, Color color)
+{
+    abort();
 }
 void BitmapDrawCubeTemp(Bitmap* instance, Vector3 position, Vector3 rotation, Camera camera, Color color)
 {
