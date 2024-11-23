@@ -86,7 +86,7 @@ void Draw(BitmapClass& bitmap, Player& player, long time)
         Vector3 p1 = { -1, 0, 95 }; p1 *= view;
         Vector3 p2 = {  1, 0, 95 }; p2 *= view;
         Vector3 p3 = {  1, 0,  2 }; p3 *= view;
-        bitmap.DrawPoligon1(p0, p1, p2, p3, COLOR_WHITE);
+        bitmap.DrawPoligon(p0, p1, p2, p3, COLOR_WHITE);
     }
     {
         float size = 5;
@@ -94,11 +94,11 @@ void Draw(BitmapClass& bitmap, Player& player, long time)
         Vector3 p1 = { -size, 0,  size + 100 }; p1 *= view;
         Vector3 p2 = {  size, 0,  size + 100 }; p2 *= view;
         Vector3 p3 = {  size, 0, -size + 100 }; p3 *= view;
-        bitmap.DrawPoligon1(p0, p1, p2, p3, COLOR_WHITE);
+        bitmap.DrawPoligon(p0, p1, p2, p3, COLOR_WHITE);
     }
 
     // TODO fix this
-    // bitmap->ApplyBlackWhiteColorDepth();
+    // bitmap->ApplyFade();
 
     {
         auto time2 = (float)time / 600;
@@ -131,7 +131,7 @@ void Draw(BitmapClass& bitmap, Camera camera, long time)
         Vector3 p1 = { -1, 0, 95 }; p1 *= view;
         Vector3 p2 = {  1, 0, 95 }; p2 *= view;
         Vector3 p3 = {  1, 0,  2 }; p3 *= view;
-        bitmap.DrawPoligon1(p0, p1, p2, p3, COLOR_WHITE);
+        bitmap.DrawPoligon(p0, p1, p2, p3, COLOR_WHITE);
     }
     {
         float size = 5;
@@ -139,11 +139,11 @@ void Draw(BitmapClass& bitmap, Camera camera, long time)
         Vector3 p1 = { -size, 0,  size + 100 }; p1 *= view;
         Vector3 p2 = {  size, 0,  size + 100 }; p2 *= view;
         Vector3 p3 = {  size, 0, -size + 100 }; p3 *= view;
-        bitmap.DrawPoligon1(p0, p1, p2, p3, COLOR_WHITE);
+        bitmap.DrawPoligon(p0, p1, p2, p3, COLOR_WHITE);
     }
 
     // TODO fix this
-    // bitmap->ApplyBlackWhiteColorDepth();
+    // bitmap->ApplyFade();
 
     {
         auto time2 = (float)time / 600;
