@@ -638,6 +638,31 @@ inline Vector4 Vector4Normalize(Vector4 v)
     return Vector4Div(v, length);
 }
 
+inline Vector2 Vector2ClampLength(Vector2 vector, float min, float max)
+{
+    float length = Vector2Length(vector);
+    if (length <= 0)  return Vector2Zero();
+    if (length > max) return Vector2Mul(vector, (max/length));
+    if (length < min) return Vector2Mul(vector, (min/length));
+    return vector;
+}
+inline Vector3 Vector3ClampLength(Vector3 vector, float min, float max)
+{
+    float length = Vector3Length(vector);
+    if (length <= 0)  return Vector3Zero();
+    if (length > max) return Vector3Mul(vector, (max/length));
+    if (length < min) return Vector3Mul(vector, (min/length));
+    return vector;
+}
+inline Vector4 Vector4ClampLength(Vector4 vector, float min, float max)
+{
+    float length = Vector4Length(vector);
+    if (length <= 0)  return Vector4Zero();
+    if (length > max) return Vector4Mul(vector, (max/length));
+    if (length < min) return Vector4Mul(vector, (min/length));
+    return vector;
+}
+
 inline float Vector2Rotation(Vector2 v)
 {
     // atan2( 0.0f,  1.0f ) = 0.0000
@@ -669,14 +694,6 @@ inline Vector2 Vector2MoveTowardsLimit(Vector2 from, Vector2 target, float delta
     return Vector2Add(from, moveVec);
 }
 
-inline Vector3 Vector3ClampLength(Vector3 vector, float min, float max)
-{
-    float length = Vector3Length(vector);
-    if (length <= 0)  return Vector3Zero();
-    if (length > max) return Vector3Mul(vector, (max/length));
-    if (length < min) return Vector3Mul(vector, (min/length));
-    return vector;
-}
 inline Vector3 Vector3Cross(Vector3 a, Vector3 b)
 {
     return (Vector3)
