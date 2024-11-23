@@ -2,6 +2,7 @@
 
 #include "float.h"
 #include "assert.h"
+#include "string.h"
 
 #include "Color.h"
 #include "Clipping.h"
