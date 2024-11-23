@@ -101,6 +101,10 @@ inline int MathSignInt(int value)
     if (value < 0) { return -1; }
                      return  0;
 }
+inline int MathAbsInt(int value)
+{
+    return abs(value);
+}
 inline int MathMinInt(int v1, int v2)
 {
     return fmin(v1, v2);

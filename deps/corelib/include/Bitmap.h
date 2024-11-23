@@ -295,9 +295,9 @@ void BitmapDrawTriangleScreenspaceV1(Bitmap* instance, Vector3 v0, Vector3 v1, V
     int dir1 = MathSignInt(dx1);
     int dir2 = MathSignInt(dx2);
     int dir3 = MathSignInt(dx3);
-    int dx1abs = abs(dx1);
-    int dx2abs = abs(dx2);
-    int dx3abs = abs(dx3);
+    int dx1abs = MathAbsInt(dx1);
+    int dx2abs = MathAbsInt(dx2);
+    int dx3abs = MathAbsInt(dx3);
     int err1 = dy1 / 2 - dx1abs;
     int err2 = dy2 / 2 - dx2abs;
     int err3 = dy3 / 2 - dx3abs;
