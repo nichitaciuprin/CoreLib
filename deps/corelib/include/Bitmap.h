@@ -257,14 +257,20 @@ void BitmapDrawLineScreenSpace(Bitmap* instance, Vector3 v0, Vector3 v1, Color c
 }
 void BitmapDrawLineNdc(Bitmap* instance, Vector3 v0, Vector3 v1, Color color)
 {
-    // REMOVE
-    if (ClipLineLeft   (&v0, &v1, -1)) return;
-    if (ClipLineRight  (&v0, &v1, +1)) return;
-    if (ClipLineDown   (&v0, &v1, -1)) return;
-    if (ClipLineUp     (&v0, &v1, +1)) return;
+    // vertex must be in this range
+    // -1 <= x <= 1
+    // -1 <= y <= 1
+    //  0 <= z <= inf
+
+    assert(-1 <= v0.x && v0.x <= 1);
+    assert(-1 <= v1.x && v1.x <= 1);
+
+    assert(-1 <= v0.y && v0.y <= 1);
+    assert(-1 <= v1.y && v1.y <= 1);
 
     BitmapToScreenSpace(instance, &v0);
     BitmapToScreenSpace(instance, &v1);
+
     BitmapDrawLineScreenSpace(instance, v0, v1, color);
 }
 
