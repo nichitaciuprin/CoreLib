@@ -188,7 +188,7 @@ float GetDepth(Vector3 p1, Vector3 p2, Vector3 p3, float x, float y)
     return l1 * p1.z + l2 * p2.z + l3 * p3.z;
 }
 
-void BitmapDrawLineV1(Bitmap* instance, Vector3 v0, Vector3 v1, Color color)
+void BitmapDrawLineScreenSpaceV1(Bitmap* instance, Vector3 v0, Vector3 v1, Color color)
 {
     int x0 = (int)v0.x;
     int y0 = (int)v0.y;
@@ -214,7 +214,7 @@ void BitmapDrawLineV1(Bitmap* instance, Vector3 v0, Vector3 v1, Color color)
         if (e2 <= dx) { err += dx; y0 += sy; }
     }
 }
-void BitmapDrawLineV2(Bitmap* instance, Vector3 v0, Vector3 v1, Color color)
+void BitmapDrawLineScreenSpaceV2(Bitmap* instance, Vector3 v0, Vector3 v1, Color color)
 {
     int x0 = (int)v0.x;
     int y0 = (int)v0.y;
@@ -252,7 +252,7 @@ void BitmapDrawLineV2(Bitmap* instance, Vector3 v0, Vector3 v1, Color color)
 }
 void BitmapDrawLineScreenSpace(Bitmap* instance, Vector3 v0, Vector3 v1, Color color)
 {
-    BitmapDrawLineV2(instance, v0, v1, color);
+    BitmapDrawLineScreenSpaceV2(instance, v0, v1, color);
 }
 void BitmapDrawLineNdc(Bitmap* instance, Vector3 v0, Vector3 v1, Color color)
 {
