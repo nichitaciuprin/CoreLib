@@ -26,8 +26,7 @@
 // https://www.youtube.com/watch?v=VMD7fsCYO9o
 // http://www.cs.ucr.edu/~shinar/courses/cs130-winter-2019/content/clipping.pdf
 
-#ifndef HELPER_H
-#define HELPER_H
+#pragma once
 
 #include <stdio.h>
 #include <stdlib.h>
@@ -1593,5 +1592,3 @@ inline Pose GetWorldPose(Pose parentWorld, Pose childLocal)
     childLocal.rotation = Vector3Add(childLocal.rotation, parentWorld.rotation);
     return childLocal;
 }
-
-#endif
