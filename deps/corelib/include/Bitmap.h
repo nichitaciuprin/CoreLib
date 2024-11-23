@@ -269,6 +269,22 @@ void BitmapDrawLineNdc(Bitmap* instance, Vector3 v0, Vector3 v1, Color color)
 
 void BitmapDrawTriangleScreenspaceV1(Bitmap* instance, Vector3 v0, Vector3 v1, Vector3 v2, Color color)
 {
+    int maxX = MathMaxFloat(v0.x, MathMaxFloat(v1.x, v2.x));
+    int minX = MathMinFloat(v0.x, MathMinFloat(v1.x, v2.x));
+    int maxY = MathMaxFloat(v0.y, MathMaxFloat(v1.y, v2.y));
+    int minY = MathMinFloat(v0.y, MathMinFloat(v1.y, v2.y));
+
+    for (int x = minX; x <= maxX; x++)
+    for (int y = minY; y <= maxY; y++)
+    {
+        Vector3 v = { (float)x, (float)y, 0 };
+        if (!IsInside(v0, v1, v2, v)) continue;
+        float z = GetDepth(v0, v1, v2, x, y);
+        BitmapSetPixelZ(instance, x, y, z, color);
+    }
+}
+void BitmapDrawTriangleScreenspaceV2(Bitmap* instance, Vector3 v0, Vector3 v1, Vector3 v2, Color color)
+{
     // TODO not accurate, improve
 
     // p0 is top
@@ -346,22 +362,6 @@ void BitmapDrawTriangleScreenspaceV1(Bitmap* instance, Vector3 v0, Vector3 v1, V
         z2 += offset3;
     }
     BitmapDrawLineHorizontal(instance, y, *xl, *xr, *zl, *zr, color);
-}
-void BitmapDrawTriangleScreenspaceV2(Bitmap* instance, Vector3 v0, Vector3 v1, Vector3 v2, Color color)
-{
-    int maxX = MathMaxFloat(v0.x, MathMaxFloat(v1.x, v2.x));
-    int minX = MathMinFloat(v0.x, MathMinFloat(v1.x, v2.x));
-    int maxY = MathMaxFloat(v0.y, MathMaxFloat(v1.y, v2.y));
-    int minY = MathMinFloat(v0.y, MathMinFloat(v1.y, v2.y));
-
-    for (int x = minX; x <= maxX; x++)
-    for (int y = minY; y <= maxY; y++)
-    {
-        Vector3 v = { (float)x, (float)y, 0 };
-        if (!IsInside(v0, v1, v2, v)) continue;
-        float z = GetDepth(v0, v1, v2, x, y);
-        BitmapSetPixelZ(instance, x, y, z, color);
-    }
 }
 void BitmapDrawTriangleScreenspace(Bitmap* instance, Vector3 v0, Vector3 v1, Vector3 v2, Color color)
 {
