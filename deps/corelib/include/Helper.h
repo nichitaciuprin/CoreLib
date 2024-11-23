@@ -100,50 +100,6 @@ typedef struct Pose
 }
 Pose;
 
-inline void PrintFloat(float f)
-{
-    if (f >= 0)
-        printf("+");
-
-    printf("%.2f", f);
-}
-inline void PrintFloatHex(float f)
-{
-    // unsigned int ui;
-    // memcpy(&ui, &f, sizeof (ui));
-    // printf("%X", ui);
-}
-inline void PrintVector2(Vector2 v)
-{
-    // printf("%.6f", myFloat)
-    // cout << "<" << v.x << "," << v.y << ">" << endl;
-}
-inline void PrintVector3(Vector3 v)
-{
-    printf("<");
-    PrintFloat(v.x);
-    // printf(", ");
-    // PrintFloat(v.x); printf(", ");
-    // PrintFloat(v.x); printf(", ");
-    printf(">");
-}
-inline void PrintVector4(Vector4 v)
-{
-    // cout << "<" << v.x << "," << v.y << "," << v.z << "," << v.w << ">" << endl;
-}
-inline void PrintVector2Hex(Vector2 v)
-{
-    PrintFloatHex(v.x);
-    PrintFloatHex(v.y);
-}
-inline void PrintMatrix(Matrix m)
-{
-    // cout << m.m[0][0] << "," << m.m[0][1] << "," << m.m[0][2] << "," << m.m[0][3] << endl;
-    // cout << m.m[1][0] << "," << m.m[1][1] << "," << m.m[1][2] << "," << m.m[1][3] << endl;
-    // cout << m.m[2][0] << "," << m.m[2][1] << "," << m.m[2][2] << "," << m.m[2][3] << endl;
-    // cout << m.m[3][0] << "," << m.m[3][1] << "," << m.m[3][2] << "," << m.m[3][3] << endl;
-}
-
 inline int MathSignInt(int value)
 {
     if (value > 0) { return  1; }
