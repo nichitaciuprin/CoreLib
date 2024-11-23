@@ -238,14 +238,28 @@ void BitmapDrawLineScreenSpaceV2(Bitmap* instance, Vector3 v0, Vector3 v1, Color
 
     int err = max / 2 - min;
 
-    float offset = (v1.z - v0.z) / max;
     float z = v0.z;
+    float offset = (v1.z - v0.z) / max;
 
     for (int i = 0; i < max; i++)
     {
         BitmapSetPixelZ(instance, x0, y0, z, color);
+
+        // TODO optimise
+        // {
+        //     int size = 2;
+        //     for (int duno1 = -size; duno1 < size; duno1++)
+        //     for (int duno2 = -size; duno2 < size; duno2++)
+        //     {
+        //         int _x0 = MathClampInt(x0+duno1, 0, instance->maxX);
+        //         int _y0 = MathClampInt(y0+duno2, 0, instance->maxY);
+        //         BitmapSetPixelZ(instance, _x0, _y0, z, color);
+        //     }
+        // }
+
         if (err < 0) { err += max; (*axis1) += val1; }
                      { err -= min; (*axis2) += val2; }
+
         z += offset;
     }
 
