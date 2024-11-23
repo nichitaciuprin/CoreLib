@@ -46,13 +46,13 @@ void main2()
         Vector3 p1 = {  5, 20, zClose };
         Vector3 p2 = { 35, 35, zClose };
 
-        bitmap->DrawLine3(p2, p0, COLOR_RED);
-        bitmap->DrawLine3(p1, p0, COLOR_RED);
-        bitmap->DrawLine3(p2, p1, COLOR_RED);
+        bitmap->DrawLineScreenSpace(p2, p0, COLOR_RED);
+        bitmap->DrawLineScreenSpace(p1, p0, COLOR_RED);
+        bitmap->DrawLineScreenSpace(p2, p1, COLOR_RED);
 
-        bitmap->DrawLine3(p0, p2, COLOR_BLUE);
-        bitmap->DrawLine3(p0, p1, COLOR_BLUE);
-        bitmap->DrawLine3(p1, p2, COLOR_BLUE);
+        bitmap->DrawLineScreenSpace(p0, p2, COLOR_BLUE);
+        bitmap->DrawLineScreenSpace(p0, p1, COLOR_BLUE);
+        bitmap->DrawLineScreenSpace(p1, p2, COLOR_BLUE);
 
         DrawPixelSignal(*bitmap, p0);
         DrawPixelSignal(*bitmap, p1);
