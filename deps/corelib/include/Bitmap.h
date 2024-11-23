@@ -253,6 +253,7 @@ void BitmapDrawLineScreenSpaceV2(Bitmap* instance, Vector3 v0, Vector3 v1, Color
 }
 void BitmapDrawLineScreenSpace(Bitmap* instance, Vector3 v0, Vector3 v1, Color color)
 {
+    // BitmapDrawLineScreenSpaceV1(instance, v0, v1, color);
     BitmapDrawLineScreenSpaceV2(instance, v0, v1, color);
 }
 void BitmapDrawLineNdc(Bitmap* instance, Vector3 v0, Vector3 v1, Color color)
