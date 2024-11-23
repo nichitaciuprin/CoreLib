@@ -18,6 +18,9 @@ typedef struct Bitmap
     int maxY;
     int pixelsSize;
     int zbufferSize;
+    Matrix view;
+    Matrix proj;
+    float near;
 }
 Bitmap;
 
@@ -42,6 +45,14 @@ Bitmap BitmapCreate(int width, int height)
     instance.pixels = (uint32_t*)malloc(sizeof(uint32_t) * size);
     instance.zbuffer = (float*)malloc(sizeof(float) * size);
 
+    float near = 0.1f;
+    float far = 1000.f;
+
+    instance.view = MatrixIdentity();
+    instance.proj = MatrixPerspectiveCube(1, 1, near, far);
+
+    instance.near = near;
+
     return instance;
 }
 void BitmapDestroy(Bitmap* instance)
@@ -57,6 +68,19 @@ void BitmapReset(Bitmap* instance)
     // can we, somehow, do memset here?
     for (int i = 0; i < instance->zbufferSize; i++)
         instance->zbuffer[i] = FLT_MAX;
+}
+void BitmapSetView(Bitmap* instance, Camera* camera)
+{
+    instance->view = MatrixView3(camera);
+}
+void BitmapSetPerspective(Bitmap* instance, float width, float height, float near, float far)
+{
+    assert(width > 0);
+    assert(height > 0);
+    assert(0 < near && near < far);
+
+    instance->near = near;
+    instance->proj = MatrixPerspectiveCube(width, height, near, far);
 }
 
 void BitmapSetPixel(Bitmap* instance, int x, int y, Color color)
@@ -431,10 +455,13 @@ void BitmapDrawLine(Bitmap* instance, Vector3 v0, Vector3 v1, Color color)
 }
 void BitmapDrawTriangle(Bitmap* instance, Vector3 p0, Vector3 p1, Vector3 p2, Color color)
 {
-    float near = 1.0f;
-    float far = 100;
+    float near = instance->near;
+    Matrix view = instance->view;
+    Matrix proj = instance->proj;
 
-    Matrix mat = MatrixPerspectiveCube(1, 1, near, far);
+    p0 = MatrixMultiply3L(p0, view);
+    p1 = MatrixMultiply3L(p1, view);
+    p2 = MatrixMultiply3L(p2, view);
 
     int vertexCount = 3;
 
@@ -445,13 +472,13 @@ void BitmapDrawTriangle(Bitmap* instance, Vector3 p0, Vector3 p1, Vector3 p2, Co
     v0[1] = { p1.x, p1.y, p1.z };
     v0[2] = { p2.x, p2.y, p2.z };
 
-    ClipPoligonBack   (v0, v1, &vertexCount, 0.1f); if (vertexCount < 3) return; swap(v0, v1);
+    ClipPoligonBack   (v0, v1, &vertexCount, near); if (vertexCount < 3) return; swap(v0, v1);
 
     for (int i = 0; i < vertexCount; i++)
     {
         Vector4 _v = { v0[i].x, v0[i].y, v0[i].z, 1 };
-        _v *= mat;
-        if (_v.w == 0) continue;
+        _v *= proj;
+        // TODO 0 div should not happen here
         _v.x /= _v.w;
         _v.y /= _v.w;
         _v.z /= _v.w;
