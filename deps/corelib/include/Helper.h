@@ -672,6 +672,10 @@ inline float Vector2Rotation(Vector2 v)
     // atan2( 0.0f, -1.0f ) = 3.1415
     return atan2(v.x, v.y);
 }
+inline float Vector2Cross(Vector2 a, Vector2 b)
+{
+    return a.x * b.y - a.y * b.x;
+}
 inline Vector2 Vector2MoveTowards(Vector2 from, Vector2 target, float delta)
 {
     if (Vector2Equal(from, target)) return from;
