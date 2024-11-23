@@ -6,7 +6,8 @@
 
 void PrintFloat(float f)
 {
-    if (f >= 0) printf("+");
+    if (f > 0)       printf("+");
+    else if (f == 0) printf(" ");
     printf("%.2f", f);
 }
 void PrintFloatHex(float f)
