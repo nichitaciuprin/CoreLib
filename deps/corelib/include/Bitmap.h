@@ -278,17 +278,20 @@ void BitmapDrawTriangleScreenspaceV1(Bitmap* instance, Vector3 v0, Vector3 v1, V
     if (v1.y > v2.y) swap(v1, v2);
     if (v0.y > v1.y) swap(v0, v1);
 
-    // TODO maybe remove Vector2Int
-    Vector2Int p0 = { (int)v0.x, (int)v0.y };
-    Vector2Int p1 = { (int)v1.x, (int)v1.y };
-    Vector2Int p2 = { (int)v2.x, (int)v2.y };
+    int p0x = (int)v0.x;
+    int p1x = (int)v1.x;
+    int p2x = (int)v2.x;
 
-    int dx1 = p2.x - p0.x;
-    int dx2 = p1.x - p0.x;
-    int dx3 = p2.x - p1.x;
-    int dy1 = p2.y - p0.y;
-    int dy2 = p1.y - p0.y;
-    int dy3 = p2.y - p1.y;
+    int p0y = (int)v0.y;
+    int p1y = (int)v1.y;
+    int p2y = (int)v2.y;
+
+    int dx1 = p2x - p0x;
+    int dx2 = p1x - p0x;
+    int dx3 = p2x - p1x;
+    int dy1 = p2y - p0y;
+    int dy2 = p1y - p0y;
+    int dy3 = p2y - p1y;
     int dir1 = MathSignFloat(dx1);
     int dir2 = MathSignFloat(dx2);
     int dir3 = MathSignFloat(dx3);
@@ -304,15 +307,15 @@ void BitmapDrawTriangleScreenspaceV1(Bitmap* instance, Vector3 v0, Vector3 v1, V
     float offset2 = (v1.z - v0.z) / dy2;
     float offset3 = (v2.z - v1.z) / dy3;
 
-    int y = p0.y;
+    int y = p0y;
 
-    int x1 = p0.x;
+    int x1 = p0x;
     float z1 = v0.z;
 
     int x2;
     float z2;
-    if (dy2 > 0) { x2 = p0.x; z2 = v0.z; }
-    else         { x2 = p1.x; z2 = v1.z; }
+    if (dy2 > 0) { x2 = p0x; z2 = v0.z; }
+    else         { x2 = p1x; z2 = v1.z; }
 
     int cross = dx1 * dy2 - dy1 * dx2;
 

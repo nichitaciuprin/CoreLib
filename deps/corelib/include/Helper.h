@@ -57,11 +57,6 @@ typedef struct Vector4
     float x, y, z, w;
 }
 Vector4;
-typedef struct Vector2Int
-{
-    int x, y;
-}
-Vector2Int;
 typedef struct Matrix
 {
     float m[4][4];
