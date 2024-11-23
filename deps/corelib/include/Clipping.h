@@ -3,10 +3,8 @@
 #include "BaseExt.h"
 #include "HelperExt.h"
 
-inline bool ClipLineBack(Vector3* v0, Vector3* v1)
+inline bool ClipLineBack(Vector3* v0, Vector3* v1, float offset)
 {
-    float offset = 0.1f;
-
     int flags = 0;
 
     if (v0->z < offset) flags += 1;
@@ -34,10 +32,8 @@ inline bool ClipLineBack(Vector3* v0, Vector3* v1)
         default /* 11 */ : return true;
     }
 }
-inline bool ClipLineFront(Vector3* v0, Vector3* v1)
+inline bool ClipLineFront(Vector3* v0, Vector3* v1, float offset)
 {
-    float offset = 0.1f;
-
     int flags = 0;
 
     if (v0->z > offset) flags += 1;
@@ -65,10 +61,8 @@ inline bool ClipLineFront(Vector3* v0, Vector3* v1)
         default /* 11 */ : return true;
     }
 }
-inline bool ClipLineLeft(Vector3* v0, Vector3* v1)
+inline bool ClipLineLeft(Vector3* v0, Vector3* v1, float offset)
 {
-    float offset = -1;
-
     int flags = 0;
 
     if (v0->x < offset) flags += 1;
@@ -96,10 +90,8 @@ inline bool ClipLineLeft(Vector3* v0, Vector3* v1)
         default /* 11 */ : return true;
     }
 }
-inline bool ClipLineRight(Vector3* v0, Vector3* v1)
+inline bool ClipLineRight(Vector3* v0, Vector3* v1, float offset)
 {
-    float offset = 1;
-
     int flags = 0;
 
     if (v0->x > offset) flags += 1;
@@ -127,10 +119,8 @@ inline bool ClipLineRight(Vector3* v0, Vector3* v1)
         default /* 11 */ : return true;
     }
 }
-inline bool ClipLineDown(Vector3* v0, Vector3* v1)
+inline bool ClipLineDown(Vector3* v0, Vector3* v1, float offset)
 {
-    float offset = -1;
-
     int flags = 0;
 
     if (v0->y < offset) flags += 1;
@@ -158,10 +148,8 @@ inline bool ClipLineDown(Vector3* v0, Vector3* v1)
         default /* 11 */ : return true;
     }
 }
-inline bool ClipLineUp(Vector3* v0, Vector3* v1)
+inline bool ClipLineUp(Vector3* v0, Vector3* v1, float offset)
 {
-    float offset = 1;
-
     int flags = 0;
 
     if (v0->y > offset) flags += 1;
