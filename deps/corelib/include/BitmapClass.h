@@ -30,7 +30,7 @@ public:
     void FillBorder(Color color)                                                       { BitmapFillBorder(&bitmap, color); }
     void FillCross(Color color)                                                        { BitmapFillCross(&bitmap, color); }
     void FillAll(Color color)                                                          { BitmapFillAll(&bitmap, color); }
-    void DrawLineHorizontal(int y, int xl, int xr, float zl, float zr, Color color)    { BitmapDrawLineHorizontal(&bitmap, y, xl, xr, zl, zr, color); }
+    void SetLineZ(int y, int xl, int xr, float zl, float zr, Color color)              { BitmapSetLineZ(&bitmap, y, xl, xr, zl, zr, color); }
     void SetPixel(int x, int y, Color color)                                           { BitmapSetPixel(&bitmap, x, y, color); }
     void SetPixelZ(int x, int y, float z, Color color)                                 { BitmapSetPixelZ(&bitmap, x, y, z, color); }
     void Reset()                                                                       { BitmapReset(&bitmap); }

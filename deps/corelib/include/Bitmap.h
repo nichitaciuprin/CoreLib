@@ -105,7 +105,7 @@ void BitmapSetPixelZ(Bitmap* instance, int x, int y, float z, Color color)
     instance->pixels[i] = color;
 }
 
-void BitmapDrawLineHorizontal(Bitmap* instance, int y, int xl, int xr, float zl, float zr, Color color)
+void BitmapSetLineZ(Bitmap* instance, int y, int xl, int xr, float zl, float zr, Color color)
 {
     int count = xr - xl;
     float diff = zr - zl;
@@ -389,7 +389,7 @@ void BitmapDrawTriangleScreenspaceV2(Bitmap* instance, Vector3 v0, Vector3 v1, V
     {
         while (err1 < 0) { err1 += dy1; x1 += dir1; }
         while (err2 < 0) { err2 += dy2; x2 += dir2; }
-        BitmapDrawLineHorizontal(instance, y, *xl, *xr, *zl, *zr, color);
+        BitmapSetLineZ(instance, y, *xl, *xr, *zl, *zr, color);
         y++;
         err1 -= dx1abs;
         err2 -= dx2abs;
@@ -400,14 +400,14 @@ void BitmapDrawTriangleScreenspaceV2(Bitmap* instance, Vector3 v0, Vector3 v1, V
     {
         while (err1 < 0) { err1 += dy1; x1 += dir1; }
         while (err3 < 0) { err3 += dy3; x2 += dir3; }
-        BitmapDrawLineHorizontal(instance, y, *xl, *xr, *zl, *zr, color);
+        BitmapSetLineZ(instance, y, *xl, *xr, *zl, *zr, color);
         y++;
         err1 -= dx1abs;
         err3 -= dx3abs;
         z1 += offset1;
         z2 += offset3;
     }
-    BitmapDrawLineHorizontal(instance, y, *xl, *xr, *zl, *zr, color);
+    BitmapSetLineZ(instance, y, *xl, *xr, *zl, *zr, color);
 }
 void BitmapDrawTriangleScreenspace(Bitmap* instance, Vector3 v0, Vector3 v1, Vector3 v2, Color color)
 {
