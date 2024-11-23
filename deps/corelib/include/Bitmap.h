@@ -258,10 +258,10 @@ void BitmapDrawLineScreenSpace(Bitmap* instance, Vector3 v0, Vector3 v1, Color c
 void BitmapDrawLineNdc(Bitmap* instance, Vector3 v0, Vector3 v1, Color color)
 {
     // REMOVE
-    if (ClipLineLeft   (&v0, &v1)) return;
-    if (ClipLineRight  (&v0, &v1)) return;
-    if (ClipLineDown   (&v0, &v1)) return;
-    if (ClipLineUp     (&v0, &v1)) return;
+    if (ClipLineLeft   (&v0, &v1, -1)) return;
+    if (ClipLineRight  (&v0, &v1, +1)) return;
+    if (ClipLineDown   (&v0, &v1, -1)) return;
+    if (ClipLineUp     (&v0, &v1, +1)) return;
 
     BitmapToScreenSpace(instance, &v0);
     BitmapToScreenSpace(instance, &v1);
@@ -393,15 +393,15 @@ void BitmapDrawTriangleNdc(Bitmap* instance, Vector3 v0, Vector3 v1, Vector3 v2,
 
 void BitmapDrawLine(Bitmap* instance, Vector3 v0, Vector3 v1, Color color)
 {
-    if (ClipLineBack   (&v0, &v1)) return;
+    if (ClipLineBack   (&v0, &v1, -1)) return;
 
     BitmapApplyPerspective(&v0);
     BitmapApplyPerspective(&v1);
 
-    if (ClipLineLeft   (&v0, &v1)) return;
-    if (ClipLineRight  (&v0, &v1)) return;
-    if (ClipLineDown   (&v0, &v1)) return;
-    if (ClipLineUp     (&v0, &v1)) return;
+    if (ClipLineLeft   (&v0, &v1, -1)) return;
+    if (ClipLineRight  (&v0, &v1, +1)) return;
+    if (ClipLineDown   (&v0, &v1, -1)) return;
+    if (ClipLineUp     (&v0, &v1, +1)) return;
 
     BitmapToScreenSpace(instance, &v0);
     BitmapToScreenSpace(instance, &v1);
