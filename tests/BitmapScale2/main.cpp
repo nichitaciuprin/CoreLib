@@ -4,7 +4,26 @@
 #include "Window.h"
 #include "Subgen1.h"
 
-void DrawPixelSignal(BitmapClass& bitmap, Vector3 point)
+// void DrawPixelSignal(BitmapClass& bitmap, Vector3 point)
+// {
+//     static long timer = 0;
+//     static bool draw = false;
+
+//     if (timer > 0)
+//         timer--;
+
+//     if (timer <= 0)
+//     {
+//         timer = 500;
+//         draw = !draw;
+//     }
+
+//     if (!draw) return;
+
+//     bitmap.SetPixel(point.x, point.y, COLOR_WHITE);
+// }
+
+void DrawLineScreenSpaceBlip(BitmapClass& bitmap, Vector3 v0, Vector3 v1, Color color)
 {
     static long timer = 0;
     static bool draw = false;
@@ -14,14 +33,17 @@ void DrawPixelSignal(BitmapClass& bitmap, Vector3 point)
 
     if (timer <= 0)
     {
-        timer = 500;
+        timer = 1000;
         draw = !draw;
     }
 
-    if (draw) bitmap.SetPixel(point.x, point.y, COLOR_GREEN);
+    if (!draw) return;
+
+    bitmap.DrawLineScreenSpace(v0, v1, COLOR_WHITE);
 }
 
-void main2()
+
+int main()
 {
     auto width = 40;
     auto height = 40;
@@ -46,34 +68,22 @@ void main2()
         Vector3 p1 = {  5, 20, zClose };
         Vector3 p2 = { 35, 35, zClose };
 
-        bitmap->DrawLineScreenSpace(p2, p0, COLOR_RED);
-        bitmap->DrawLineScreenSpace(p1, p0, COLOR_RED);
-        bitmap->DrawLineScreenSpace(p2, p1, COLOR_RED);
+        bitmap->DrawTriangleScreenspace(p0, p1, p2, COLOR_RED);
 
-        bitmap->DrawLineScreenSpace(p0, p2, COLOR_BLUE);
-        bitmap->DrawLineScreenSpace(p0, p1, COLOR_BLUE);
-        bitmap->DrawLineScreenSpace(p1, p2, COLOR_BLUE);
+        // DrawLineScreenSpaceBlip(*bitmap, p2, p0, COLOR_GREEN);
+        // DrawLineScreenSpaceBlip(*bitmap, p1, p0, COLOR_GREEN);
+        // DrawLineScreenSpaceBlip(*bitmap, p2, p1, COLOR_GREEN);
 
-        DrawPixelSignal(*bitmap, p0);
-        DrawPixelSignal(*bitmap, p1);
-        DrawPixelSignal(*bitmap, p2);
+        DrawLineScreenSpaceBlip(*bitmap, p0, p2, COLOR_GREEN);
+        DrawLineScreenSpaceBlip(*bitmap, p0, p1, COLOR_GREEN);
+        DrawLineScreenSpaceBlip(*bitmap, p1, p2, COLOR_GREEN);
+
+        // DrawPixelSignal(*bitmap, p0);
+        // DrawPixelSignal(*bitmap, p1);
+        // DrawPixelSignal(*bitmap, p2);
 
         window->SetPixelsScaled(bitmap->pixels, bitmap->Width(), bitmap->Height(), scale);
 
         window->Update();
     }
-}
-
-int main()
-{
-    try
-    {
-        main2();
-    }
-    catch (const exception& e)
-    {
-        cerr << e.what() << endl;
-    }
-
-    return 0;
 }
