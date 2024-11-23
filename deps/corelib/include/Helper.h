@@ -100,6 +100,13 @@ typedef struct Pose
 }
 Pose;
 
+inline void PrintFloat(float f)
+{
+    if (f >= 0)
+        printf("+");
+
+    printf("%.2f", f);
+}
 inline void PrintFloatHex(float f)
 {
     // unsigned int ui;
@@ -108,15 +115,21 @@ inline void PrintFloatHex(float f)
 }
 inline void PrintVector2(Vector2 v)
 {
+    // printf("%.6f", myFloat)
     // cout << "<" << v.x << "," << v.y << ">" << endl;
 }
 inline void PrintVector3(Vector3 v)
 {
-    cout << "<" << v.x << "," << v.y << "," << v.z << ">" << endl;
+    printf("<");
+    PrintFloat(v.x);
+    // printf(", ");
+    // PrintFloat(v.x); printf(", ");
+    // PrintFloat(v.x); printf(", ");
+    printf(">");
 }
 inline void PrintVector4(Vector4 v)
 {
-    cout << "<" << v.x << "," << v.y << "," << v.z << "," << v.w << ">" << endl;
+    // cout << "<" << v.x << "," << v.y << "," << v.z << "," << v.w << ">" << endl;
 }
 inline void PrintVector2Hex(Vector2 v)
 {
@@ -422,10 +435,10 @@ inline Vector2 MatrixMultiply2R(Matrix m, Vector2 v)
 
     Vector4 row = { v.x, v.y, 1, 1 };
 
-    float x = Vector4Dot(row, col0);
-    float y = Vector4Dot(row, col1);
+    v.x = Vector4Dot(row, col0);
+    v.y = Vector4Dot(row, col1);
 
-    return { x, y };
+    return v;
 }
 inline Vector3 MatrixMultiply3R(Matrix m, Vector3 v)
 {
@@ -435,11 +448,11 @@ inline Vector3 MatrixMultiply3R(Matrix m, Vector3 v)
 
     Vector4 row = { v.x, v.y, v.z, 1 };
 
-    float x = Vector4Dot(row, col0);
-    float y = Vector4Dot(row, col1);
-    float z = Vector4Dot(row, col2);
+    v.x = Vector4Dot(row, col0);
+    v.y = Vector4Dot(row, col1);
+    v.z = Vector4Dot(row, col2);
 
-    return { x, y, z };
+    return v;
 }
 inline Vector4 MatrixMultiply4R(Matrix m, Vector4 v)
 {
@@ -448,12 +461,14 @@ inline Vector4 MatrixMultiply4R(Matrix m, Vector4 v)
     Vector4 col2 = { m.m[2][0], m.m[2][1], m.m[2][2], m.m[2][3] };
     Vector4 col3 = { m.m[3][0], m.m[3][1], m.m[3][2], m.m[3][3] };
 
-    float x = Vector4Dot(col0, v);
-    float y = Vector4Dot(col1, v);
-    float z = Vector4Dot(col2, v);
-    float w = Vector4Dot(col3, v);
+    Vector4 row = v;
 
-    return { x, y, z, w };
+    v.x = Vector4Dot(row, col0);
+    v.y = Vector4Dot(row, col1);
+    v.z = Vector4Dot(row, col2);
+    v.w = Vector4Dot(row, col3);
+
+    return v;
 }
 
 inline Vector2 Vector2Abs(Vector2 v)
