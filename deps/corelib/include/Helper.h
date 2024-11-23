@@ -28,14 +28,8 @@
 
 #pragma once
 
-#include <stdio.h>
-#include <stdlib.h>
 #include <stdbool.h>
-#include <string.h>
-#include <memory.h>
-#include <time.h>
 #include <math.h>
-
 #include "Subgen.h"
 
 #define MY_PI        (float)3.14159265358979323846
