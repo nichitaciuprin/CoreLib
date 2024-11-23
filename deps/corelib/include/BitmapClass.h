@@ -15,16 +15,16 @@ public:
 
     void DrawCubeTemp(Vector3 position, Vector3 rotation, Camera camera, Color color)  { BitmapDrawCubeTemp(&bitmap, position, rotation, camera, color); }
     void DrawCubeColored(Matrix modelView)                                             { BitmapDrawCubeColored(&bitmap, modelView); }
-    void DrawCube1(Matrix modelView, Color color)                                      { BitmapDrawCube1(&bitmap, modelView, color); }
+    void DrawCube(Matrix modelView, Color color)                                       { BitmapDrawCube(&bitmap, modelView, color); }
     void DrawCubeWireframe(Matrix modelView, Color color)                              { BitmapDrawCubeWireframe(&bitmap, modelView, color); }
-    void DrawPoligon1(Vector3 p0, Vector3 p1, Vector3 p2, Vector3 p3, Color color)     { BitmapDrawPoligon1(&bitmap, p0, p1, p2, p3, color); }
-    void DrawTriangle1(Vector3 p0, Vector3 p1, Vector3 p2, Color color)                { BitmapDrawTriangle1(&bitmap, p0, p1, p2, color); }
-    void DrawTriangle2(Vector3 p0, Vector3 p1, Vector3 p2, Color color)                { BitmapDrawTriangle2(&bitmap, p0, p1, p2, color); }
-    void DrawTriangle3(Vector3 v0, Vector3 v1, Vector3 v2, Color color)                { BitmapDrawTriangle3(&bitmap, v0, v1, v2, color); }
-    void DrawLine1(Vector3 v0, Vector3 v1, Color color)                                { BitmapDrawLine1(&bitmap, v0, v1, color); }
-    void DrawLine2(Vector3 v0, Vector3 v1, Color color)                                { BitmapDrawLine2(&bitmap, v0, v1, color); }
-    void DrawLine3(Vector3 v0, Vector3 v1, Color color)                                { BitmapDrawLine3(&bitmap, v0, v1, color); }
-    void ApplyBlackWhiteColorDepth()                                                   { BitmapApplyFade(&bitmap); }
+    void DrawPoligon(Vector3 p0, Vector3 p1, Vector3 p2, Vector3 p3, Color color)      { BitmapDrawPoligon(&bitmap, p0, p1, p2, p3, color); }
+    void DrawTriangle(Vector3 p0, Vector3 p1, Vector3 p2, Color color)                 { BitmapDrawTriangle(&bitmap, p0, p1, p2, color); }
+    void DrawTriangleNdc(Vector3 p0, Vector3 p1, Vector3 p2, Color color)              { BitmapDrawTriangleNdc(&bitmap, p0, p1, p2, color); }
+    void DrawTriangleScreenspace(Vector3 v0, Vector3 v1, Vector3 v2, Color color)      { BitmapDrawTriangleScreenspace(&bitmap, v0, v1, v2, color); }
+    void DrawLine(Vector3 v0, Vector3 v1, Color color)                                 { BitmapDrawLine(&bitmap, v0, v1, color); }
+    void DrawLineNdc(Vector3 v0, Vector3 v1, Color color)                              { BitmapDrawLineNdc(&bitmap, v0, v1, color); }
+    void DrawLineScreenSpace(Vector3 v0, Vector3 v1, Color color)                      { BitmapDrawLineScreenSpace(&bitmap, v0, v1, color); }
+    void ApplyFade()                                                                   { BitmapApplyFade(&bitmap); }
     void ApplyPerspective(Vector3* v)                                                  { BitmapApplyPerspective(v); }
     void ToScreenSpace(Vector3* v)                                                     { BitmapToScreenSpace(&bitmap, v); }
     void FillBorder(Color color)                                                       { BitmapFillBorder(&bitmap, color); }

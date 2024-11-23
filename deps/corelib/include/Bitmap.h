@@ -64,6 +64,7 @@ void BitmapSetPixel(Bitmap* instance, int x, int y, Color color)
     assert(0 <= y && y < instance->height);
 
     int i = x + y * instance->width;
+
     instance->pixels[i] = color;
 }
 void BitmapSetPixelZ(Bitmap* instance, int x, int y, float z, Color color)
@@ -74,8 +75,8 @@ void BitmapSetPixelZ(Bitmap* instance, int x, int y, float z, Color color)
     int i = x + y * instance->width;
 
     if (instance->zbuffer[i] < z) return;
-
     instance->zbuffer[i] = z;
+
     instance->pixels[i] = color;
 }
 
@@ -156,13 +157,64 @@ void BitmapToScreenSpace(Bitmap* instance, Vector3* v)
     v->y = -v->y;
     v->x += 1.0f;
     v->y += 1.0f;
-    v->x /= 2;
-    v->y /= 2;
+    v->x /= 2.0f;
+    v->y /= 2.0f;
     v->x = instance->maxX * v->x;
     v->y = instance->maxY * v->y;
 }
 
-void BitmapDrawLine3(Bitmap* instance, Vector3 v0, Vector3 v1, Color color)
+float GetArea(Vector3 v1, Vector3 v2, Vector3 v3)
+{
+    int r1 = (int)v1.x * ((int)v2.y - (int)v3.y);
+    int r2 = (int)v2.x * ((int)v3.y - (int)v1.y);
+    int r3 = (int)v3.x * ((int)v1.y - (int)v2.y);
+    return abs((r1 + r2 + r3) / 2.0f);
+}
+bool IsInside(Vector3 v1, Vector3 v2, Vector3 v3, Vector3 p)
+{
+    float A0 = GetArea(v1, v2, v3);
+    float A1 = GetArea( p, v2, v3);
+    float A2 = GetArea(v1,  p, v3);
+    float A3 = GetArea(v1, v2,  p);
+    return A0 == (A1 + A2 + A3);
+}
+float GetDepth(Vector3 p1, Vector3 p2, Vector3 p3, float x, float y)
+{
+    // Barycentric coordinates
+    float det = (p2.y - p3.y) * (p1.x - p3.x) + (p3.x - p2.x) * (p1.y - p3.y);
+    float l1 = ((p2.y - p3.y) * (x - p3.x) + (p3.x - p2.x) * (y - p3.y)) / det;
+    float l2 = ((p3.y - p1.y) * (x - p3.x) + (p1.x - p3.x) * (y - p3.y)) / det;
+    float l3 = 1.0f - l1 - l2;
+    return l1 * p1.z + l2 * p2.z + l3 * p3.z;
+}
+
+void BitmapDrawLineV1(Bitmap* instance, Vector3 v0, Vector3 v1, Color color)
+{
+    int x0 = (int)v0.x;
+    int y0 = (int)v0.y;
+
+    int x1 = (int)v1.x;
+    int y1 = (int)v1.y;
+
+    int dx =  abs(x1 - x0);
+    int dy = -abs(y1 - y0);
+
+    int sx = x0 < x1 ? 1 : -1;
+    int sy = y0 < y1 ? 1 : -1;
+
+    int err = dx + dy;
+    int e2;
+
+    while (true)
+    {
+        BitmapSetPixel(instance, x0, y0, color);
+        if (x0 == x1 && y0 == y1) break;
+        e2 = 2 * err;
+        if (e2 >= dy) { err += dy; x0 += sx; }
+        if (e2 <= dx) { err += dx; y0 += sy; }
+    }
+}
+void BitmapDrawLineV2(Bitmap* instance, Vector3 v0, Vector3 v1, Color color)
 {
     int x0 = (int)v0.x;
     int y0 = (int)v0.y;
@@ -198,8 +250,13 @@ void BitmapDrawLine3(Bitmap* instance, Vector3 v0, Vector3 v1, Color color)
 
     BitmapSetPixelZ(instance, x0, y0, z, color);
 }
-void BitmapDrawLine2(Bitmap* instance, Vector3 v0, Vector3 v1, Color color)
+void BitmapDrawLineScreenSpace(Bitmap* instance, Vector3 v0, Vector3 v1, Color color)
 {
+    BitmapDrawLineV2(instance, v0, v1, color);
+}
+void BitmapDrawLineNdc(Bitmap* instance, Vector3 v0, Vector3 v1, Color color)
+{
+    // REMOVE
     if (ClipLineLeft   (&v0, &v1)) return;
     if (ClipLineRight  (&v0, &v1)) return;
     if (ClipLineDown   (&v0, &v1)) return;
@@ -207,28 +264,10 @@ void BitmapDrawLine2(Bitmap* instance, Vector3 v0, Vector3 v1, Color color)
 
     BitmapToScreenSpace(instance, &v0);
     BitmapToScreenSpace(instance, &v1);
-
-    BitmapDrawLine3(instance, v0, v1, color);
-}
-void BitmapDrawLine1(Bitmap* instance, Vector3 v0, Vector3 v1, Color color)
-{
-    if (ClipLineBack   (&v0, &v1)) return;
-
-    BitmapApplyPerspective(&v0);
-    BitmapApplyPerspective(&v1);
-
-    if (ClipLineLeft   (&v0, &v1)) return;
-    if (ClipLineRight  (&v0, &v1)) return;
-    if (ClipLineDown   (&v0, &v1)) return;
-    if (ClipLineUp     (&v0, &v1)) return;
-
-    BitmapToScreenSpace(instance, &v0);
-    BitmapToScreenSpace(instance, &v1);
-
-    BitmapDrawLine3(instance, v0, v1, color);
+    BitmapDrawLineScreenSpace(instance, v0, v1, color);
 }
 
-void BitmapDrawTriangle3(Bitmap* instance, Vector3 v0, Vector3 v1, Vector3 v2, Color color)
+void BitmapDrawTriangleScreenspaceV1(Bitmap* instance, Vector3 v0, Vector3 v1, Vector3 v2, Color color)
 {
     // TODO not accurate, improve
 
@@ -305,89 +344,111 @@ void BitmapDrawTriangle3(Bitmap* instance, Vector3 v0, Vector3 v1, Vector3 v2, C
     }
     BitmapDrawLineHorizontal(instance, y, *xl, *xr, *zl, *zr, color);
 }
-void BitmapDrawTriangle2(Bitmap* instance, Vector3 p0, Vector3 p1, Vector3 p2, Color color)
+void BitmapDrawTriangleScreenspaceV2(Bitmap* instance, Vector3 v0, Vector3 v1, Vector3 v2, Color color)
 {
+    int maxX = MathMaxFloat(v0.x, MathMaxFloat(v1.x, v2.x));
+    int minX = MathMinFloat(v0.x, MathMinFloat(v1.x, v2.x));
+    int maxY = MathMaxFloat(v0.y, MathMaxFloat(v1.y, v2.y));
+    int minY = MathMinFloat(v0.y, MathMinFloat(v1.y, v2.y));
+
+    for (int x = minX; x <= maxX; x++)
+    for (int y = minY; y <= maxY; y++)
+    {
+        Vector3 v = { (float)x, (float)y, 0 };
+        if (!IsInside(v0, v1, v2, v)) continue;
+        float z = GetDepth(v0, v1, v2, x, y);
+        BitmapSetPixelZ(instance, x, y, z, color);
+    }
+}
+void BitmapDrawTriangleScreenspace(Bitmap* instance, Vector3 v0, Vector3 v1, Vector3 v2, Color color)
+{
+    BitmapDrawTriangleScreenspaceV1(instance, v0, v1, v2, color);
+}
+void BitmapDrawTriangleNdc(Bitmap* instance, Vector3 v0, Vector3 v1, Vector3 v2, Color color)
+{
+    // vertex must be in this range
+    // -1 <= x <= 1
+    // -1 <= y <= 1
+    //  0 <= z <= inf
+
+    assert(-1 <= v0.x && v0.x <= 1);
+    assert(-1 <= v1.x && v1.x <= 1);
+    assert(-1 <= v2.x && v2.x <= 1);
+
+    assert(-1 <= v0.y && v0.y <= 1);
+    assert(-1 <= v1.y && v1.y <= 1);
+    assert(-1 <= v2.y && v2.y <= 1);
+
+    BitmapToScreenSpace(instance, &v0);
+    BitmapToScreenSpace(instance, &v1);
+    BitmapToScreenSpace(instance, &v2);
+
+    BitmapDrawTriangleScreenspace(instance, v0, v1, v2, color);
+}
+
+void BitmapDrawLine(Bitmap* instance, Vector3 v0, Vector3 v1, Color color)
+{
+    if (ClipLineBack   (&v0, &v1)) return;
+
+    BitmapApplyPerspective(&v0);
+    BitmapApplyPerspective(&v1);
+
+    if (ClipLineLeft   (&v0, &v1)) return;
+    if (ClipLineRight  (&v0, &v1)) return;
+    if (ClipLineDown   (&v0, &v1)) return;
+    if (ClipLineUp     (&v0, &v1)) return;
+
+    BitmapToScreenSpace(instance, &v0);
+    BitmapToScreenSpace(instance, &v1);
+
+    BitmapDrawLineScreenSpace(instance, v0, v1, color);
+}
+void BitmapDrawTriangle(Bitmap* instance, Vector3 p0, Vector3 p1, Vector3 p2, Color color)
+{
+    float near = 1.0f;
+    float far = 100;
+
+    Matrix mat = MatrixPerspectiveCube(1, 1, near, far);
+
     int vertexCount = 3;
 
     Vector3 v0[6];
     Vector3 v1[6];
 
-    v0[0] = p0;
-    v0[1] = p1;
-    v0[2] = p2;
+    v0[0] = { p0.x, p0.y, p0.z };
+    v0[1] = { p1.x, p1.y, p1.z };
+    v0[2] = { p2.x, p2.y, p2.z };
 
-    ClipPoligonBack(v0, v1, &vertexCount, +0.1f); if (vertexCount < 3) return;
-
-    if (!Vector3TriangleIsClockwise(v1[0], v1[1], v1[2])) return;
+    ClipPoligonBack   (v0, v1, &vertexCount, 0.1f); if (vertexCount < 3) return; swap(v0, v1);
 
     for (int i = 0; i < vertexCount; i++)
-        BitmapToScreenSpace(instance, &v1[i]);
+    {
+        Vector4 _v = { v0[i].x, v0[i].y, v0[i].z, 1 };
+        _v *= mat;
+        if (_v.w == 0) continue;
+        _v.x /= _v.w;
+        _v.y /= _v.w;
+        _v.z /= _v.w;
+        v0[i] = { _v.x, _v.y, _v.z };
+    }
+
+    ClipPoligonLeft   (v0, v1, &vertexCount, -1.0f); if (vertexCount < 3) return; swap(v0, v1);
+    ClipPoligonRight  (v0, v1, &vertexCount, +1.0f); if (vertexCount < 3) return; swap(v0, v1);
+    ClipPoligonDown   (v0, v1, &vertexCount, -1.0f); if (vertexCount < 3) return; swap(v0, v1);
+    ClipPoligonUp     (v0, v1, &vertexCount, +1.0f); if (vertexCount < 3) return; swap(v0, v1);
+
+    for (int i = 0; i < vertexCount; i++)
+        v0[i].z += 1.0f;
 
     for (int i = 1; i < vertexCount - 1; i++)
-        BitmapDrawTriangle3(instance, v1[0], v1[i], v1[i + 1], color);
+        BitmapDrawTriangleNdc(instance, v0[0], v0[i], v0[i+1], color);
 }
-void BitmapDrawTriangle1(Bitmap* instance, Vector3 p0, Vector3 p1, Vector3 p2, Color color)
+void BitmapDrawPoligon(Bitmap* instance, Vector3 p0, Vector3 p1, Vector3 p2, Vector3 p3, Color color)
 {
-    int vertexCount = 3;
-
-    Vector3 v0[6];
-    Vector3 v1[6];
-
-    v0[0] = p0;
-    v0[1] = p1;
-    v0[2] = p2;
-
-    ClipPoligonBack   (v0, v1, &vertexCount, +0.1f); if (vertexCount < 3) return;
-
-    for (int i = 0; i < vertexCount; i++)
-        BitmapApplyPerspective(&v1[i]);
-
-    if (!Vector3TriangleIsClockwise(v1[0], v1[1], v1[2])) return;
-
-    ClipPoligonLeft   (v1, v0, &vertexCount, -1.0f); if (vertexCount < 3) return;
-    ClipPoligonRight  (v0, v1, &vertexCount, +1.0f); if (vertexCount < 3) return;
-    ClipPoligonUp     (v1, v0, &vertexCount, +1.0f); if (vertexCount < 3) return;
-    ClipPoligonDown   (v0, v1, &vertexCount, -1.0f); if (vertexCount < 3) return;
-
-    for (int i = 0; i < vertexCount; i++)
-        BitmapToScreenSpace(instance, &v1[i]);
-
-    for (int i = 1; i < vertexCount - 1; i++)
-        BitmapDrawTriangle3(instance, v1[0], v1[i], v1[i + 1], color);
+    BitmapDrawTriangle(instance, p0, p1, p2, color);
+    BitmapDrawTriangle(instance, p2, p3, p0, color);
 }
-
-void BitmapDrawPoligon1(Bitmap* instance, Vector3 p0, Vector3 p1, Vector3 p2, Vector3 p3, Color color)
-{
-    int vertexCount = 4;
-
-    Vector3 v0[8];
-    Vector3 v1[8];
-
-    v0[0] = p0;
-    v0[1] = p1;
-    v0[2] = p2;
-    v0[3] = p3;
-
-    ClipPoligonBack   (v0, v1, &vertexCount, +0.1f); if (vertexCount < 3) return;
-
-    for (int i = 0; i < vertexCount; i++)
-        BitmapApplyPerspective(&v1[i]);
-
-    if (!Vector3TriangleIsClockwise(v1[0], v1[1], v1[2])) return;
-
-    ClipPoligonLeft   (v1, v0, &vertexCount, -1.0f); if (vertexCount < 3) return;
-    ClipPoligonRight  (v0, v1, &vertexCount, +1.0f); if (vertexCount < 3) return;
-    ClipPoligonUp     (v1, v0, &vertexCount, +1.0f); if (vertexCount < 3) return;
-    ClipPoligonDown   (v0, v1, &vertexCount, -1.0f); if (vertexCount < 3) return;
-
-    for (int i = 0; i < vertexCount; i++)
-        BitmapToScreenSpace(instance, &v1[i]);
-
-    for (int i = 1; i < vertexCount - 1; i++)
-        BitmapDrawTriangle3(instance, v1[0], v1[i], v1[i + 1], color);
-}
-
-void BitmapDrawCube1(Bitmap* instance, Matrix modelView, Color color)
+void BitmapDrawCube(Bitmap* instance, Matrix mvp, Color color)
 {
     #define DRAW(INDEX, COLOR)                                \
     {                                                         \
@@ -399,11 +460,11 @@ void BitmapDrawCube1(Bitmap* instance, Matrix modelView, Color color)
         Vector3 p1 = ModelCubeVerteces[i1];                   \
         Vector3 p2 = ModelCubeVerteces[i2];                   \
         Vector3 p3 = ModelCubeVerteces[i3];                   \
-        p0 *= modelView;                                      \
-        p1 *= modelView;                                      \
-        p2 *= modelView;                                      \
-        p3 *= modelView;                                      \
-        BitmapDrawPoligon1(instance, p0, p1, p2, p3, COLOR);  \
+        p0 *= mvp;                                            \
+        p1 *= mvp;                                            \
+        p2 *= mvp;                                            \
+        p3 *= mvp;                                            \
+        BitmapDrawPoligon(instance, p0, p1, p2, p3, COLOR);   \
     }                                                         \
 
     DRAW(0, color)
@@ -415,24 +476,29 @@ void BitmapDrawCube1(Bitmap* instance, Matrix modelView, Color color)
 
     #undef DRAW
 }
-void BitmapDrawCubeWireframe(Bitmap* instance, Matrix modelView, Color color)
+void BitmapDrawSphere(Bitmap* instance, Matrix mvp, Color color)
+{
+    abort();
+}
+void BitmapDrawCubeWireframe(Bitmap* instance, Matrix mvp, Color color)
 {
     for (int i = 0; i < 12; i++)
     {
         int i0 = ModelCubeIndecesLine[i][0];
         int i1 = ModelCubeIndecesLine[i][1];
-        Vector3 v0 = ModelCubeVerteces[i0] * modelView;
-        Vector3 v1 = ModelCubeVerteces[i1] * modelView;
-        BitmapDrawLine1(instance, v0, v1, color);
+        Vector3 v0 = ModelCubeVerteces[i0];
+        Vector3 v1 = ModelCubeVerteces[i1];
+        v0 *= mvp;
+        v1 *= mvp;
+        BitmapDrawLine(instance, v0, v1, color);
     }
 }
-
 void BitmapDrawCubeTemp(Bitmap* instance, Vector3 position, Vector3 rotation, Camera camera, Color color)
 {
     Vector3 scale = { 1, 1, 1 };
     Matrix world = MatrixWorld2(position, rotation, scale);
     Matrix view = MatrixView3(&camera);
-    BitmapDrawCube1(instance, world * view, color);
+    BitmapDrawCube(instance, world * view, color);
 }
 void BitmapDrawCubeColored(Bitmap* instance, Matrix modelView)
 {
@@ -450,7 +516,7 @@ void BitmapDrawCubeColored(Bitmap* instance, Matrix modelView)
         p1 *= modelView;                                     \
         p2 *= modelView;                                     \
         p3 *= modelView;                                     \
-        BitmapDrawPoligon1(instance, p0, p1, p2, p3, COLOR); \
+        BitmapDrawPoligon(instance, p0, p1, p2, p3, COLOR);  \
     }                                                        \
 
     DRAW(0, COLOR_CYAN)
