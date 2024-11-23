@@ -365,7 +365,8 @@ void BitmapDrawTriangleScreenspaceV2(Bitmap* instance, Vector3 v0, Vector3 v1, V
 }
 void BitmapDrawTriangleScreenspace(Bitmap* instance, Vector3 v0, Vector3 v1, Vector3 v2, Color color)
 {
-    BitmapDrawTriangleScreenspaceV1(instance, v0, v1, v2, color);
+    // BitmapDrawTriangleScreenspaceV1(instance, v0, v1, v2, color);
+    BitmapDrawTriangleScreenspaceV2(instance, v0, v1, v2, color);
 }
 void BitmapDrawTriangleNdc(Bitmap* instance, Vector3 v0, Vector3 v1, Vector3 v2, Color color)
 {
