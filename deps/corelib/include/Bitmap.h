@@ -623,19 +623,19 @@ void BitmapDrawTriangleNdc(Bitmap* instance, Vector3 v0, Vector3 v1, Vector3 v2,
     BitmapDrawTriangleScreenspace(instance, v0, v1, v2, color);
 }
 
-void BitmapDrawLine(Bitmap* instance, Vector3 v0, Vector3 v1, Color color)
+void BitmapDrawLine(Bitmap* instance, Vector3 p0, Vector3 p1, Color color)
 {
     float near = instance->near;
     Matrix view = instance->view;
     Matrix proj = instance->proj;
 
-    v0 = MatrixMultiply3L(v0, view);
-    v1 = MatrixMultiply3L(v1, view);
+    p0 = MatrixMultiply3L(p0, view);
+    p1 = MatrixMultiply3L(p1, view);
 
-    if (ClipLineBack(&v0, &v1, near)) return;
+    if (ClipLineBack(&p0, &p1, near)) return;
 
-    Vector4 _v0 = { v0.x, v0.y, v0.z, 1 };
-    Vector4 _v1 = { v1.x, v1.y, v1.z, 1 };
+    Vector4 _v0 = { p0.x, p0.y, p0.z, 1 };
+    Vector4 _v1 = { p1.x, p1.y, p1.z, 1 };
 
     _v0 = MatrixMultiply4L(_v0, proj);
     _v1 = MatrixMultiply4L(_v1, proj);
@@ -648,18 +648,18 @@ void BitmapDrawLine(Bitmap* instance, Vector3 v0, Vector3 v1, Color color)
     _v1.y /= _v1.w;
     _v1.z /= _v1.w;
 
-    v0 = { _v0.x, _v0.y, _v0.z };
-    v1 = { _v1.x, _v1.y, _v1.z };
+    p0 = { _v0.x, _v0.y, _v0.z };
+    p1 = { _v1.x, _v1.y, _v1.z };
 
-    if (ClipLineLeft   (&v0, &v1, -1)) return;
-    if (ClipLineRight  (&v0, &v1, +1)) return;
-    if (ClipLineDown   (&v0, &v1, -1)) return;
-    if (ClipLineUp     (&v0, &v1, +1)) return;
+    if (ClipLineLeft   (&p0, &p1, -1)) return;
+    if (ClipLineRight  (&p0, &p1, +1)) return;
+    if (ClipLineDown   (&p0, &p1, -1)) return;
+    if (ClipLineUp     (&p0, &p1, +1)) return;
 
-    v0.z += 0.5f;
-    v1.z += 0.5f;
+    p0.z += 0.5f;
+    p1.z += 0.5f;
 
-    BitmapDrawLineNdc(instance, v0, v1, color);
+    BitmapDrawLineNdc(instance, p0, p1, color);
 }
 void BitmapDrawTriangle(Bitmap* instance, Vector3 p0, Vector3 p1, Vector3 p2, Color color)
 {
@@ -711,8 +711,10 @@ void BitmapDrawPoligon(Bitmap* instance, Vector3 p0, Vector3 p1, Vector3 p2, Vec
     BitmapDrawTriangle(instance, p0, p1, p2, color);
     BitmapDrawTriangle(instance, p2, p3, p0, color);
 }
-void BitmapDrawCube(Bitmap* instance, Matrix mvp, Color color)
+void BitmapDrawCube(Bitmap* instance, Vector3 position, Vector3 rotation, Vector3 scale, Color color)
 {
+    Matrix model = MatrixWorld2(position, rotation, scale);
+
     #define DRAW(INDEX, COLOR)                                \
     {                                                         \
         int i0 = ModelCubeIndecesQuad[INDEX][0];              \
@@ -723,10 +725,10 @@ void BitmapDrawCube(Bitmap* instance, Matrix mvp, Color color)
         Vector3 p1 = ModelCubeVerteces[i1];                   \
         Vector3 p2 = ModelCubeVerteces[i2];                   \
         Vector3 p3 = ModelCubeVerteces[i3];                   \
-        p0 *= mvp;                                            \
-        p1 *= mvp;                                            \
-        p2 *= mvp;                                            \
-        p3 *= mvp;                                            \
+        p0 *= model;                                          \
+        p1 *= model;                                          \
+        p2 *= model;                                          \
+        p3 *= model;                                          \
         BitmapDrawPoligon(instance, p0, p1, p2, p3, COLOR);   \
     }                                                         \
 
@@ -739,32 +741,10 @@ void BitmapDrawCube(Bitmap* instance, Matrix mvp, Color color)
 
     #undef DRAW
 }
-void BitmapDrawCubeWireframe(Bitmap* instance, Matrix mvp, Color color)
+void BitmapDrawCubeColored(Bitmap* instance, Vector3 position, Vector3 rotation, Vector3 scale)
 {
-    for (int i = 0; i < 12; i++)
-    {
-        int i0 = ModelCubeIndecesLine[i][0];
-        int i1 = ModelCubeIndecesLine[i][1];
-        Vector3 v0 = ModelCubeVerteces[i0];
-        Vector3 v1 = ModelCubeVerteces[i1];
-        v0 *= mvp;
-        v1 *= mvp;
-        BitmapDrawLine(instance, v0, v1, color);
-    }
-}
-void BitmapDrawSphere(Bitmap* instance, Matrix mvp, Color color)
-{
-    abort();
-}
-void BitmapDrawCubeTemp(Bitmap* instance, Vector3 position, Vector3 rotation, Camera camera, Color color)
-{
-    Vector3 scale = { 1, 1, 1 };
-    Matrix world = MatrixWorld2(position, rotation, scale);
-    Matrix view = MatrixView3(&camera);
-    BitmapDrawCube(instance, world * view, color);
-}
-void BitmapDrawCubeColored(Bitmap* instance, Matrix modelView)
-{
+    Matrix model = MatrixWorld2(position, rotation, scale);
+
     #define DRAW(INDEX, COLOR)                               \
     {                                                        \
         int i0 = ModelCubeIndecesQuad[INDEX][0];             \
@@ -775,10 +755,10 @@ void BitmapDrawCubeColored(Bitmap* instance, Matrix modelView)
         Vector3 p1 = ModelCubeVerteces[i1];                  \
         Vector3 p2 = ModelCubeVerteces[i2];                  \
         Vector3 p3 = ModelCubeVerteces[i3];                  \
-        p0 *= modelView;                                     \
-        p1 *= modelView;                                     \
-        p2 *= modelView;                                     \
-        p3 *= modelView;                                     \
+        p0 *= model;                                         \
+        p1 *= model;                                         \
+        p2 *= model;                                         \
+        p3 *= model;                                         \
         BitmapDrawPoligon(instance, p0, p1, p2, p3, COLOR);  \
     }                                                        \
 
@@ -790,4 +770,23 @@ void BitmapDrawCubeColored(Bitmap* instance, Matrix modelView)
     DRAW(5, COLOR_RED)
 
     #undef DRAW
+}
+void BitmapDrawCubeWireframe(Bitmap* instance, Vector3 position, Vector3 rotation, Vector3 scale, Color color)
+{
+    Matrix model = MatrixWorld2(position, rotation, scale);
+
+    for (int i = 0; i < 12; i++)
+    {
+        int i0 = ModelCubeIndecesLine[i][0];
+        int i1 = ModelCubeIndecesLine[i][1];
+        Vector3 v0 = ModelCubeVerteces[i0];
+        Vector3 v1 = ModelCubeVerteces[i1];
+        v0 *= model;
+        v1 *= model;
+        BitmapDrawLine(instance, v0, v1, color);
+    }
+}
+void BitmapDrawSphere(Bitmap* instance, Vector3 position, Vector3 rotation, Vector3 scale, Color color)
+{
+    abort();
 }

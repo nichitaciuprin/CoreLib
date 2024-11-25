@@ -9,10 +9,8 @@ void DrawCube(Bitmap* bitmap, Vector3 position, float time)
     Vector3 rotation = { 0, time, 0 };
     Vector3 scale = { 1, 1, 1 };
 
-    auto mvp = MatrixWorld2(position, rotation, scale);
-
-    BitmapDrawCubeColored(bitmap, mvp);
-    BitmapDrawCubeWireframe(bitmap, mvp, COLOR_RED);
+    BitmapDrawCubeColored(bitmap, position, rotation, scale);
+    BitmapDrawCubeWireframe(bitmap, position, rotation, scale, COLOR_RED);
 
     // Vector3 offset = Vector3Right() + Vector3Up();
 
