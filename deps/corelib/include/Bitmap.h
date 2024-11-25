@@ -397,6 +397,21 @@ void BitmapDrawLineNdc(Bitmap* instance, Vector3 v0, Vector3 v1, Color color)
     BitmapDrawLineScreenSpace(instance, v0, v1, color);
 }
 
+void BitmapDrawTriangleWireframeScreenspaceV1(Bitmap* instance, Vector3 v0, Vector3 v1, Vector3 v2, Color color)
+{
+    // v0 is top
+    // v1 is middle
+    // v2 is bottom
+
+    if (v0.y > v1.y) swap(v0, v1);
+    if (v1.y > v2.y) swap(v1, v2);
+    if (v0.y > v1.y) swap(v0, v1);
+
+    BitmapDrawLineScreenSpaceV3(instance, v0, v1, color);
+    BitmapDrawLineScreenSpaceV3(instance, v0, v2, color);
+    BitmapDrawLineScreenSpaceV3(instance, v1, v2, color);
+}
+
 void BitmapDrawTriangleScreenspaceV1(Bitmap* instance, Vector3 v0, Vector3 v1, Vector3 v2, Color color)
 {
     int maxX = MathMaxFloat(v0.x, MathMaxFloat(v1.x, v2.x));
