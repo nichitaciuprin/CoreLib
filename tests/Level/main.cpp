@@ -4,24 +4,31 @@
 #include "BitmapClass.h"
 #include "Window.h"
 
-void DrawCube(Bitmap* bitmap, Matrix view, Vector3 position, float time)
+void DrawCube(Bitmap* bitmap, Vector3 position, float time)
 {
     Vector3 rotation = { 0, time, 0 };
     Vector3 scale = { 1, 1, 1 };
 
-    auto world = MatrixWorld2(position, rotation, scale);
-    auto mvp = world * view;
+    auto mvp = MatrixWorld2(position, rotation, scale);
 
     BitmapDrawCubeColored(bitmap, mvp);
+    BitmapDrawCubeWireframe(bitmap, mvp, COLOR_RED);
+
+    // Vector3 offset = Vector3Right() + Vector3Up();
+
+    // offset /= 2;
+
+    // auto mvp2 = MatrixWorld2(position + offset, rotation, scale);
+    // BitmapDrawCubeWireframe(bitmap, mvp2, COLOR_GREEN);
 }
-void DrawPlane(Bitmap* bitmap, Matrix view, Vector3 position)
+void DrawPlane(Bitmap* bitmap, Vector3 position)
 {
     float size = 5;
 
-    Vector3 p0 = { +size, 0, +size }; p0 += position; p0 *= view;
-    Vector3 p1 = { +size, 0, -size }; p1 += position; p1 *= view;
-    Vector3 p2 = { -size, 0, -size }; p2 += position; p2 *= view;
-    Vector3 p3 = { -size, 0, +size }; p3 += position; p3 *= view;
+    Vector3 p0 = { +size, 0, +size }; p0 += position;
+    Vector3 p1 = { +size, 0, -size }; p1 += position;
+    Vector3 p2 = { -size, 0, -size }; p2 += position;
+    Vector3 p3 = { -size, 0, +size }; p3 += position;
 
     BitmapDrawPoligon(bitmap, p0, p1, p2, p3, COLOR_WHITE);
 }
@@ -30,21 +37,21 @@ void Draw(Bitmap* bitmap, Camera camera)
     float time = GetTime();
 
     BitmapReset(bitmap);
+    BitmapSetView(bitmap, &camera);
+    BitmapSetPerspective(bitmap, 1, 1, 0.1f, 1000.0f);
 
-    auto view = MatrixView3(&camera);
-
-    DrawPlane(bitmap, view, { 0, 0, 0 });
-    DrawPlane(bitmap, view, { 0, 0, 100 });
-    DrawCube(bitmap, view, { 0, 0.5f, 0 }, (float)time / 3000);
-    DrawCube(bitmap, view, { 0, 0.5f, 100 }, (float)time / 600);
-    DrawCube(bitmap, view, { 0, 1.5f, 100 }, (float)time / 300);
+    DrawPlane(bitmap, { 0, 0, 0 });
+    DrawPlane(bitmap, { 0, 0, 100 });
+    DrawCube(bitmap, { 0, 0.5f, 0 }, (float)time / 3000);
+    DrawCube(bitmap, { 0, 0.5f, 100 }, (float)time / 600);
+    DrawCube(bitmap, { 0, 1.5f, 100 }, (float)time / 300);
 
     // bridge
     {
-        Vector3 p0 = { -1, 0,  2 }; p0 *= view;
-        Vector3 p1 = { -1, 0, 95 }; p1 *= view;
-        Vector3 p2 = {  1, 0, 95 }; p2 *= view;
-        Vector3 p3 = {  1, 0,  2 }; p3 *= view;
+        Vector3 p0 = { -1, 0,  2 };
+        Vector3 p1 = { -1, 0, 95 };
+        Vector3 p2 = {  1, 0, 95 };
+        Vector3 p3 = {  1, 0,  2 };
         BitmapDrawPoligon(bitmap, p0, p1, p2, p3, COLOR_WHITE);
     }
 
