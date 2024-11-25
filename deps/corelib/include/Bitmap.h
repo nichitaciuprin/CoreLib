@@ -413,6 +413,91 @@ void BitmapDrawTriangleWireframeScreenspaceV1(Bitmap* instance, Vector3 v0, Vect
     BitmapDrawLineScreenSpaceV3(instance, v1, v2, color);
 }
 
+bool BitmapDrawLineStep(int* x0, int* y0, int* x1, int* y1, int* err, int dx, int dy, int sx, int sy, int* x)
+{
+    while (true)
+    {
+        if (*x0 == *x1 && *y0 == *y1) { *x = *x0; return true; }
+        int e2 = 2 * (*err); *x = *x0;
+        if (e2 >= dy) { *err += dy; *x0 += sx; }
+        if (e2 <= dx) { *err += dx; *y0 += sy; return false; }
+    }
+}
+void BitmapDrawTriangleWireframeScreenspaceV2(Bitmap* instance, Vector3 v0, Vector3 v1, Vector3 v2, Color color)
+{
+    // TODO Finish
+
+    // v0 is top
+    // v1 is middle
+    // v2 is bottom
+
+    if (v0.y > v1.y) swap(v0, v1);
+    if (v1.y > v2.y) swap(v1, v2);
+    if (v0.y > v1.y) swap(v0, v1);
+
+    int x0 = (int)v0.x;
+    int y0 = (int)v0.y;
+    int x1 = (int)v2.x;
+    int y1 = (int)v2.y;
+
+    int _x0 = (int)v0.x;
+    int _y0 = (int)v0.y;
+    int _x1 = (int)v1.x;
+    int _y1 = (int)v1.y;
+
+    int __x0 = (int)v1.x;
+    int __y0 = (int)v1.y;
+    int __x1 = (int)v2.x;
+    int __y1 = (int)v2.y;
+
+    int dy2 = v1.y - v0.y;
+    int dy3 = v2.y - v1.y;
+
+    int x;
+    int dx =  abs(x1 - x0);
+    int dy = -abs(y1 - y0);
+    int sx = x0 < x1 ? 1 : -1;
+    int sy = y0 < y1 ? 1 : -1;
+    int err = dx + dy;
+
+    int _x;
+    int _dx =  abs(_x1 - _x0);
+    int _dy = -abs(_y1 - _y0);
+    int _sx = _x0 < _x1 ? 1 : -1;
+    int _sy = _y0 < _y1 ? 1 : -1;
+    int _err = _dx + _dy;
+
+    int __x;
+    int __dx =  abs(__x1 - __x0);
+    int __dy = -abs(__y1 - __y0);
+    int __sx = __x0 < __x1 ? 1 : -1;
+    int __sy = __y0 < __y1 ? 1 : -1;
+    int __err = __dx + __dy;
+
+    int y = v0.y;
+
+    for (int i = 0; i < dy2; i++)
+    {
+        BitmapDrawLineStep( &x0,  &y0,  &x1,  &y1,  &err,  dx,  dy,  sx,  sy,  &x);
+        BitmapDrawLineStep(&_x0, &_y0, &_x1, &_y1, &_err, _dx, _dy, _sx, _sy, &_x);
+        // BitmapSetPixel(instance,  x,  y, color);
+        // BitmapSetPixel(instance, _x, _y, color);
+        if (x > _x) swap(x, _x);
+        BitmapSetLineZ(instance, y, x, _x, 0, 0, color);
+        y++;
+    }
+    for (int i = 0; i < dy3; i++)
+    {
+        BitmapDrawLineStep(  &x0,   &y0,   &x1,   &y1,   &err,   dx,   dy,   sx,   sy,   &x);
+        BitmapDrawLineStep(&__x0, &__y0, &__x1, &__y1, &__err, __dx, __dy, __sx, __sy, &__x);
+        // BitmapSetPixel(instance,  x,  y, color);
+        // BitmapSetPixel(instance, __x, __y, color);
+        if (x > __x) swap(x, __x);
+        BitmapSetLineZ(instance, y, x, __x, 0, 0, color);
+        y++;
+    }
+}
+
 void BitmapDrawTriangleScreenspaceV1(Bitmap* instance, Vector3 v0, Vector3 v1, Vector3 v2, Color color)
 {
     int maxX = MathMaxFloat(v0.x, MathMaxFloat(v1.x, v2.x));
