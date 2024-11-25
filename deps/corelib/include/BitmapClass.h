@@ -24,7 +24,6 @@ public:
     void DrawLineNdc(Vector3 v0, Vector3 v1, Color color)                                  { BitmapDrawLineNdc(&bitmap, v0, v1, color); }
     void DrawLineScreenSpace(Vector3 v0, Vector3 v1, Color color)                          { BitmapDrawLineScreenSpace(&bitmap, v0, v1, color); }
     void ApplyFade()                                                                       { BitmapApplyFade(&bitmap); }
-    void ApplyPerspective(Vector3* v)                                                      { BitmapApplyPerspective(v); }
     void ToScreenSpace(Vector3* v)                                                         { BitmapToScreenSpace(&bitmap, v); }
     void FillBorder(Color color)                                                           { BitmapFillBorder(&bitmap, color); }
     void FillCross(Color color)                                                            { BitmapFillCross(&bitmap, color); }
