@@ -308,6 +308,71 @@ void BitmapDrawLineScreenSpaceV2(Bitmap* instance, Vector3 v0, Vector3 v1, Color
 
     BitmapSetPixelZ(instance, x0, y0, z, color);
 }
+void BitmapDrawLineScreenSpaceV3(Bitmap* instance, Vector3 v0, Vector3 v1, Color color)
+{
+    int x0 = (int)v0.x;
+    int y0 = (int)v0.y;
+    float z0 = v0.z;
+
+    int x1 = (int)v1.x;
+    int y1 = (int)v1.y;
+    float z1 = v1.z;
+
+    int dx, sx;
+    int dy, sy;
+
+    if (x0 < x1) { dx = x1 - x0; sx =  1; }
+    else         { dx = x0 - x1; sx = -1; }
+
+    if (y0 < y1) { dy = y1 - y0; sy =  1; }
+    else         { dy = y0 - y1; sy = -1; }
+
+    // TODO maybe refactor branching
+    if (dx > dy)
+    {
+        float offset = (z1 - z0) / dx;
+
+        int err = dx - dx / 2;
+
+        for (int i = 0; i < dx; i++)
+        {
+            // float t = (float)i / dx;
+            // float zt = MathLerp(z0, z1, t);
+
+            BitmapSetPixelZ(instance, x0, y0, z0, color);
+            // BitmapSetPixelZ(instance, x0, y0, zt, color);
+
+                          { err -= dy; x0 += sx; }
+            if (err <= 0) { err += dx; y0 += sy; }
+
+            z0 += offset;
+        }
+
+        BitmapSetPixelZ(instance, x0, y0, z1, color);
+    }
+    else
+    {
+        float offset = (z1 - z0) / dy;
+
+        int err = dy - dy / 2;
+
+        for (int i = 0; i < dy; i++)
+        {
+            // float t = (float)i / dy;
+            // float zt = MathLerp(z0, z1, t);
+
+            BitmapSetPixelZ(instance, x0, y0, z0, color);
+            // BitmapSetPixelZ(instance, x0, y0, zt, color);
+
+                          { err -= dx; y0 += sy; }
+            if (err <= 0) { err += dy; x0 += sx; }
+
+            z0 += offset;
+        }
+
+        BitmapSetPixelZ(instance, x0, y0, z1, color);
+    }
+}
 void BitmapDrawLineScreenSpace(Bitmap* instance, Vector3 v0, Vector3 v1, Color color)
 {
     // BitmapDrawLineScreenSpaceV1(instance, v0, v1, color);
