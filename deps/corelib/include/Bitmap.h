@@ -518,81 +518,83 @@ void BitmapDrawTriangleScreenspaceV2(Bitmap* instance, Vector3 v0, Vector3 v1, V
 {
     // TODO not accurate, improve
 
-    // p0 is top
-    // p1 is middle
-    // p2 is bottom
+    // v0 is top
+    // v1 is middle
+    // v2 is bottom
+
     if (v0.y > v1.y) swap(v0, v1);
     if (v1.y > v2.y) swap(v1, v2);
     if (v0.y > v1.y) swap(v0, v1);
 
-    int p0x = (int)v0.x;
-    int p1x = (int)v1.x;
-    int p2x = (int)v2.x;
+    int x0 = (int)v0.x;
+    int x1 = (int)v1.x;
+    int x2 = (int)v2.x;
 
-    int p0y = (int)v0.y;
-    int p1y = (int)v1.y;
-    int p2y = (int)v2.y;
+    int y0 = (int)v0.y;
+    int y1 = (int)v1.y;
+    int y2 = (int)v2.y;
 
-    int dx1 = p2x - p0x;
-    int dx2 = p1x - p0x;
-    int dx3 = p2x - p1x;
-    int dy1 = p2y - p0y;
-    int dy2 = p1y - p0y;
-    int dy3 = p2y - p1y;
+    float z0 = v0.z;
+    float z1 = v1.z;
+    float z2 = v2.z;
+
+    int dx1 = x2 - x0;
+    int dx2 = x1 - x0;
+    int dx3 = x2 - x1;
+
+    int dy1 = y2 - y0;
+    int dy2 = y1 - y0;
+    int dy3 = y2 - y1;
+
     int dir1 = MathSignInt(dx1);
     int dir2 = MathSignInt(dx2);
     int dir3 = MathSignInt(dx3);
+
     int dx1abs = MathAbsInt(dx1);
     int dx2abs = MathAbsInt(dx2);
     int dx3abs = MathAbsInt(dx3);
-    int err1 = dy1 / 2 - dx1abs;
-    int err2 = dy2 / 2 - dx2abs;
-    int err3 = dy3 / 2 - dx3abs;
+
+    int err1 = dy1 - dx1abs;
+    int err2 = dy2 - dx2abs;
+    int err3 = dy3 - dx3abs;
 
     // TODO check for 0 division?
-    float offset1 = (v2.z - v0.z) / dy1;
-    float offset2 = (v1.z - v0.z) / dy2;
-    float offset3 = (v2.z - v1.z) / dy3;
+    float offset1 = (z2 - z0) / dy1;
+    float offset2 = (z1 - z0) / dy2;
+    float offset3 = (z2 - z1) / dy3;
 
-    int y = p0y;
-
-    int x1 = p0x;
-    float z1 = v0.z;
-
-    int x2;
-    float z2;
-    if (dy2 > 0) { x2 = p0x; z2 = v0.z; }
-    else         { x2 = p1x; z2 = v1.z; }
+    if (dy2 > 0) { x1 = x0; z1 = z0; }
+    else         { x1 = x1; z1 = z1; }
 
     int cross = dx1 * dy2 - dy1 * dx2;
 
     int* xl; int* xr; float* zl; float* zr;
-    if (cross < 0) { xl = &x1; xr = &x2; zl = &z1; zr = &z2; }
-    else           { xl = &x2; xr = &x1; zl = &z2; zr = &z1; }
+    if (cross < 0) { xl = &x0; xr = &x1; zl = &z0; zr = &z1; }
+    else           { xl = &x1; xr = &x0; zl = &z1; zr = &z0; }
 
     for (int i = 0; i < dy2; i++)
     {
-        while (err1 < 0) { err1 += dy1; x1 += dir1; }
-        while (err2 < 0) { err2 += dy2; x2 += dir2; }
-        BitmapSetLineZ(instance, y, *xl, *xr, *zl, *zr, color);
-        y++;
+        while (err1 < 0) { err1 += dy1; x0 += dir1; }
+        while (err2 < 0) { err2 += dy2; x1 += dir2; }
+        BitmapSetLineZ(instance, y0, *xl, *xr, *zl, *zr, color);
+        y0++;
         err1 -= dx1abs;
         err2 -= dx2abs;
-        z1 += offset1;
-        z2 += offset2;
+        z0 += offset1;
+        z1 += offset2;
     }
     for (int i = 0; i < dy3; i++)
     {
-        while (err1 < 0) { err1 += dy1; x1 += dir1; }
-        while (err3 < 0) { err3 += dy3; x2 += dir3; }
-        BitmapSetLineZ(instance, y, *xl, *xr, *zl, *zr, color);
-        y++;
+        while (err1 < 0) { err1 += dy1; x0 += dir1; }
+        while (err3 < 0) { err3 += dy3; x1 += dir3; }
+        BitmapSetLineZ(instance, y0, *xl, *xr, *zl, *zr, color);
+        y0++;
         err1 -= dx1abs;
         err3 -= dx3abs;
-        z1 += offset1;
-        z2 += offset3;
+        z0 += offset1;
+        z1 += offset3;
     }
-    BitmapSetLineZ(instance, y, *xl, *xr, *zl, *zr, color);
+    BitmapSetLineZ(instance, y0, *xl, *xr, *zl, *zr, color);
 }
 void BitmapDrawTriangleScreenspace(Bitmap* instance, Vector3 v0, Vector3 v1, Vector3 v2, Color color)
 {
