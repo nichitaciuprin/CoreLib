@@ -190,12 +190,6 @@ void BitmapApplyFade(Bitmap* instance)
         instance->pixels[i] = color;
     }
 }
-void BitmapApplyPerspective(Vector3* v)
-{
-    if (v->z == 0) return;
-    v->x /= v->z;
-    v->y /= v->z;
-}
 void BitmapToScreenSpace(Bitmap* instance, Vector3* v)
 {
     v->y = -v->y;
