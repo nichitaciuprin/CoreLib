@@ -104,6 +104,25 @@ void BitmapSetPixelZ(Bitmap* instance, int x, int y, float z, Color color)
 
     instance->pixels[i] = color;
 }
+void BitmapSetPixelZScaled(Bitmap* instance, int x, int y, float z, Color color, int scale)
+{
+    int minx = MathClampInt(x - scale, 0, instance->maxX);
+    int maxx = MathClampInt(x + scale, 0, instance->maxX);
+    int miny = MathClampInt(y - scale, 0, instance->maxY);
+    int maxy = MathClampInt(y + scale, 0, instance->maxY);
+
+    int i = x + y * instance->width;
+
+    if (instance->zbuffer[i] < z) return;
+
+    for (; minx <= maxx; minx++)
+    for (; miny <= maxy; miny++)
+    {
+        int i2 = minx + miny * instance->width;
+        instance->zbuffer[i2] = z;
+        instance->pixels[i2] = color;
+    }
+}
 
 void BitmapSetLineZ(Bitmap* instance, int y, int xl, int xr, float zl, float zr, Color color)
 {
