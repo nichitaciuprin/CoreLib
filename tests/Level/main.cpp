@@ -10,7 +10,7 @@ void DrawCube(Bitmap* bitmap, Vector3 position, float time)
     Vector3 scale = { 1, 1, 1 };
 
     BitmapDrawCubeColored(bitmap, position, rotation, scale);
-    BitmapDrawCubeWireframe(bitmap, position, rotation, scale, COLOR_RED);
+    BitmapDrawCubeWire(bitmap, position, rotation, scale, COLOR_RED);
 
     // Vector3 offset = Vector3Right() + Vector3Up();
 
