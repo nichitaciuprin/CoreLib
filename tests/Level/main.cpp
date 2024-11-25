@@ -62,33 +62,33 @@ int main()
     auto size = 512;
 
     Bitmap bitmap = BitmapCreate(size, size);
-    auto window = make_unique<Window>(700, 100, size, size);
+    auto window = SysWindow_Create(700, 100, size, size);
 
     Camera camera = { 0, 1.70f, -10 };
 
-    while (window->Exists())
+    while (SysWindow_Exists(window))
     {
         FixedTimeStart();
 
-        auto left = window->KeyDown_LEFT();
-        auto up = window->KeyDown_UP();
-        auto down = window->KeyDown_DOWN();
-        auto right = window->KeyDown_RIGHT();
+        auto left = SysWindow_KeyDown_LEFT(window);
+        auto up = SysWindow_KeyDown_UP(window);
+        auto down = SysWindow_KeyDown_DOWN(window);
+        auto right = SysWindow_KeyDown_RIGHT(window);
 
-        auto w = window->KeyDown_W();
-        auto a = window->KeyDown_A();
-        auto s = window->KeyDown_S();
-        auto d = window->KeyDown_D();
-        auto e = window->KeyDown_E();
-        auto q = window->KeyDown_Q();
+        auto w = SysWindow_KeyDown_W(window);
+        auto a = SysWindow_KeyDown_A(window);
+        auto s = SysWindow_KeyDown_S(window);
+        auto d = SysWindow_KeyDown_D(window);
+        auto e = SysWindow_KeyDown_E(window);
+        auto q = SysWindow_KeyDown_Q(window);
 
         UpdateCameraRotation(&camera, 0.0230f, left, up, down, right);
         UpdateCameraPosition(&camera, 0.0080f, w, a, s, d, e, q);
 
         Draw(&bitmap, camera);
 
-        window->SetPixels(bitmap.pixels, bitmap.width, bitmap.height);
-        window->Update();
+        SysWindow_SetPixels(window, bitmap.pixels, bitmap.width, bitmap.height);
+        SysWindow_Update(window);
 
         FixedTimeEnd();
     }
