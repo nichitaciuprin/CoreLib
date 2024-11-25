@@ -638,7 +638,7 @@ void BitmapDrawLine(Bitmap* instance, Vector3 v0, Vector3 v1, Color color)
     _v0 = MatrixMultiply4L(_v0, proj);
     _v1 = MatrixMultiply4L(_v1, proj);
 
-    // TODO 0 div should not happen here
+    // TODO div by 0 should not happen here
     _v0.x /= _v0.w;
     _v0.y /= _v0.w;
     _v0.z /= _v0.w;
@@ -653,6 +653,9 @@ void BitmapDrawLine(Bitmap* instance, Vector3 v0, Vector3 v1, Color color)
     if (ClipLineRight  (&v0, &v1, +1)) return;
     if (ClipLineDown   (&v0, &v1, -1)) return;
     if (ClipLineUp     (&v0, &v1, +1)) return;
+
+    v0.z += 1.0f;
+    v1.z += 1.0f;
 
     BitmapDrawLineNdc(instance, v0, v1, color);
 }
