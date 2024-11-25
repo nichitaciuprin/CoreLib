@@ -656,8 +656,8 @@ void BitmapDrawLine(Bitmap* instance, Vector3 v0, Vector3 v1, Color color)
     if (ClipLineDown   (&v0, &v1, -1)) return;
     if (ClipLineUp     (&v0, &v1, +1)) return;
 
-    v0.z += 1.0f;
-    v1.z += 1.0f;
+    v0.z += 0.5f;
+    v1.z += 0.5f;
 
     BitmapDrawLineNdc(instance, v0, v1, color);
 }
@@ -701,7 +701,7 @@ void BitmapDrawTriangle(Bitmap* instance, Vector3 p0, Vector3 p1, Vector3 p2, Co
     ClipPoligonUp     (v0, v1, &vertexCount, +1.0f); if (vertexCount < 3) return; swap(v0, v1);
 
     for (int i = 0; i < vertexCount; i++)
-        v0[i].z += 1.0f;
+        v0[i].z += 0.5f;
 
     for (int i = 1; i < vertexCount - 1; i++)
         BitmapDrawTriangleNdc(instance, v0[0], v0[i], v0[i+1], color);
