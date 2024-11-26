@@ -31,6 +31,8 @@ typedef struct SysWindow
     uint32_t*  _pixels;
     int        _width;
     int        _height;
+
+    bool fullScreen;
 }
 SysWindow;
 
@@ -93,6 +95,34 @@ LRESULT __stdcall _SysWindow_MessageHandler(HWND hwnd, UINT message, WPARAM wPar
         case WM_PAINT:
         {
             _SysWindow_PaintBitmap(instance);
+            break;
+        }
+        case WM_SYSKEYDOWN:
+        {
+            // TODO
+
+            // alt+enter fullscreen toggle
+            int altDown = (lParam & 0x60000000) == 0x20000000;
+            int enterDown = wParam == VK_RETURN;
+            if (!(altDown && enterDown)) break;
+
+            if (instance->fullScreen)
+            {
+                SetWindowLongPtr(hwnd, GWL_STYLE, WS_OVERLAPPEDWINDOW);
+                SetWindowLongPtr(hwnd, GWL_EXSTYLE, 0);
+                SetWindowPos(hwnd, HWND_TOP, 0, 0, 800, 600, SWP_NOMOVE | SWP_NOZORDER | SWP_FRAMECHANGED);
+                ShowWindow(hwnd, SW_SHOWNORMAL);
+                instance->fullScreen = false;
+            }
+            else
+            {
+                SetWindowLongPtr(hwnd, GWL_STYLE, WS_POPUP);
+                SetWindowLongPtr(hwnd, GWL_EXSTYLE, WS_EX_TOPMOST);
+                SetWindowPos(hwnd, HWND_TOP, 0, 0, 0, 0, SWP_NOMOVE | SWP_NOSIZE | SWP_NOZORDER | SWP_FRAMECHANGED);
+                ShowWindow(hwnd, SW_SHOWMAXIMIZED);
+                instance->fullScreen = true;
+            }
+
             break;
         }
         case WM_SIZE:
@@ -166,6 +196,8 @@ SysWindow* SysWindow_Create(int x, int y, int clientWidth, int clientHeight)
     instance->_pixels = 0;
     instance->_width = 0;
     instance->_height = 0;
+
+    instance->fullScreen = false;
 
     HINSTANCE hInstance = GetModuleHandleA(0);
 
