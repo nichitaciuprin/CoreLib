@@ -1,8 +1,9 @@
 #include "SysHelper.h"
-#include "BaseExt.h"
+#include "SysWindow.h"
 #include "HelperExt.h"
-#include "BitmapClass.h"
-#include "Window.h"
+#include "Bitmap.h"
+#include "BitmapResize.h"
+#include "BaseExt.h"
 
 void DrawCube(Bitmap* bitmap, Vector3 position, float time)
 {
@@ -69,6 +70,8 @@ int main()
     while (SysWindow_Exists(window))
     {
         FixedTimeStart();
+
+        AdaptBitmapToWindow(&bitmap, window);
 
         auto left = SysWindow_KeyDown_LEFT(window);
         auto up = SysWindow_KeyDown_UP(window);
