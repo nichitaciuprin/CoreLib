@@ -242,7 +242,16 @@ SysWindow* SysWindow_Create(int x, int y, int clientWidth, int clientHeight)
     // Forces window to update style
     // Setting lStyle before CreateWindow() wont work
     SetWindowLongA(instance->_hwnd, GWL_STYLE, lStyle);
-    SetWindowPos(instance->_hwnd, NULL, 0,0,0,0, SWP_FRAMECHANGED | SWP_NOMOVE | SWP_NOSIZE | SWP_NOZORDER | SWP_NOOWNERZORDER);
+
+    // SystemParametersInfo(SPI_GETWORKAREA, 0, &rect, 0);
+    // SetWindowLong(instance->_hwnd, GWL_STYLE, WS_POPUP | WS_VISIBLE | WS_MINIMIZEBOX);
+    // SetWindowPos(instance->_hwnd, NULL, 0, 0, rect.right - rect.left, rect.bottom - rect.top, SWP_NOZORDER);
+
+    // TODO?
+    // SetWindowPos(instance->_hwnd, NULL, 0,0,0,0, SWP_FRAMECHANGED | SWP_NOMOVE | SWP_NOSIZE | SWP_NOZORDER | SWP_NOOWNERZORDER);
+    // SetWindowPos(instance->_hwnd, NULL, 0,0,0,0, SW_SHOWMAXIMIZED);
+
+    // ShowWindow(instance->_hwnd, SW_SHOWMAXIMIZED);
 
     return instance;
 }
