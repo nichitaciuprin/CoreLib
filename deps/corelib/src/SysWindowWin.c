@@ -335,3 +335,5 @@ bool SysWindow_KeyDown_UP(SysWindow* instance) { return instance->keydown_UP; }
 bool SysWindow_KeyDown_LEFT(SysWindow* instance) { return instance->keydown_LEFT; }
 bool SysWindow_KeyDown_DOWN(SysWindow* instance) { return instance->keydown_DOWN; }
 bool SysWindow_KeyDown_RIGHT(SysWindow* instance) { return instance->keydown_RIGHT; }
+int SysWindow_GetWidth(SysWindow* instance) { return instance->_width; }
+int SysWindow_GetHeight(SysWindow* instance) { return instance->_height; }

@@ -23,5 +23,7 @@ bool SysWindow_KeyDown_UP(SysWindow* instance);
 bool SysWindow_KeyDown_LEFT(SysWindow* instance);
 bool SysWindow_KeyDown_DOWN(SysWindow* instance);
 bool SysWindow_KeyDown_RIGHT(SysWindow* instance);
+int SysWindow_GetWidth(SysWindow* instance);
+int SysWindow_GetHeight(SysWindow* instance);
 
 #endif
