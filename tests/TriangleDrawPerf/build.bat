@@ -6,7 +6,8 @@ set build=%~dp0build
 set main=%~dp0main.cpp
 
 set flags=
-set flags=%flags% -g3 -Og -std=c++17 -pthread -m64
+set flags=%flags% -g0 -O3 -std=c++17 -pthread -m64 -D NDEBUG
+@REM set flags=%flags% -g3 -Og -std=c++17 -pthread -m64
 @REM set flags=%flags% -Werror -Wall -Wno-missing-braces
 
 set src=

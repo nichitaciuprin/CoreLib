@@ -5,7 +5,6 @@
 
 int main()
 {
-
     Bitmap bitmap = BitmapCreate(1920, 1080);
 
     Vector3 p0 = {     0,     0,  1 };
