@@ -45,13 +45,10 @@ Bitmap BitmapCreate(int width, int height)
     instance.pixels = (uint32_t*)malloc(sizeof(uint32_t) * size);
     instance.zbuffer = (float*)malloc(sizeof(float) * size);
 
-    float near = 0.1f;
-    float far = 1000.f;
-
     instance.view = MatrixIdentity();
-    instance.proj = MatrixPerspectiveCube(1, 1, near, far);
+    instance.proj = MatrixIdentity();
 
-    instance.near = near;
+    instance.near = 0;
 
     return instance;
 }
