@@ -26,8 +26,8 @@ float RayMarch(vec3 ro, vec3 rd)
     	vec3 p = ro + rd * dO;
         float dS = GetDist(p);
         dO += dS;
-        if(dO > MAX_DIST) break;
-        if(dS < SURF_DIST) break;
+        if (dO > MAX_DIST) break;
+        if (dS < SURF_DIST) break;
     }
 
     return dO;
