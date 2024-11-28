@@ -37,7 +37,6 @@ void Draw(Bitmap* bitmap, Camera camera)
 
     BitmapReset(bitmap);
     BitmapSetView(bitmap, &camera);
-    BitmapSetPerspective(bitmap, 1, 1, 0.1f, 1000.0f);
 
     DrawPlane(bitmap, { 0, 0, 0 });
     DrawPlane(bitmap, { 0, 0, 100 });
@@ -64,6 +63,8 @@ int main()
 
     Bitmap bitmap = BitmapCreate(size, size);
     auto window = SysWindow_Create(700, 100, size, size);
+
+    BitmapSetPerspective(&bitmap, 16, 9, 0.1f, 1000.0f);
 
     Camera camera = { 0, 1.70f, -10 };
 
