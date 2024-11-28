@@ -64,7 +64,7 @@ int main()
     Bitmap bitmap = BitmapCreate(size, size);
     auto window = SysWindow_Create(700, 100, size, size);
 
-    BitmapSetPerspective(&bitmap, 16, 9, 0.1f, 1000.0f);
+    BitmapSetPerspective(&bitmap, size, size, 0.1f, 1000.0f);
 
     Camera camera = { 0, 1.70f, -10 };
 
