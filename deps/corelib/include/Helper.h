@@ -1119,17 +1119,23 @@ inline Matrix MatrixOrthographic(float width, float height, float zNear, float z
 }
 inline Matrix MatrixPerspectiveCube(float width, float height, float near, float far)
 {
+    width /= height;
+    height = 1;
+
+    width *= near;
+    height *= near;
+
     float n = near;
     float f = far;
 
-    float r =  n;
-    float t =  n;
-    float l = -n;
-    float b = -n;
+    float r =  width;
+    float t =  height;
+    float l = -width;
+    float b = -height;
 
-    float w =  (2*n) / (r-l);
-    float h =  (2*n) / (t-b);
-    float a =  (f+n) / (f-n);
+    float x =  (2*n) / (r-l);
+    float y =  (2*n) / (t-b);
+    float z =  (f+n) / (f-n);
 
     float u = (r+l) / (r-l);
     float i = (t+b) / (t-b);
@@ -1137,9 +1143,9 @@ inline Matrix MatrixPerspectiveCube(float width, float height, float near, float
 
     return (Matrix)
     {
-        w,  0,  0,  0,
-        0,  h,  0,  0,
-       -u, -i,  a,  1,
+        x,  0,  0,  0,
+        0,  y,  0,  0,
+       -u, -i,  z,  1,
         0,  0, -o,  0
     };
 }
