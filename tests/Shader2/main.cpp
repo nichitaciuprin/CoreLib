@@ -108,7 +108,7 @@ void DrawPixel(Bitmap* bitmap, int x, int y)
     Vector3 p = ro + rd * d;
     float diff = GetLight(p);
 
-    Color color = LightValueToColor(diff);
+    Color color = ColorCreateBwFloat(diff);
 
     BitmapSetPixel(bitmap, x, y, color);
 }

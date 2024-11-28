@@ -17,7 +17,16 @@ const Color COLOR_GREENCOLD  = 0x0000FF80;
 const Color COLOR_VIOLET     = 0x008000FF;
 const Color COLOR_LIGHTBLUE  = 0x000080FF;
 
-inline uint32_t ToColor(uint8_t r, uint8_t g, uint8_t b)
+inline uint32_t ColorCreate(uint8_t a, uint8_t r, uint8_t g, uint8_t b)
+{
+    Color result = 0;
+    result += a; result <<= 8;
+    result += r; result <<= 8;
+    result += g; result <<= 8;
+    result += b;
+    return result;
+}
+inline uint32_t ColorCreateRgb(uint8_t r, uint8_t g, uint8_t b)
 {
     Color result = 0;
     result += r; result <<= 8;
@@ -25,13 +34,7 @@ inline uint32_t ToColor(uint8_t r, uint8_t g, uint8_t b)
     result += b;
     return result;
 }
-inline uint32_t LightValueToColor(float t)
-{
-    uint8_t byte = (uint8_t)(255.0f * t);
-    Color color = ToColor(byte, byte, byte);
-    return color;
-}
-inline uint32_t ColorToBwColor(uint32_t color)
+inline uint32_t ColorCreateBw(uint32_t color)
 {
     int r = (uint8_t)(color >> 8 * 2);
     int g = (uint8_t)(color >> 8 * 1);
@@ -42,7 +45,19 @@ inline uint32_t ColorToBwColor(uint32_t color)
 
     return 0x00FFFFFF * fraction;
 }
-inline uint8_t ColorToLightValue(uint32_t color)
+inline uint32_t ColorCreateBwFloat(float t)
+{
+    uint8_t byte = (uint8_t)(255.0f * t);
+    Color color = ColorCreateRgb(byte, byte, byte);
+    return color;
+}
+inline uint32_t ColorCreateBwByte(uint8_t color)
+{
+    // TODO need fix?
+    float fraction = (float)color / 255;
+    return 0x00FFFFFF * fraction;
+}
+inline uint8_t ColorGetLightValue(uint32_t color)
 {
     int r = (uint8_t)(color >> 8 * 2);
     int g = (uint8_t)(color >> 8 * 1);
@@ -51,9 +66,4 @@ inline uint8_t ColorToLightValue(uint32_t color)
     uint8_t value = (r + g + b) / 3;
 
     return value;
-}
-inline uint32_t LightValueToColor(uint8_t color)
-{
-    float fraction = (float)color / 255;
-    return 0x00FFFFFF * fraction;
 }
