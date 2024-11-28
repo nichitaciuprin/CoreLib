@@ -17,6 +17,20 @@ const Color COLOR_GREENCOLD  = 0x0000FF80;
 const Color COLOR_VIOLET     = 0x008000FF;
 const Color COLOR_LIGHTBLUE  = 0x000080FF;
 
+inline uint32_t ToColor(uint8_t r, uint8_t g, uint8_t b)
+{
+    Color result = 0;
+    result += r; result <<= 8;
+    result += g; result <<= 8;
+    result += b;
+    return result;
+}
+inline uint32_t LightValueToColor(float t)
+{
+    uint8_t byte = (uint8_t)(255.0f * t);
+    Color color = ToColor(byte, byte, byte);
+    return color;
+}
 uint32_t ColorToBwColor(uint32_t color)
 {
     int r = (uint8_t)(color >> 8 * 2);

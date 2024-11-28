@@ -5,21 +5,6 @@
 #include "BitmapResize.h"
 #include "BaseExt.h"
 
-inline uint32_t ToColor(uint8_t r, uint8_t g, uint8_t b)
-{
-    Color result = 0;
-    result += r; result <<= 8;
-    result += g; result <<= 8;
-    result += b;
-    return result;
-}
-inline uint32_t LightValueToColor(float lightValue)
-{
-    uint8_t value = (uint8_t)(255.0f * lightValue);
-    Color color = ToColor(value, value, value);
-    return color;
-}
-
 #define MAX_STEPS 100
 #define MAX_DIST 100.0
 #define SURF_DIST 0.01
