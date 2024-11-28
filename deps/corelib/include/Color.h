@@ -31,7 +31,7 @@ inline uint32_t LightValueToColor(float t)
     Color color = ToColor(byte, byte, byte);
     return color;
 }
-uint32_t ColorToBwColor(uint32_t color)
+inline uint32_t ColorToBwColor(uint32_t color)
 {
     int r = (uint8_t)(color >> 8 * 2);
     int g = (uint8_t)(color >> 8 * 1);
@@ -42,7 +42,7 @@ uint32_t ColorToBwColor(uint32_t color)
 
     return 0x00FFFFFF * fraction;
 }
-uint8_t ColorToLightValue(uint32_t color)
+inline uint8_t ColorToLightValue(uint32_t color)
 {
     int r = (uint8_t)(color >> 8 * 2);
     int g = (uint8_t)(color >> 8 * 1);
@@ -52,7 +52,7 @@ uint8_t ColorToLightValue(uint32_t color)
 
     return value;
 }
-uint32_t LightValueToColor(uint8_t color)
+inline uint32_t LightValueToColor(uint8_t color)
 {
     float fraction = (float)color / 255;
     return 0x00FFFFFF * fraction;
