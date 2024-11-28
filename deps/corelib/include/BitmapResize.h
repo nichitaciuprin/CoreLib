@@ -30,5 +30,6 @@ void AdaptBitmapToWindow(Bitmap* bitmap, SysWindow* window)
     AdaptBitmapToWindowWidth = width;
     AdaptBitmapToWindowHeight = height;
 
-    *bitmap = BitmapCreate(width, height);
+    BitmapResize(bitmap, width, height);
+    BitmapSetPerspective(bitmap, width, height, bitmap->near, 1000.0f);
 }
