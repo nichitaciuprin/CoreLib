@@ -60,6 +60,28 @@ void BitmapDestroy(Bitmap* instance)
     free(instance->pixels);
     free(instance->zbuffer);
 }
+void BitmapResize(Bitmap* instance, int width, int height)
+{
+    int size = width * height;
+    int sizeOld = instance->width * instance->height;
+
+    if (size > sizeOld)
+    {
+        free(instance->pixels);
+        free(instance->zbuffer);
+        instance->pixels = (uint32_t*)malloc(sizeof(uint32_t) * size);
+        instance->zbuffer = (float*)malloc(sizeof(float) * size);
+    }
+
+    instance->width = width;
+    instance->height = height;
+
+    instance->maxX = width - 1;
+    instance->maxY = height - 1;
+
+    instance->pixelsSize = size;
+    instance->zbufferSize = size;
+}
 
 void BitmapReset(Bitmap* instance)
 {
