@@ -1169,6 +1169,24 @@ inline Matrix MatrixPerspectiveCubeHalf(float width, float height, float near, f
         0,  0, -o,  0
     };
 }
+inline Matrix MatrixPerspectiveCubeHalf2(float ratio, float fov, float near, float far)
+{
+    // float aspectRatio = width / height;
+    // float fov = (float)(MY_PI_DIV_2);
+
+    float h = 1.0f / tanf(fov / 2);
+    float w = h / ratio;
+    float a = far / (far - near);
+    float o = a * near;
+
+    return (Matrix)
+    {
+        w,  0,  0,  0,
+        0,  h,  0,  0,
+        0,  0,  a,  1,
+        0,  0, -o,  0
+    };
+}
 
 inline Vector3 ToEuler(Vector4 q)
 {
