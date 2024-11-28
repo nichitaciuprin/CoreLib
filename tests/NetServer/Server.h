@@ -184,7 +184,7 @@ void RenderGame()
         char buffer[1024];
 
         for (int i = 0; i < 1024; i++)
-            buffer[i] = ColorToLightValue(bitmapNet->pixels[i]);
+            buffer[i] = ColorGetLightValue(bitmapNet->pixels[i]);
 
         SysNetSendFrame(&player.id, buffer);
     }
