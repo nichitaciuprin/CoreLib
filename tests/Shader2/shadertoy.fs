@@ -81,16 +81,15 @@ float ToBrightnes(float dist)
 void mainImage(out vec4 fragColor, in vec2 fragCoord)
 {
     vec2 uv = (fragCoord - iResolution.xy / 2.0) / iResolution.y;
-    vec3 col = vec3(0);
     vec3 ro = vec3(0, 1, 0);
     vec3 rd = normalize(vec3(uv.x, uv.y, 1));
     float d = RayMarch(ro, rd);
     vec3 p = ro + rd * d;
     float dif = GetLight(p);
-    col = vec3(dif);
+    vec3 col = vec3(dif);
 
     // gamma correction
-    col = pow(col, vec3(.4545));
+    // col = pow(col, vec3(.4545));
 
     fragColor = vec4(col,1.0);
 }
