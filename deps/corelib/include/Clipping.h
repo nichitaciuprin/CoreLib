@@ -231,21 +231,35 @@ inline void ClipPoligonBack(Vector3* input, Vector3* output, int* vertexCount, f
             };
             /* 10 */ case 2:
             {
-                output[index] = p0; index++;
-                auto diff = p1 - p0;
-                auto newPoint = p0 + diff * (offset - p0.z) / diff.z;
+                Vector3 newPoint;
+
+                float t = MathInverseLerp(p1.z, p0.z, offset);
+
+                newPoint.x = MathLerp(p1.x, p0.x, t);
+                newPoint.y = MathLerp(p1.y, p0.y, t);
                 newPoint.z = offset;
+
+                output[index] = p0; index++;
                 output[index] = newPoint; index++;
+
                 finalCount += 2;
+
                 break;
             };
             /* 01 */ case 1:
             {
-                auto diff = p1 - p0;
-                auto newPoint = p0 + diff * (offset - p0.z) / diff.z;
+                Vector3 newPoint;
+
+                float t = MathInverseLerp(p0.z, p1.z, offset);
+
+                newPoint.x = MathLerp(p0.x, p1.x, t);
+                newPoint.y = MathLerp(p0.y, p1.y, t);
                 newPoint.z = offset;
+
                 output[index] = newPoint; index++;
+
                 finalCount += 1;
+
                 break;
             };
             default: break;
@@ -285,21 +299,35 @@ inline void ClipPoligonFront(Vector3* input, Vector3* output, int* vertexCount, 
             };
             /* 10 */ case 2:
             {
-                output[index] = p0; index++;
-                auto diff = p1 - p0;
-                auto newPoint = p0 + diff * (offset - p0.z) / diff.z;
+                Vector3 newPoint;
+
+                float t = MathInverseLerp(p1.z, p0.z, offset);
+
+                newPoint.x = MathLerp(p1.x, p0.x, t);
+                newPoint.y = MathLerp(p1.y, p0.y, t);
                 newPoint.z = offset;
+
+                output[index] = p0;       index++;
                 output[index] = newPoint; index++;
+
                 finalCount += 2;
+
                 break;
             };
             /* 01 */ case 1:
             {
-                auto diff = p1 - p0;
-                auto newPoint = p0 + diff * (offset - p0.z) / diff.z;
+                Vector3 newPoint;
+
+                float t = MathInverseLerp(p0.z, p1.z, offset);
+
+                newPoint.x = MathLerp(p0.x, p1.x, t);
+                newPoint.y = MathLerp(p0.y, p1.y, t);
                 newPoint.z = offset;
+
                 output[index] = newPoint; index++;
+
                 finalCount += 1;
+
                 break;
             };
             default: break;
@@ -334,26 +362,42 @@ inline void ClipPoligonLeft(Vector3* input, Vector3* output, int* vertexCount, f
             /* 00 */ case 0:
             {
                 output[index] = p0; index++;
+
                 finalCount += 1;
+
                 break;
             };
             /* 10 */ case 2:
             {
-                output[index] = p0; index++;
-                auto diff = p1 - p0;
-                auto newPoint = p0 + diff * (offset - p0.x) / diff.x;
+                Vector3 newPoint;
+
+                float t = MathInverseLerp(p1.x, p0.x, offset);
+
                 newPoint.x = offset;
+                newPoint.y = MathLerp(p1.y, p0.y, t);
+                newPoint.z = MathLerp(p1.z, p0.z, t);
+
+                output[index] = p0; index++;
                 output[index] = newPoint; index++;
+
                 finalCount += 2;
+
                 break;
             };
             /* 01 */ case 1:
             {
-                auto diff = p1 - p0;
-                auto newPoint = p0 + diff * (offset - p0.x) / diff.x;
+                Vector3 newPoint;
+
+                float t = MathInverseLerp(p0.x, p1.x, offset);
+
                 newPoint.x = offset;
+                newPoint.y = MathLerp(p0.y, p1.y, t);
+                newPoint.z = MathLerp(p0.z, p1.z, t);
+
                 output[index] = newPoint; index++;
+
                 finalCount += 1;
+
                 break;
             };
             default: break;
@@ -388,26 +432,42 @@ inline void ClipPoligonRight(Vector3* input, Vector3* output, int* vertexCount, 
             /* 00 */ case 0:
             {
                 output[index] = p0; index++;
+
                 finalCount += 1;
+
                 break;
             };
             /* 10 */ case 2:
             {
-                output[index] = p0; index++;
-                auto diff = p1 - p0;
-                auto newPoint = p0 + diff * (offset - p0.x) / diff.x;
+                Vector3 newPoint;
+
+                float t = MathInverseLerp(p1.x, p0.x, offset);
+
                 newPoint.x = offset;
+                newPoint.y = MathLerp(p1.y, p0.y, t);
+                newPoint.z = MathLerp(p1.z, p0.z, t);
+
+                output[index] = p0;       index++;
                 output[index] = newPoint; index++;
+
                 finalCount += 2;
+
                 break;
             };
             /* 01 */ case 1:
             {
-                auto diff = p1 - p0;
-                auto newPoint = p0 + diff * (offset - p0.x) / diff.x;
+                Vector3 newPoint;
+
+                float t = MathInverseLerp(p0.x, p1.x, offset);
+
                 newPoint.x = offset;
+                newPoint.y = MathLerp(p0.y, p1.y, t);
+                newPoint.z = MathLerp(p0.z, p1.z, t);
+
                 output[index] = newPoint; index++;
+
                 finalCount += 1;
+
                 break;
             };
             default: break;
@@ -442,26 +502,42 @@ inline void ClipPoligonDown(Vector3* input, Vector3* output, int* vertexCount, f
             /* 00 */ case 0:
             {
                 output[index] = p0; index++;
+
                 finalCount += 1;
+
                 break;
             };
             /* 10 */ case 2:
             {
-                output[index] = p0; index++;
-                auto diff = p1 - p0;
-                auto newPoint = p0 + diff * (offset - p0.y) / diff.y;
+                Vector3 newPoint;
+
+                float t = MathInverseLerp(p1.y, p0.y, offset);
+
+                newPoint.x = MathLerp(p1.x, p0.x, t);
                 newPoint.y = offset;
+                newPoint.z = MathLerp(p1.z, p0.z, t);
+
+                output[index] = p0; index++;
                 output[index] = newPoint; index++;
+
                 finalCount += 2;
+
                 break;
             };
             /* 01 */ case 1:
             {
-                auto diff = p1 - p0;
-                auto newPoint = p0 + diff * (offset - p0.y) / diff.y;
+                Vector3 newPoint;
+
+                float t = MathInverseLerp(p0.y, p1.y, offset);
+
+                newPoint.x = MathLerp(p0.x, p1.x, t);
                 newPoint.y = offset;
+                newPoint.z = MathLerp(p0.z, p1.z, t);
+
                 output[index] = newPoint; index++;
+
                 finalCount += 1;
+
                 break;
             };
             default: break;
@@ -501,21 +577,35 @@ inline void ClipPoligonUp(Vector3* input, Vector3* output, int* vertexCount, flo
             };
             /* 10 */ case 2:
             {
-                output[index] = p0; index++;
-                auto diff = p1 - p0;
-                auto newPoint = p0 + diff * (offset - p0.y) / diff.y;
+                Vector3 newPoint;
+
+                float t = MathInverseLerp(p1.y, p0.y, offset);
+
+                newPoint.x = MathLerp(p1.x, p0.x, t);
                 newPoint.y = offset;
+                newPoint.z = MathLerp(p1.z, p0.z, t);
+
+                output[index] = p0;       index++;
                 output[index] = newPoint; index++;
+
                 finalCount += 2;
+
                 break;
             };
             /* 01 */ case 1:
             {
-                auto diff = p1 - p0;
-                auto newPoint = p0 + diff * (offset - p0.y) / diff.y;
+                Vector3 newPoint;
+
+                float t = MathInverseLerp(p0.y, p1.y, offset);
+
+                newPoint.x = MathLerp(p0.x, p1.x, t);
                 newPoint.y = offset;
+                newPoint.z = MathLerp(p0.z, p1.z, t);
+
                 output[index] = newPoint; index++;
+
                 finalCount += 1;
+
                 break;
             };
             default: break;
