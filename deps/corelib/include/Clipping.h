@@ -15,18 +15,22 @@ inline bool ClipLineBack(Vector3* v0, Vector3* v1, float offset)
         case /* 00 */ 0: return false;
         case /* 01 */ 1:
         {
-            Vector3 diff = Vector3Sub(*v0, *v1);
-            diff *= (offset - v0->z) / diff.z;
-            *v0 = Vector3Add(*v0, diff);
+            float t = MathInverseLerp(v0->z, v1->z, offset);
+
+            v0->x = MathLerp(v0->x, v1->x, t);
+            v0->y = MathLerp(v0->y, v1->y, t);
             v0->z = offset;
+
             return false;
         }
         case /* 10 */ 2:
         {
-            Vector3 diff = Vector3Sub(*v1, *v0);
-            diff *= (offset - v1->z) / diff.z;
-            *v1 = Vector3Add(*v1, diff);
+            float t = MathInverseLerp(v1->z, v0->z, offset);
+
+            v1->x = MathLerp(v1->x, v0->x, t);
+            v1->y = MathLerp(v1->y, v0->y, t);
             v1->z = offset;
+
             return false;
         }
         default /* 11 */ : return true;
@@ -44,18 +48,22 @@ inline bool ClipLineFront(Vector3* v0, Vector3* v1, float offset)
         case /* 00 */ 0: return false;
         case /* 01 */ 1:
         {
-            Vector3 diff = Vector3Sub(*v0, *v1);
-            diff *= (offset - v0->z) / diff.z;
-            *v0 = Vector3Add(*v0, diff);
+            float t = MathInverseLerp(v1->z, v0->z, offset);
+
+            v0->x = MathLerp(v1->x, v0->x, t);
+            v0->y = MathLerp(v1->y, v0->y, t);
             v0->z = offset;
+
             return false;
         }
         case /* 10 */ 2:
         {
-            Vector3 diff = Vector3Sub(*v1, *v0);
-            diff *= (offset - v1->z) / diff.z;
-            *v1 = Vector3Add(*v1, diff);
+            float t = MathInverseLerp(v0->z, v1->z, offset);
+
+            v1->x = MathLerp(v0->x, v1->x, t);
+            v1->y = MathLerp(v0->y, v1->y, t);
             v1->z = offset;
+
             return false;
         }
         default /* 11 */ : return true;
@@ -73,18 +81,22 @@ inline bool ClipLineLeft(Vector3* v0, Vector3* v1, float offset)
         case /* 00 */ 0: return false;
         case /* 01 */ 1:
         {
-            Vector3 diff = Vector3Sub(*v0, *v1);
-            diff *= (offset - v0->x) / diff.x;
-            *v0 = Vector3Add(*v0, diff);
+            float t = MathInverseLerp(v0->x, v1->x, offset);
+
             v0->x = offset;
+            v0->y = MathLerp(v0->y, v1->y, t);
+            v0->z = MathLerp(v0->z, v1->z, t);
+
             return false;
         }
         case /* 10 */ 2:
         {
-            Vector3 diff = Vector3Sub(*v1, *v0);
-            diff *= (offset - v1->x) / diff.x;
-            *v1 = Vector3Add(*v1, diff);
+            float t = MathInverseLerp(v1->x, v0->x, offset);
+
             v1->x = offset;
+            v1->y = MathLerp(v1->y, v0->y, t);
+            v1->z = MathLerp(v1->z, v0->z, t);
+
             return false;
         }
         default /* 11 */ : return true;
@@ -102,18 +114,22 @@ inline bool ClipLineRight(Vector3* v0, Vector3* v1, float offset)
         case /* 00 */ 0: return false;
         case /* 01 */ 1:
         {
-            Vector3 diff = Vector3Sub(*v0, *v1);
-            diff *= (offset - v0->x) / diff.x;
-            *v0 = Vector3Add(*v0, diff);
+            float t = MathInverseLerp(v1->x, v0->x, offset);
+
             v0->x = offset;
+            v0->y = MathLerp(v1->y, v0->y, t);
+            v0->z = MathLerp(v1->z, v0->z, t);
+
             return false;
         }
         case /* 10 */ 2:
         {
-            Vector3 diff = Vector3Sub(*v1, *v0);
-            diff *= (offset - v1->x) / diff.x;
-            *v1 = Vector3Add(*v1, diff);
+            float t = MathInverseLerp(v0->x, v1->x, offset);
+
             v1->x = offset;
+            v1->y = MathLerp(v0->y, v1->y, t);
+            v1->z = MathLerp(v0->z, v1->z, t);
+
             return false;
         }
         default /* 11 */ : return true;
@@ -131,18 +147,22 @@ inline bool ClipLineDown(Vector3* v0, Vector3* v1, float offset)
         case /* 00 */ 0: return false;
         case /* 01 */ 1:
         {
-            Vector3 diff = Vector3Sub(*v0, *v1);
-            diff *= (offset - v0->y) / diff.y;
-            *v0 = Vector3Add(*v0, diff);
+            float t = MathInverseLerp(v0->y, v1->y, offset);
+
+            v0->x = MathLerp(v0->x, v1->x, t);
             v0->y = offset;
+            v0->z = MathLerp(v0->z, v1->z, t);
+
             return false;
         }
         case /* 10 */ 2:
         {
-            Vector3 diff = Vector3Sub(*v1, *v0);
-            diff *= (offset - v1->y) / diff.y;
-            *v1 = Vector3Add(*v1, diff);
+            float t = MathInverseLerp(v1->y, v0->y, offset);
+
+            v1->x = MathLerp(v1->x, v0->x, t);
             v1->y = offset;
+            v1->z = MathLerp(v1->z, v0->z, t);
+
             return false;
         }
         default /* 11 */ : return true;
@@ -160,18 +180,22 @@ inline bool ClipLineUp(Vector3* v0, Vector3* v1, float offset)
         case /* 00 */ 0: return false;
         case /* 01 */ 1:
         {
-            Vector3 diff = Vector3Sub(*v0, *v1);
-            diff *= (offset - v0->y) / diff.y;
-            *v0 = Vector3Add(*v0, diff);
+            float t = MathInverseLerp(v1->y, v0->y, offset);
+
+            v0->x = MathLerp(v1->x, v0->x, t);
             v0->y = offset;
+            v0->z = MathLerp(v1->z, v0->z, t);
+
             return false;
         }
         case /* 10 */ 2:
         {
-            Vector3 diff = Vector3Sub(*v1, *v0);
-            diff *= (offset - v1->y) / diff.y;
-            *v1 = Vector3Add(*v1, diff);
+            float t = MathInverseLerp(v0->y, v1->y, offset);
+
+            v1->x = MathLerp(v0->x, v1->x, t);
             v1->y = offset;
+            v1->z = MathLerp(v0->z, v1->z, t);
+
             return false;
         }
         default /* 11 */ : return true;
