@@ -12,8 +12,11 @@ inline bool ClipLineBack(Vector3* v0, Vector3* v1, float offset)
 
     switch (flags)
     {
-        case /* 00 */ 0: return false;
-        case /* 01 */ 1:
+        case 0:
+        {
+            return false;
+        }
+        case 1:
         {
             float t = MathInverseLerp(v0->z, v1->z, offset);
 
@@ -23,7 +26,7 @@ inline bool ClipLineBack(Vector3* v0, Vector3* v1, float offset)
 
             return false;
         }
-        case /* 10 */ 2:
+        case 2:
         {
             float t = MathInverseLerp(v0->z, v1->z, offset);
 
@@ -33,7 +36,10 @@ inline bool ClipLineBack(Vector3* v0, Vector3* v1, float offset)
 
             return false;
         }
-        default /* 11 */ : return true;
+        default:
+        {
+            return true;
+        }
     }
 }
 inline bool ClipLineFront(Vector3* v0, Vector3* v1, float offset)
@@ -45,8 +51,11 @@ inline bool ClipLineFront(Vector3* v0, Vector3* v1, float offset)
 
     switch (flags)
     {
-        case /* 00 */ 0: return false;
-        case /* 01 */ 1:
+        case 0:
+        {
+            return false;
+        }
+        case 1:
         {
             float t = MathInverseLerp(v0->z, v1->z, offset);
 
@@ -56,7 +65,7 @@ inline bool ClipLineFront(Vector3* v0, Vector3* v1, float offset)
 
             return false;
         }
-        case /* 10 */ 2:
+        case 2:
         {
             float t = MathInverseLerp(v0->z, v1->z, offset);
 
@@ -66,7 +75,10 @@ inline bool ClipLineFront(Vector3* v0, Vector3* v1, float offset)
 
             return false;
         }
-        default /* 11 */ : return true;
+        default:
+        {
+            return true;
+        }
     }
 }
 inline bool ClipLineLeft(Vector3* v0, Vector3* v1, float offset)
@@ -78,8 +90,11 @@ inline bool ClipLineLeft(Vector3* v0, Vector3* v1, float offset)
 
     switch (flags)
     {
-        case /* 00 */ 0: return false;
-        case /* 01 */ 1:
+        case 0:
+        {
+            return false;
+        }
+        case 1:
         {
             float t = MathInverseLerp(v0->x, v1->x, offset);
 
@@ -89,7 +104,7 @@ inline bool ClipLineLeft(Vector3* v0, Vector3* v1, float offset)
 
             return false;
         }
-        case /* 10 */ 2:
+        case 2:
         {
             float t = MathInverseLerp(v0->x, v1->x, offset);
 
@@ -99,7 +114,10 @@ inline bool ClipLineLeft(Vector3* v0, Vector3* v1, float offset)
 
             return false;
         }
-        default /* 11 */ : return true;
+        default:
+        {
+            return true;
+        }
     }
 }
 inline bool ClipLineRight(Vector3* v0, Vector3* v1, float offset)
@@ -111,8 +129,11 @@ inline bool ClipLineRight(Vector3* v0, Vector3* v1, float offset)
 
     switch (flags)
     {
-        case /* 00 */ 0: return false;
-        case /* 01 */ 1:
+        case 0:
+        {
+            return false;
+        }
+        case 1:
         {
             float t = MathInverseLerp(v0->x, v1->x, offset);
 
@@ -122,7 +143,7 @@ inline bool ClipLineRight(Vector3* v0, Vector3* v1, float offset)
 
             return false;
         }
-        case /* 10 */ 2:
+        case 2:
         {
             float t = MathInverseLerp(v0->x, v1->x, offset);
 
@@ -132,7 +153,10 @@ inline bool ClipLineRight(Vector3* v0, Vector3* v1, float offset)
 
             return false;
         }
-        default /* 11 */ : return true;
+        default:
+        {
+            return true;
+        }
     }
 }
 inline bool ClipLineDown(Vector3* v0, Vector3* v1, float offset)
@@ -144,8 +168,11 @@ inline bool ClipLineDown(Vector3* v0, Vector3* v1, float offset)
 
     switch (flags)
     {
-        case /* 00 */ 0: return false;
-        case /* 01 */ 1:
+        case 0:
+        {
+            return false;
+        }
+        case 1:
         {
             float t = MathInverseLerp(v0->y, v1->y, offset);
 
@@ -155,7 +182,7 @@ inline bool ClipLineDown(Vector3* v0, Vector3* v1, float offset)
 
             return false;
         }
-        case /* 10 */ 2:
+        case 2:
         {
             float t = MathInverseLerp(v0->y, v1->y, offset);
 
@@ -165,7 +192,10 @@ inline bool ClipLineDown(Vector3* v0, Vector3* v1, float offset)
 
             return false;
         }
-        default /* 11 */ : return true;
+        default:
+        {
+            return true;
+        }
     }
 }
 inline bool ClipLineUp(Vector3* v0, Vector3* v1, float offset)
@@ -177,8 +207,11 @@ inline bool ClipLineUp(Vector3* v0, Vector3* v1, float offset)
 
     switch (flags)
     {
-        case /* 00 */ 0: return false;
-        case /* 01 */ 1:
+        case 0:
+        {
+            return false;
+        }
+        case 1:
         {
             float t = MathInverseLerp(v0->y, v1->y, offset);
 
@@ -188,7 +221,7 @@ inline bool ClipLineUp(Vector3* v0, Vector3* v1, float offset)
 
             return false;
         }
-        case /* 10 */ 2:
+        case 2:
         {
             float t = MathInverseLerp(v0->y, v1->y, offset);
 
@@ -198,7 +231,10 @@ inline bool ClipLineUp(Vector3* v0, Vector3* v1, float offset)
 
             return false;
         }
-        default /* 11 */ : return true;
+        default:
+        {
+            return true;
+        }
     }
 }
 
