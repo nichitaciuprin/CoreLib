@@ -259,13 +259,15 @@ inline void ClipPoligonBack(Vector3* input, Vector3* output, int* vertexCount, f
 
         switch (flags)
         {
-            /* 00 */ case 0:
+            case 0:
             {
                 output[index] = p0; index++;
+
                 finalCount += 1;
+
                 break;
-            };
-            /* 10 */ case 2:
+            }
+            case 2:
             {
                 Vector3 newPoint;
 
@@ -281,8 +283,8 @@ inline void ClipPoligonBack(Vector3* input, Vector3* output, int* vertexCount, f
                 finalCount += 2;
 
                 break;
-            };
-            /* 01 */ case 1:
+            }
+            case 1:
             {
                 Vector3 newPoint;
 
@@ -297,8 +299,11 @@ inline void ClipPoligonBack(Vector3* input, Vector3* output, int* vertexCount, f
                 finalCount += 1;
 
                 break;
-            };
-            default: break;
+            }
+            default:
+            {
+                break;
+            }
         }
 
         p0 = p1;
@@ -327,13 +332,15 @@ inline void ClipPoligonFront(Vector3* input, Vector3* output, int* vertexCount, 
 
         switch (flags)
         {
-            /* 00 */ case 0:
+            case 0:
             {
                 output[index] = p0; index++;
+
                 finalCount += 1;
+
                 break;
-            };
-            /* 10 */ case 2:
+            }
+            case 2:
             {
                 Vector3 newPoint;
 
@@ -349,8 +356,8 @@ inline void ClipPoligonFront(Vector3* input, Vector3* output, int* vertexCount, 
                 finalCount += 2;
 
                 break;
-            };
-            /* 01 */ case 1:
+            }
+            case 1:
             {
                 Vector3 newPoint;
 
@@ -365,8 +372,11 @@ inline void ClipPoligonFront(Vector3* input, Vector3* output, int* vertexCount, 
                 finalCount += 1;
 
                 break;
-            };
-            default: break;
+            }
+            default:
+            {
+                break;
+            }
         }
 
         p0 = p1;
@@ -395,15 +405,15 @@ inline void ClipPoligonLeft(Vector3* input, Vector3* output, int* vertexCount, f
 
         switch (flags)
         {
-            /* 00 */ case 0:
+            case 0:
             {
                 output[index] = p0; index++;
 
                 finalCount += 1;
 
                 break;
-            };
-            /* 10 */ case 2:
+            }
+            case 2:
             {
                 Vector3 newPoint;
 
@@ -419,8 +429,8 @@ inline void ClipPoligonLeft(Vector3* input, Vector3* output, int* vertexCount, f
                 finalCount += 2;
 
                 break;
-            };
-            /* 01 */ case 1:
+            }
+            case 1:
             {
                 Vector3 newPoint;
 
@@ -435,8 +445,11 @@ inline void ClipPoligonLeft(Vector3* input, Vector3* output, int* vertexCount, f
                 finalCount += 1;
 
                 break;
-            };
-            default: break;
+            }
+            default:
+            {
+                break;
+            }
         }
 
         p0 = p1;
@@ -465,15 +478,15 @@ inline void ClipPoligonRight(Vector3* input, Vector3* output, int* vertexCount, 
 
         switch (flags)
         {
-            /* 00 */ case 0:
+            case 0:
             {
                 output[index] = p0; index++;
 
                 finalCount += 1;
 
                 break;
-            };
-            /* 10 */ case 2:
+            }
+            case 2:
             {
                 Vector3 newPoint;
 
@@ -489,8 +502,8 @@ inline void ClipPoligonRight(Vector3* input, Vector3* output, int* vertexCount, 
                 finalCount += 2;
 
                 break;
-            };
-            /* 01 */ case 1:
+            }
+            case 1:
             {
                 Vector3 newPoint;
 
@@ -505,8 +518,11 @@ inline void ClipPoligonRight(Vector3* input, Vector3* output, int* vertexCount, 
                 finalCount += 1;
 
                 break;
-            };
-            default: break;
+            }
+            default:
+            {
+                break;
+            }
         }
 
         p0 = p1;
@@ -535,15 +551,15 @@ inline void ClipPoligonDown(Vector3* input, Vector3* output, int* vertexCount, f
 
         switch (flags)
         {
-            /* 00 */ case 0:
+            case 0:
             {
                 output[index] = p0; index++;
 
                 finalCount += 1;
 
                 break;
-            };
-            /* 10 */ case 2:
+            }
+            case 2:
             {
                 Vector3 newPoint;
 
@@ -559,8 +575,8 @@ inline void ClipPoligonDown(Vector3* input, Vector3* output, int* vertexCount, f
                 finalCount += 2;
 
                 break;
-            };
-            /* 01 */ case 1:
+            }
+            case 1:
             {
                 Vector3 newPoint;
 
@@ -575,8 +591,11 @@ inline void ClipPoligonDown(Vector3* input, Vector3* output, int* vertexCount, f
                 finalCount += 1;
 
                 break;
-            };
-            default: break;
+            }
+            default:
+            {
+                break;
+            }
         }
 
         p0 = p1;
@@ -605,13 +624,15 @@ inline void ClipPoligonUp(Vector3* input, Vector3* output, int* vertexCount, flo
 
         switch (flags)
         {
-            /* 00 */ case 0:
+            case 0:
             {
                 output[index] = p0; index++;
+
                 finalCount += 1;
+
                 break;
-            };
-            /* 10 */ case 2:
+            }
+            case 2:
             {
                 Vector3 newPoint;
 
@@ -627,8 +648,8 @@ inline void ClipPoligonUp(Vector3* input, Vector3* output, int* vertexCount, flo
                 finalCount += 2;
 
                 break;
-            };
-            /* 01 */ case 1:
+            }
+            case 1:
             {
                 Vector3 newPoint;
 
@@ -643,8 +664,11 @@ inline void ClipPoligonUp(Vector3* input, Vector3* output, int* vertexCount, flo
                 finalCount += 1;
 
                 break;
-            };
-            default: break;
+            }
+            default:
+            {
+                break;
+            }
         }
 
         p0 = p1;
