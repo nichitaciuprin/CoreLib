@@ -7,6 +7,10 @@
 // https://fabiensanglard.net/polygon_codec/clippingdocument/p245-blinn.pdf
 // https://fabiensanglard.net/polygon_codec/clippingdocument/Clipping.pdf
 
+// https://www.youtube.com/results?search_query=shadow+volume
+// https://www.youtube.com/watch?v=QCIKgyL3ePo
+// https://www.youtube.com/watch?v=oO0LJWy5COg
+
 // about clipping in clip space
 // clipping result has float errors
 // after division by w, clamp verteces to ndc
