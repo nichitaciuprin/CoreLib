@@ -257,21 +257,21 @@ inline void ClipPoligonBack(Vector3* input, Vector3* output, int* vertexCount, f
     int initCount = *vertexCount;
     int finalCount = 0;
 
-    Vector3 p0 = input[initCount - 1];
-    if (p0.z < offset) flags += 2;
+    Vector3* p0 = &input[initCount - 1];
+    if (p0->z < offset) flags += 2;
 
     for (int i = 0; i < initCount; i++)
     {
         flags >>= 1;
 
-        Vector3 p1 = input[i];
-        if (p1.z < offset) flags += 2;
+        Vector3* p1 = &input[i];
+        if (p1->z < offset) flags += 2;
 
         switch (flags)
         {
             case 0:
             {
-                output[index] = p0; index++;
+                output[index] = *p0; index++;
 
                 finalCount += 1;
 
@@ -281,10 +281,10 @@ inline void ClipPoligonBack(Vector3* input, Vector3* output, int* vertexCount, f
             {
                 Vector3 newPoint;
 
-                float t = MathInverseLerp(p0.z, p1.z, offset);
+                float t = MathInverseLerp(p0->z, p1->z, offset);
 
-                newPoint.x = MathLerp(p0.x, p1.x, t);
-                newPoint.y = MathLerp(p0.y, p1.y, t);
+                newPoint.x = MathLerp(p0->x, p1->x, t);
+                newPoint.y = MathLerp(p0->y, p1->y, t);
                 newPoint.z = offset;
 
                 output[index] = newPoint; index++;
@@ -297,13 +297,13 @@ inline void ClipPoligonBack(Vector3* input, Vector3* output, int* vertexCount, f
             {
                 Vector3 newPoint;
 
-                float t = MathInverseLerp(p0.z, p1.z, offset);
+                float t = MathInverseLerp(p0->z, p1->z, offset);
 
-                newPoint.x = MathLerp(p0.x, p1.x, t);
-                newPoint.y = MathLerp(p0.y, p1.y, t);
+                newPoint.x = MathLerp(p0->x, p1->x, t);
+                newPoint.y = MathLerp(p0->y, p1->y, t);
                 newPoint.z = offset;
 
-                output[index] = p0; index++;
+                output[index] = *p0; index++;
                 output[index] = newPoint; index++;
 
                 finalCount += 2;
@@ -328,21 +328,21 @@ inline void ClipPoligonFront(Vector3* input, Vector3* output, int* vertexCount, 
     int initCount = *vertexCount;
     int finalCount = 0;
 
-    Vector3 p0 = input[initCount - 1];
-    if (p0.z > offset) flags += 2;
+    Vector3* p0 = &input[initCount - 1];
+    if (p0->z > offset) flags += 2;
 
     for (int i = 0; i < initCount; i++)
     {
         flags >>= 1;
 
-        Vector3 p1 = input[i];
-        if (p1.z > offset) flags += 2;
+        Vector3* p1 = &input[i];
+        if (p1->z > offset) flags += 2;
 
         switch (flags)
         {
             case 0:
             {
-                output[index] = p0; index++;
+                output[index] = *p0; index++;
 
                 finalCount += 1;
 
@@ -352,10 +352,10 @@ inline void ClipPoligonFront(Vector3* input, Vector3* output, int* vertexCount, 
             {
                 Vector3 newPoint;
 
-                float t = MathInverseLerp(p0.z, p1.z, offset);
+                float t = MathInverseLerp(p0->z, p1->z, offset);
 
-                newPoint.x = MathLerp(p0.x, p1.x, t);
-                newPoint.y = MathLerp(p0.y, p1.y, t);
+                newPoint.x = MathLerp(p0->x, p1->x, t);
+                newPoint.y = MathLerp(p0->y, p1->y, t);
                 newPoint.z = offset;
 
                 output[index] = newPoint; index++;
@@ -368,13 +368,13 @@ inline void ClipPoligonFront(Vector3* input, Vector3* output, int* vertexCount, 
             {
                 Vector3 newPoint;
 
-                float t = MathInverseLerp(p0.z, p1.z, offset);
+                float t = MathInverseLerp(p0->z, p1->z, offset);
 
-                newPoint.x = MathLerp(p0.x, p1.x, t);
-                newPoint.y = MathLerp(p0.y, p1.y, t);
+                newPoint.x = MathLerp(p0->x, p1->x, t);
+                newPoint.y = MathLerp(p0->y, p1->y, t);
                 newPoint.z = offset;
 
-                output[index] = p0;       index++;
+                output[index] = *p0;       index++;
                 output[index] = newPoint; index++;
 
                 finalCount += 2;
@@ -399,21 +399,21 @@ inline void ClipPoligonLeft(Vector3* input, Vector3* output, int* vertexCount, f
     int initCount = *vertexCount;
     int finalCount = 0;
 
-    Vector3 p0 = input[initCount - 1];
-    if (p0.x < offset) flags += 2;
+    Vector3* p0 = &input[initCount - 1];
+    if (p0->x < offset) flags += 2;
 
     for (int i = 0; i < initCount; i++)
     {
         flags >>= 1;
 
-        Vector3 p1 = input[i];
-        if (p1.x < offset) flags += 2;
+        Vector3* p1 = &input[i];
+        if (p1->x < offset) flags += 2;
 
         switch (flags)
         {
             case 0:
             {
-                output[index] = p0; index++;
+                output[index] = *p0; index++;
 
                 finalCount += 1;
 
@@ -423,11 +423,11 @@ inline void ClipPoligonLeft(Vector3* input, Vector3* output, int* vertexCount, f
             {
                 Vector3 newPoint;
 
-                float t = MathInverseLerp(p0.x, p1.x, offset);
+                float t = MathInverseLerp(p0->x, p1->x, offset);
 
                 newPoint.x = offset;
-                newPoint.y = MathLerp(p0.y, p1.y, t);
-                newPoint.z = MathLerp(p0.z, p1.z, t);
+                newPoint.y = MathLerp(p0->y, p1->y, t);
+                newPoint.z = MathLerp(p0->z, p1->z, t);
 
                 output[index] = newPoint; index++;
 
@@ -439,13 +439,13 @@ inline void ClipPoligonLeft(Vector3* input, Vector3* output, int* vertexCount, f
             {
                 Vector3 newPoint;
 
-                float t = MathInverseLerp(p0.x, p1.x, offset);
+                float t = MathInverseLerp(p0->x, p1->x, offset);
 
                 newPoint.x = offset;
-                newPoint.y = MathLerp(p0.y, p1.y, t);
-                newPoint.z = MathLerp(p0.z, p1.z, t);
+                newPoint.y = MathLerp(p0->y, p1->y, t);
+                newPoint.z = MathLerp(p0->z, p1->z, t);
 
-                output[index] = p0; index++;
+                output[index] = *p0; index++;
                 output[index] = newPoint; index++;
 
                 finalCount += 2;
@@ -470,21 +470,21 @@ inline void ClipPoligonRight(Vector3* input, Vector3* output, int* vertexCount, 
     int initCount = *vertexCount;
     int finalCount = 0;
 
-    Vector3 p0 = input[initCount - 1];
-    if (p0.x > offset) flags += 2;
+    Vector3* p0 = &input[initCount - 1];
+    if (p0->x > offset) flags += 2;
 
     for (int i = 0; i < initCount; i++)
     {
         flags >>= 1;
 
-        Vector3 p1 = input[i];
-        if (p1.x > offset) flags += 2;
+        Vector3* p1 = &input[i];
+        if (p1->x > offset) flags += 2;
 
         switch (flags)
         {
             case 0:
             {
-                output[index] = p0; index++;
+                output[index] = *p0; index++;
 
                 finalCount += 1;
 
@@ -494,11 +494,11 @@ inline void ClipPoligonRight(Vector3* input, Vector3* output, int* vertexCount, 
             {
                 Vector3 newPoint;
 
-                float t = MathInverseLerp(p0.x, p1.x, offset);
+                float t = MathInverseLerp(p0->x, p1->x, offset);
 
                 newPoint.x = offset;
-                newPoint.y = MathLerp(p0.y, p1.y, t);
-                newPoint.z = MathLerp(p0.z, p1.z, t);
+                newPoint.y = MathLerp(p0->y, p1->y, t);
+                newPoint.z = MathLerp(p0->z, p1->z, t);
 
                 output[index] = newPoint; index++;
 
@@ -510,13 +510,13 @@ inline void ClipPoligonRight(Vector3* input, Vector3* output, int* vertexCount, 
             {
                 Vector3 newPoint;
 
-                float t = MathInverseLerp(p0.x, p1.x, offset);
+                float t = MathInverseLerp(p0->x, p1->x, offset);
 
                 newPoint.x = offset;
-                newPoint.y = MathLerp(p0.y, p1.y, t);
-                newPoint.z = MathLerp(p0.z, p1.z, t);
+                newPoint.y = MathLerp(p0->y, p1->y, t);
+                newPoint.z = MathLerp(p0->z, p1->z, t);
 
-                output[index] = p0;       index++;
+                output[index] = *p0;       index++;
                 output[index] = newPoint; index++;
 
                 finalCount += 2;
@@ -541,21 +541,21 @@ inline void ClipPoligonDown(Vector3* input, Vector3* output, int* vertexCount, f
     int initCount = *vertexCount;
     int finalCount = 0;
 
-    Vector3 p0 = input[initCount - 1];
-    if (p0.y < offset) flags += 2;
+    Vector3* p0 = &input[initCount - 1];
+    if (p0->y < offset) flags += 2;
 
     for (int i = 0; i < initCount; i++)
     {
         flags >>= 1;
 
-        Vector3 p1 = input[i];
-        if (p1.y < offset) flags += 2;
+        Vector3* p1 = &input[i];
+        if (p1->y < offset) flags += 2;
 
         switch (flags)
         {
             case 0:
             {
-                output[index] = p0; index++;
+                output[index] = *p0; index++;
 
                 finalCount += 1;
 
@@ -565,11 +565,11 @@ inline void ClipPoligonDown(Vector3* input, Vector3* output, int* vertexCount, f
             {
                 Vector3 newPoint;
 
-                float t = MathInverseLerp(p0.y, p1.y, offset);
+                float t = MathInverseLerp(p0->y, p1->y, offset);
 
-                newPoint.x = MathLerp(p0.x, p1.x, t);
+                newPoint.x = MathLerp(p0->x, p1->x, t);
                 newPoint.y = offset;
-                newPoint.z = MathLerp(p0.z, p1.z, t);
+                newPoint.z = MathLerp(p0->z, p1->z, t);
 
                 output[index] = newPoint; index++;
 
@@ -581,13 +581,13 @@ inline void ClipPoligonDown(Vector3* input, Vector3* output, int* vertexCount, f
             {
                 Vector3 newPoint;
 
-                float t = MathInverseLerp(p0.y, p1.y, offset);
+                float t = MathInverseLerp(p0->y, p1->y, offset);
 
-                newPoint.x = MathLerp(p0.x, p1.x, t);
+                newPoint.x = MathLerp(p0->x, p1->x, t);
                 newPoint.y = offset;
-                newPoint.z = MathLerp(p0.z, p1.z, t);
+                newPoint.z = MathLerp(p0->z, p1->z, t);
 
-                output[index] = p0; index++;
+                output[index] = *p0; index++;
                 output[index] = newPoint; index++;
 
                 finalCount += 2;
@@ -612,21 +612,21 @@ inline void ClipPoligonUp(Vector3* input, Vector3* output, int* vertexCount, flo
     int initCount = *vertexCount;
     int finalCount = 0;
 
-    Vector3 p0 = input[initCount - 1];
-    if (p0.y > offset) flags += 2;
+    Vector3* p0 = &input[initCount - 1];
+    if (p0->y > offset) flags += 2;
 
     for (int i = 0; i < initCount; i++)
     {
         flags >>= 1;
 
-        Vector3 p1 = input[i];
-        if (p1.y > offset) flags += 2;
+        Vector3* p1 = &input[i];
+        if (p1->y > offset) flags += 2;
 
         switch (flags)
         {
             case 0:
             {
-                output[index] = p0; index++;
+                output[index] = *p0; index++;
 
                 finalCount += 1;
 
@@ -636,11 +636,11 @@ inline void ClipPoligonUp(Vector3* input, Vector3* output, int* vertexCount, flo
             {
                 Vector3 newPoint;
 
-                float t = MathInverseLerp(p0.y, p1.y, offset);
+                float t = MathInverseLerp(p0->y, p1->y, offset);
 
-                newPoint.x = MathLerp(p0.x, p1.x, t);
+                newPoint.x = MathLerp(p0->x, p1->x, t);
                 newPoint.y = offset;
-                newPoint.z = MathLerp(p0.z, p1.z, t);
+                newPoint.z = MathLerp(p0->z, p1->z, t);
 
                 output[index] = newPoint; index++;
 
@@ -652,13 +652,13 @@ inline void ClipPoligonUp(Vector3* input, Vector3* output, int* vertexCount, flo
             {
                 Vector3 newPoint;
 
-                float t = MathInverseLerp(p0.y, p1.y, offset);
+                float t = MathInverseLerp(p0->y, p1->y, offset);
 
-                newPoint.x = MathLerp(p0.x, p1.x, t);
+                newPoint.x = MathLerp(p0->x, p1->x, t);
                 newPoint.y = offset;
-                newPoint.z = MathLerp(p0.z, p1.z, t);
+                newPoint.z = MathLerp(p0->z, p1->z, t);
 
-                output[index] = p0;       index++;
+                output[index] = *p0;       index++;
                 output[index] = newPoint; index++;
 
                 finalCount += 2;
@@ -972,21 +972,21 @@ inline void ClipPoligonWClipSpace(Vector4* input, Vector4* output, int* vertexCo
     int initCount = *vertexCount;
     int finalCount = 0;
 
-    Vector4 p0 = input[initCount - 1];
-    if (p0.w < 0) flags += 2;
+    Vector4* p0 = &input[initCount - 1];
+    if (p0->w < 0) flags += 2;
 
     for (int i = 0; i < initCount; i++)
     {
         flags >>= 1;
 
-        Vector4 p1 = input[i];
-        if (p1.w < 0) flags += 2;
+        Vector4* p1 = &input[i];
+        if (p1->w < 0) flags += 2;
 
         switch (flags)
         {
             case 0:
             {
-                output[index] = p0; index++;
+                output[index] = *p0; index++;
 
                 finalCount += 1;
 
@@ -996,12 +996,12 @@ inline void ClipPoligonWClipSpace(Vector4* input, Vector4* output, int* vertexCo
             {
                 Vector4 newPoint;
 
-                float t0 = p0.w;
-                float t1 = p1.w;
+                float t0 = p0->w;
+                float t1 = p1->w;
 
                 float t = t0 / (t0 - t1);
 
-                newPoint = Vector4Lerp(p0, p1, t);
+                newPoint = Vector4Lerp(*p0, *p1, t);
 
                 output[index] = newPoint; index++;
 
@@ -1013,14 +1013,14 @@ inline void ClipPoligonWClipSpace(Vector4* input, Vector4* output, int* vertexCo
             {
                 Vector4 newPoint;
 
-                float t0 = p0.w;
-                float t1 = p1.w;
+                float t0 = p0->w;
+                float t1 = p1->w;
 
                 float t = t0 / (t0 - t1);
 
-                newPoint = Vector4Lerp(p0, p1, t);
+                newPoint = Vector4Lerp(*p0, *p1, t);
 
-                output[index] = p0;       index++;
+                output[index] = *p0;       index++;
                 output[index] = newPoint; index++;
 
                 finalCount += 2;
@@ -1045,21 +1045,21 @@ inline void ClipPoligonBackClipSpace(Vector4* input, Vector4* output, int* verte
     int initCount = *vertexCount;
     int finalCount = 0;
 
-    Vector4 p0 = input[initCount - 1];
-    if (p0.z < -p0.w) flags += 2;
+    Vector4* p0 = &input[initCount - 1];
+    if (p0->z < -p0->w) flags += 2;
 
     for (int i = 0; i < initCount; i++)
     {
         flags >>= 1;
 
-        Vector4 p1 = input[i];
-        if (p1.z < -p1.w) flags += 2;
+        Vector4* p1 = &input[i];
+        if (p1->z < -p1->w) flags += 2;
 
         switch (flags)
         {
             case 0:
             {
-                output[index] = p0; index++;
+                output[index] = *p0; index++;
 
                 finalCount += 1;
 
@@ -1069,12 +1069,12 @@ inline void ClipPoligonBackClipSpace(Vector4* input, Vector4* output, int* verte
             {
                 Vector4 newPoint;
 
-                float t0 = p0.w + p0.z;
-                float t1 = p1.w + p1.z;
+                float t0 = p0->w + p0->z;
+                float t1 = p1->w + p1->z;
 
                 float t = t0 / (t0 - t1);
 
-                newPoint = Vector4Lerp(p0, p1, t);
+                newPoint = Vector4Lerp(*p0, *p1, t);
 
                 output[index] = newPoint; index++;
 
@@ -1086,14 +1086,14 @@ inline void ClipPoligonBackClipSpace(Vector4* input, Vector4* output, int* verte
             {
                 Vector4 newPoint;
 
-                float t0 = p0.w + p0.z;
-                float t1 = p1.w + p1.z;
+                float t0 = p0->w + p0->z;
+                float t1 = p1->w + p1->z;
 
                 float t = t0 / (t0 - t1);
 
-                newPoint = Vector4Lerp(p0, p1, t);
+                newPoint = Vector4Lerp(*p0, *p1, t);
 
-                output[index] = p0;       index++;
+                output[index] = *p0;       index++;
                 output[index] = newPoint; index++;
 
                 finalCount += 2;
@@ -1118,21 +1118,21 @@ inline void ClipPoligonFrontClipSpace(Vector4* input, Vector4* output, int* vert
     int initCount = *vertexCount;
     int finalCount = 0;
 
-    Vector4 p0 = input[initCount - 1];
-    if (p0.z > p0.w) flags += 2;
+    Vector4* p0 = &input[initCount - 1];
+    if (p0->z > p0->w) flags += 2;
 
     for (int i = 0; i < initCount; i++)
     {
         flags >>= 1;
 
-        Vector4 p1 = input[i];
-        if (p1.z > p1.w) flags += 2;
+        Vector4* p1 = &input[i];
+        if (p1->z > p1->w) flags += 2;
 
         switch (flags)
         {
             case 0:
             {
-                output[index] = p0; index++;
+                output[index] = *p0; index++;
 
                 finalCount += 1;
 
@@ -1142,12 +1142,12 @@ inline void ClipPoligonFrontClipSpace(Vector4* input, Vector4* output, int* vert
             {
                 Vector4 newPoint;
 
-                float t0 = p0.w - p0.z;
-                float t1 = p1.w - p1.z;
+                float t0 = p0->w - p0->z;
+                float t1 = p1->w - p1->z;
 
                 float t = t0 / (t0 - t1);
 
-                newPoint = Vector4Lerp(p0, p1, t);
+                newPoint = Vector4Lerp(*p0, *p1, t);
 
                 output[index] = newPoint; index++;
 
@@ -1159,14 +1159,14 @@ inline void ClipPoligonFrontClipSpace(Vector4* input, Vector4* output, int* vert
             {
                 Vector4 newPoint;
 
-                float t0 = p0.w - p0.z;
-                float t1 = p1.w - p1.z;
+                float t0 = p0->w - p0->z;
+                float t1 = p1->w - p1->z;
 
                 float t = t0 / (t0 - t1);
 
-                newPoint = Vector4Lerp(p0, p1, t);
+                newPoint = Vector4Lerp(*p0, *p1, t);
 
-                output[index] = p0;       index++;
+                output[index] = *p0;       index++;
                 output[index] = newPoint; index++;
 
                 finalCount += 2;
@@ -1191,21 +1191,21 @@ inline void ClipPoligonLeftClipSpace(Vector4* input, Vector4* output, int* verte
     int initCount = *vertexCount;
     int finalCount = 0;
 
-    Vector4 p0 = input[initCount - 1];
-    if (p0.x < -p0.w) flags += 2;
+    Vector4* p0 = &input[initCount - 1];
+    if (p0->x < -p0->w) flags += 2;
 
     for (int i = 0; i < initCount; i++)
     {
         flags >>= 1;
 
-        Vector4 p1 = input[i];
-        if (p1.x < -p1.w) flags += 2;
+        Vector4* p1 = &input[i];
+        if (p1->x < -p1->w) flags += 2;
 
         switch (flags)
         {
             case 0:
             {
-                output[index] = p0; index++;
+                output[index] = *p0; index++;
 
                 finalCount += 1;
 
@@ -1215,12 +1215,12 @@ inline void ClipPoligonLeftClipSpace(Vector4* input, Vector4* output, int* verte
             {
                 Vector4 newPoint;
 
-                float t0 = p0.w + p0.x;
-                float t1 = p1.w + p1.x;
+                float t0 = p0->w + p0->x;
+                float t1 = p1->w + p1->x;
 
                 float t = t0 / (t0 - t1);
 
-                newPoint = Vector4Lerp(p0, p1, t);
+                newPoint = Vector4Lerp(*p0, *p1, t);
 
                 output[index] = newPoint; index++;
 
@@ -1232,14 +1232,14 @@ inline void ClipPoligonLeftClipSpace(Vector4* input, Vector4* output, int* verte
             {
                 Vector4 newPoint;
 
-                float t0 = p0.w + p0.x;
-                float t1 = p1.w + p1.x;
+                float t0 = p0->w + p0->x;
+                float t1 = p1->w + p1->x;
 
                 float t = t0 / (t0 - t1);
 
-                newPoint = Vector4Lerp(p0, p1, t);
+                newPoint = Vector4Lerp(*p0, *p1, t);
 
-                output[index] = p0;       index++;
+                output[index] = *p0;       index++;
                 output[index] = newPoint; index++;
 
                 finalCount += 2;
@@ -1264,21 +1264,21 @@ inline void ClipPoligonRightClipSpace(Vector4* input, Vector4* output, int* vert
     int initCount = *vertexCount;
     int finalCount = 0;
 
-    Vector4 p0 = input[initCount - 1];
-    if (p0.x > p0.w) flags += 2;
+    Vector4* p0 = &input[initCount - 1];
+    if (p0->x > p0->w) flags += 2;
 
     for (int i = 0; i < initCount; i++)
     {
         flags >>= 1;
 
-        Vector4 p1 = input[i];
-        if (p1.x > p1.w) flags += 2;
+        Vector4* p1 = &input[i];
+        if (p1->x > p1->w) flags += 2;
 
         switch (flags)
         {
             case 0:
             {
-                output[index] = p0; index++;
+                output[index] = *p0; index++;
 
                 finalCount += 1;
 
@@ -1288,12 +1288,12 @@ inline void ClipPoligonRightClipSpace(Vector4* input, Vector4* output, int* vert
             {
                 Vector4 newPoint;
 
-                float t0 = p0.w - p0.x;
-                float t1 = p1.w - p1.x;
+                float t0 = p0->w - p0->x;
+                float t1 = p1->w - p1->x;
 
                 float t = t0 / (t0 - t1);
 
-                newPoint = Vector4Lerp(p0, p1, t);
+                newPoint = Vector4Lerp(*p0, *p1, t);
 
                 output[index] = newPoint; index++;
 
@@ -1305,14 +1305,14 @@ inline void ClipPoligonRightClipSpace(Vector4* input, Vector4* output, int* vert
             {
                 Vector4 newPoint;
 
-                float t0 = p0.w - p0.x;
-                float t1 = p1.w - p1.x;
+                float t0 = p0->w - p0->x;
+                float t1 = p1->w - p1->x;
 
                 float t = t0 / (t0 - t1);
 
-                newPoint = Vector4Lerp(p0, p1, t);
+                newPoint = Vector4Lerp(*p0, *p1, t);
 
-                output[index] = p0;       index++;
+                output[index] = *p0;       index++;
                 output[index] = newPoint; index++;
 
                 finalCount += 2;
@@ -1337,21 +1337,21 @@ inline void ClipPoligonDownClipSpace(Vector4* input, Vector4* output, int* verte
     int initCount = *vertexCount;
     int finalCount = 0;
 
-    Vector4 p0 = input[initCount - 1];
-    if (p0.y < -p0.w) flags += 2;
+    Vector4* p0 = &input[initCount - 1];
+    if (p0->y < -p0->w) flags += 2;
 
     for (int i = 0; i < initCount; i++)
     {
         flags >>= 1;
 
-        Vector4 p1 = input[i];
-        if (p1.y < -p1.w) flags += 2;
+        Vector4* p1 = &input[i];
+        if (p1->y < -p1->w) flags += 2;
 
         switch (flags)
         {
             case 0:
             {
-                output[index] = p0; index++;
+                output[index] = *p0; index++;
 
                 finalCount += 1;
 
@@ -1361,12 +1361,12 @@ inline void ClipPoligonDownClipSpace(Vector4* input, Vector4* output, int* verte
             {
                 Vector4 newPoint;
 
-                float t0 = p0.w + p0.y;
-                float t1 = p1.w + p1.y;
+                float t0 = p0->w + p0->y;
+                float t1 = p1->w + p1->y;
 
                 float t = t0 / (t0 - t1);
 
-                newPoint = Vector4Lerp(p0, p1, t);
+                newPoint = Vector4Lerp(*p0, *p1, t);
 
                 output[index] = newPoint; index++;
 
@@ -1378,14 +1378,14 @@ inline void ClipPoligonDownClipSpace(Vector4* input, Vector4* output, int* verte
             {
                 Vector4 newPoint;
 
-                float t0 = p0.w + p0.y;
-                float t1 = p1.w + p1.y;
+                float t0 = p0->w + p0->y;
+                float t1 = p1->w + p1->y;
 
                 float t = t0 / (t0 - t1);
 
-                newPoint = Vector4Lerp(p0, p1, t);
+                newPoint = Vector4Lerp(*p0, *p1, t);
 
-                output[index] = p0;       index++;
+                output[index] = *p0;       index++;
                 output[index] = newPoint; index++;
 
                 finalCount += 2;
@@ -1410,21 +1410,21 @@ inline void ClipPoligonUpClipSpace(Vector4* input, Vector4* output, int* vertexC
     int initCount = *vertexCount;
     int finalCount = 0;
 
-    Vector4 p0 = input[initCount - 1];
-    if (p0.y > p0.w) flags += 2;
+    Vector4* p0 = &input[initCount - 1];
+    if (p0->y > p0->w) flags += 2;
 
     for (int i = 0; i < initCount; i++)
     {
         flags >>= 1;
 
-        Vector4 p1 = input[i];
-        if (p1.y > p1.w) flags += 2;
+        Vector4* p1 = &input[i];
+        if (p1->y > p1->w) flags += 2;
 
         switch (flags)
         {
             case 0:
             {
-                output[index] = p0; index++;
+                output[index] = *p0; index++;
 
                 finalCount += 1;
 
@@ -1434,12 +1434,12 @@ inline void ClipPoligonUpClipSpace(Vector4* input, Vector4* output, int* vertexC
             {
                 Vector4 newPoint;
 
-                float t0 = p0.w - p0.y;
-                float t1 = p1.w - p1.y;
+                float t0 = p0->w - p0->y;
+                float t1 = p1->w - p1->y;
 
                 float t = t0 / (t0 - t1);
 
-                newPoint = Vector4Lerp(p0, p1, t);
+                newPoint = Vector4Lerp(*p0, *p1, t);
 
                 output[index] = newPoint; index++;
 
@@ -1451,14 +1451,14 @@ inline void ClipPoligonUpClipSpace(Vector4* input, Vector4* output, int* vertexC
             {
                 Vector4 newPoint;
 
-                float t0 = p0.w - p0.y;
-                float t1 = p1.w - p1.y;
+                float t0 = p0->w - p0->y;
+                float t1 = p1->w - p1->y;
 
                 float t = t0 / (t0 - t1);
 
-                newPoint = Vector4Lerp(p0, p1, t);
+                newPoint = Vector4Lerp(*p0, *p1, t);
 
-                output[index] = p0;       index++;
+                output[index] = *p0;       index++;
                 output[index] = newPoint; index++;
 
                 finalCount += 2;
