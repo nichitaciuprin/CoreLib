@@ -11,7 +11,7 @@ void DrawCube(Bitmap* bitmap, Vector3 position, float time)
     Vector3 scale = { 1, 1, 1 };
 
     BitmapDrawCubeColored(bitmap, position, rotation, scale);
-    BitmapDrawCubeWire(bitmap, position, rotation, scale, COLOR_RED);
+    // BitmapDrawCubeWire(bitmap, position, rotation, scale, COLOR_RED);
 
     // Vector3 offset = Vector3Right() + Vector3Up();
 
@@ -38,20 +38,20 @@ void Draw(Bitmap* bitmap, Camera camera)
     BitmapReset(bitmap);
     BitmapSetView(bitmap, &camera);
 
-    DrawPlane(bitmap, { 0, 0, 0 });
-    DrawPlane(bitmap, { 0, 0, 100 });
+    // DrawPlane(bitmap, { 0, 0, 0 });
+    // DrawPlane(bitmap, { 0, 0, 100 });
     DrawCube(bitmap, { 0, 0.5f, 0 }, (float)time / 3000);
     DrawCube(bitmap, { 0, 0.5f, 100 }, (float)time / 600);
     DrawCube(bitmap, { 0, 1.5f, 100 }, (float)time / 300);
 
     // bridge
-    {
-        Vector3 p0 = { -1, 0,  2 };
-        Vector3 p1 = { -1, 0, 95 };
-        Vector3 p2 = {  1, 0, 95 };
-        Vector3 p3 = {  1, 0,  2 };
-        BitmapDrawPoligon(bitmap, p0, p1, p2, p3, COLOR_WHITE);
-    }
+    // {
+    //     Vector3 p0 = { -1, 0,  2 };
+    //     Vector3 p1 = { -1, 0, 95 };
+    //     Vector3 p2 = {  1, 0, 95 };
+    //     Vector3 p3 = {  1, 0,  2 };
+    //     BitmapDrawPoligon(bitmap, p0, p1, p2, p3, COLOR_WHITE);
+    // }
 
     // TODO fix this
     // bitmap->ApplyBlackWhiteColorDepth();
