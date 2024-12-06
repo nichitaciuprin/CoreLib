@@ -192,18 +192,22 @@ void BitmapFillSqare(Bitmap* instance, Color color)
 
 void BitmapApplyFade(Bitmap* instance)
 {
-    for (int i = 0; i < instance->pixelsSize; i++)
+    int pixelCount = instance->pixelsSize;
+
+    float min = 1.0f;
+    float max = min + 1.1;
+
+    for (int i = 0; i < pixelCount; i++)
     {
-        float depthLength = 100;
-        float factor = MathClampFloat(instance->zbuffer[i], 0.0f, depthLength);
-        factor /= depthLength;
-        factor = 1 - factor;
-        int byte = (int)(factor * 255);
+        float z = MathClampFloat(instance->zbuffer[i], min, max);
+        float t = 1 - MathInverseLerp(min, max, z);
+
+        uint8_t byte = 255 * t;
 
         uint32_t color = 0;
-        color += byte; color = color << 8;
-        color += byte; color = color << 8;
-        color += byte; color = color << 8;
+        color += byte; color <<= 8;
+        color += byte; color <<= 8;
+        color += byte; color <<= 8;
         color += byte;
 
         instance->pixels[i] = color;
