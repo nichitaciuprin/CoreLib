@@ -254,7 +254,7 @@ inline void ClipPoligonBack(Vector3* input, Vector3* output, int* vertexCount, f
 
     for (int i = 0; i < initCount; i++)
     {
-        flags = flags >> 1;
+        flags >>= 1;
 
         Vector3 p1 = input[i];
         if (p1.z < offset) flags += 2;
@@ -325,7 +325,7 @@ inline void ClipPoligonFront(Vector3* input, Vector3* output, int* vertexCount, 
 
     for (int i = 0; i < initCount; i++)
     {
-        flags = flags >> 1;
+        flags >>= 1;
 
         Vector3 p1 = input[i];
         if (p1.z > offset) flags += 2;
@@ -396,7 +396,7 @@ inline void ClipPoligonLeft(Vector3* input, Vector3* output, int* vertexCount, f
 
     for (int i = 0; i < initCount; i++)
     {
-        flags = flags >> 1;
+        flags >>= 1;
 
         Vector3 p1 = input[i];
         if (p1.x < offset) flags += 2;
@@ -467,7 +467,7 @@ inline void ClipPoligonRight(Vector3* input, Vector3* output, int* vertexCount, 
 
     for (int i = 0; i < initCount; i++)
     {
-        flags = flags >> 1;
+        flags >>= 1;
 
         Vector3 p1 = input[i];
         if (p1.x > offset) flags += 2;
@@ -538,7 +538,7 @@ inline void ClipPoligonDown(Vector3* input, Vector3* output, int* vertexCount, f
 
     for (int i = 0; i < initCount; i++)
     {
-        flags = flags >> 1;
+        flags >>= 1;
 
         Vector3 p1 = input[i];
         if (p1.y < offset) flags += 2;
@@ -609,7 +609,7 @@ inline void ClipPoligonUp(Vector3* input, Vector3* output, int* vertexCount, flo
 
     for (int i = 0; i < initCount; i++)
     {
-        flags = flags >> 1;
+        flags >>= 1;
 
         Vector3 p1 = input[i];
         if (p1.y > offset) flags += 2;
