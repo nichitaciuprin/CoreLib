@@ -1,11 +1,19 @@
-// https://fabiensanglard.net/polygon_codec/
-// https://fabiensanglard.net/polygon_codec/clippingdocument/p245-blinn.pdf
-// https://fabiensanglard.net/polygon_codec/clippingdocument/Clipping.pdf
-
 #pragma once
 
 #include "BaseExt.h"
 #include "HelperExt.h"
+
+// https://fabiensanglard.net/polygon_codec/
+// https://fabiensanglard.net/polygon_codec/clippingdocument/p245-blinn.pdf
+// https://fabiensanglard.net/polygon_codec/clippingdocument/Clipping.pdf
+
+// about clipping in clip space
+// clipping result has float errors
+// after division by w, clamp verteces to ndc
+// ndc assumed to be cube where
+// -1 <= x <= +1
+// -1 <= y <= +1
+// -1 <= z <= +1
 
 inline bool ClipLineBack(Vector3* v0, Vector3* v1, float offset)
 {
@@ -649,6 +657,806 @@ inline void ClipPoligonUp(Vector3* input, Vector3* output, int* vertexCount, flo
                 newPoint.x = MathLerp(p0.x, p1.x, t);
                 newPoint.y = offset;
                 newPoint.z = MathLerp(p0.z, p1.z, t);
+
+                output[index] = p0;       index++;
+                output[index] = newPoint; index++;
+
+                finalCount += 2;
+
+                break;
+            }
+            default:
+            {
+                break;
+            }
+        }
+
+        p0 = p1;
+    }
+
+    *vertexCount = finalCount;
+}
+
+inline bool ClipLineWClipSpace(Vector4* p0, Vector4* p1)
+{
+    int flags = 0;
+
+    if (p0->w < 0) flags += 1;
+    if (p1->w < 0) flags += 2;
+
+    switch (flags)
+    {
+        case 0:
+        {
+            return false;
+        }
+        case 1:
+        {
+            float t0 = p0->w;
+            float t1 = p1->w;
+
+            float t = t0 / (t0 - t1);
+
+            *p0 = Vector4Lerp(*p0, *p1, t);
+
+            return false;
+        }
+        case 2:
+        {
+            float t0 = p0->w;
+            float t1 = p1->w;
+
+            float t = t0 / (t0 - t1);
+
+            *p1 = Vector4Lerp(*p0, *p1, t);
+
+            return false;
+        }
+        default:
+        {
+            return true;
+        }
+    }
+}
+inline bool ClipLineBackClipSpace(Vector4* p0, Vector4* p1)
+{
+    int flags = 0;
+
+    if (p0->z < -p0->w) flags += 1;
+    if (p1->z < -p1->w) flags += 2;
+
+    switch (flags)
+    {
+        case 0:
+        {
+            return false;
+        }
+        case 1:
+        {
+            float t0 = p0->w + p0->z;
+            float t1 = p1->w + p1->z;
+
+            float t = t0 / (t0 - t1);
+
+            *p0 = Vector4Lerp(*p0, *p1, t);
+
+            return false;
+        }
+        case 2:
+        {
+            float t0 = p0->w + p0->z;
+            float t1 = p1->w + p1->z;
+
+            float t = t0 / (t0 - t1);
+
+            *p1 = Vector4Lerp(*p0, *p1, t);
+
+            return false;
+        }
+        default:
+        {
+            return true;
+        }
+    }
+}
+inline bool ClipLineFrontClipSpace(Vector4* p0, Vector4* p1)
+{
+    int flags = 0;
+
+    if (p0->z > p0->w) flags += 1;
+    if (p1->z > p1->w) flags += 2;
+
+    switch (flags)
+    {
+        case 0:
+        {
+            return false;
+        }
+        case 1:
+        {
+            float t0 = p0->w - p0->z;
+            float t1 = p1->w - p1->z;
+
+            float t = t0 / (t0 - t1);
+
+            *p0 = Vector4Lerp(*p0, *p1, t);
+
+            return false;
+        }
+        case 2:
+        {
+            float t0 = p0->w - p0->z;
+            float t1 = p1->w - p1->z;
+
+            float t = t0 / (t0 - t1);
+
+            *p1 = Vector4Lerp(*p0, *p1, t);
+
+            return false;
+        }
+        default:
+        {
+            return true;
+        }
+    }
+}
+inline bool ClipLineLeftClipSpace(Vector4* p0, Vector4* p1)
+{
+    int flags = 0;
+
+    if (p0->x < -p0->w) flags += 1;
+    if (p1->x < -p1->w) flags += 2;
+
+    switch (flags)
+    {
+        case 0:
+        {
+            return false;
+        }
+        case 1:
+        {
+            float t0 = p0->w + p0->x;
+            float t1 = p1->w + p1->x;
+
+            float t = t0 / (t0 - t1);
+
+            *p0 = Vector4Lerp(*p0, *p1, t);
+
+            return false;
+        }
+        case 2:
+        {
+            float t0 = p0->w + p0->x;
+            float t1 = p1->w + p1->x;
+
+            float t = t0 / (t0 - t1);
+
+            *p1 = Vector4Lerp(*p0, *p1, t);
+
+            return false;
+        }
+        default:
+        {
+            return true;
+        }
+    }
+}
+inline bool ClipLineRightClipSpace(Vector4* p0, Vector4* p1)
+{
+    int flags = 0;
+
+    if (p0->x > p0->w) flags += 1;
+    if (p1->x > p1->w) flags += 2;
+
+    switch (flags)
+    {
+        case 0:
+        {
+            return false;
+        }
+        case 1:
+        {
+            float t0 = p0->w - p0->x;
+            float t1 = p1->w - p1->x;
+
+            float t = t0 / (t0 - t1);
+
+            *p0 = Vector4Lerp(*p0, *p1, t);
+
+            return false;
+        }
+        case 2:
+        {
+            float t0 = p0->w - p0->x;
+            float t1 = p1->w - p1->x;
+
+            float t = t0 / (t0 - t1);
+
+            *p1 = Vector4Lerp(*p0, *p1, t);
+
+            return false;
+        }
+        default:
+        {
+            return true;
+        }
+    }
+}
+inline bool ClipLineDownClipSpace(Vector4* p0, Vector4* p1)
+{
+    int flags = 0;
+
+    if (p0->y < -p0->w) flags += 1;
+    if (p1->y < -p1->w) flags += 2;
+
+    switch (flags)
+    {
+        case 0:
+        {
+            return false;
+        }
+        case 1:
+        {
+            float t0 = p0->w + p0->y;
+            float t1 = p1->w + p1->y;
+
+            float t = t0 / (t0 - t1);
+
+            *p0 = Vector4Lerp(*p0, *p1, t);
+
+            return false;
+        }
+        case 2:
+        {
+            float t0 = p0->w + p0->y;
+            float t1 = p1->w + p1->y;
+
+            float t = t0 / (t0 - t1);
+
+            *p1 = Vector4Lerp(*p0, *p1, t);
+
+            return false;
+        }
+        default:
+        {
+            return true;
+        }
+    }
+}
+inline bool ClipLineUpClipSpace(Vector4* p0, Vector4* p1)
+{
+    int flags = 0;
+
+    if (p0->y > p0->w) flags += 1;
+    if (p1->y > p1->w) flags += 2;
+
+    switch (flags)
+    {
+        case 0:
+        {
+            return false;
+        }
+        case 1:
+        {
+            float t0 = p0->w - p0->y;
+            float t1 = p1->w - p1->y;
+
+            float t = t0 / (t0 - t1);
+
+            *p0 = Vector4Lerp(*p0, *p1, t);
+
+            return false;
+        }
+        case 2:
+        {
+            float t0 = p0->w - p0->y;
+            float t1 = p1->w - p1->y;
+
+            float t = t0 / (t0 - t1);
+
+            *p1 = Vector4Lerp(*p0, *p1, t);
+
+            return false;
+        }
+        default:
+        {
+            return true;
+        }
+    }
+}
+
+inline void ClipPoligonWClipSpace(Vector4* input, Vector4* output, int* vertexCount)
+{
+    int flags = 0;
+    int index = 0;
+    int initCount = *vertexCount;
+    int finalCount = 0;
+
+    Vector4 p0 = input[initCount - 1];
+    if (p0.w < 0) flags += 2;
+
+    for (int i = 0; i < initCount; i++)
+    {
+        flags >>= 1;
+
+        Vector4 p1 = input[i];
+        if (p1.w < 0) flags += 2;
+
+        switch (flags)
+        {
+            case 0:
+            {
+                output[index] = p0; index++;
+
+                finalCount += 1;
+
+                break;
+            }
+            case 1:
+            {
+                Vector4 newPoint;
+
+                float t0 = p0.w;
+                float t1 = p1.w;
+
+                float t = t0 / (t0 - t1);
+
+                newPoint = Vector4Lerp(p0, p1, t);
+
+                output[index] = newPoint; index++;
+
+                finalCount += 1;
+
+                break;
+            }
+            case 2:
+            {
+                Vector4 newPoint;
+
+                float t0 = p0.w;
+                float t1 = p1.w;
+
+                float t = t0 / (t0 - t1);
+
+                newPoint = Vector4Lerp(p0, p1, t);
+
+                output[index] = p0;       index++;
+                output[index] = newPoint; index++;
+
+                finalCount += 2;
+
+                break;
+            }
+            default:
+            {
+                break;
+            }
+        }
+
+        p0 = p1;
+    }
+
+    *vertexCount = finalCount;
+}
+inline void ClipPoligonBackClipSpace(Vector4* input, Vector4* output, int* vertexCount)
+{
+    int flags = 0;
+    int index = 0;
+    int initCount = *vertexCount;
+    int finalCount = 0;
+
+    Vector4 p0 = input[initCount - 1];
+    if (p0.z < -p0.w) flags += 2;
+
+    for (int i = 0; i < initCount; i++)
+    {
+        flags >>= 1;
+
+        Vector4 p1 = input[i];
+        if (p1.z < -p1.w) flags += 2;
+
+        switch (flags)
+        {
+            case 0:
+            {
+                output[index] = p0; index++;
+
+                finalCount += 1;
+
+                break;
+            }
+            case 1:
+            {
+                Vector4 newPoint;
+
+                float t0 = p0.w + p0.z;
+                float t1 = p1.w + p1.z;
+
+                float t = t0 / (t0 - t1);
+
+                newPoint = Vector4Lerp(p0, p1, t);
+
+                output[index] = newPoint; index++;
+
+                finalCount += 1;
+
+                break;
+            }
+            case 2:
+            {
+                Vector4 newPoint;
+
+                float t0 = p0.w + p0.z;
+                float t1 = p1.w + p1.z;
+
+                float t = t0 / (t0 - t1);
+
+                newPoint = Vector4Lerp(p0, p1, t);
+
+                output[index] = p0;       index++;
+                output[index] = newPoint; index++;
+
+                finalCount += 2;
+
+                break;
+            }
+            default:
+            {
+                break;
+            }
+        }
+
+        p0 = p1;
+    }
+
+    *vertexCount = finalCount;
+}
+inline void ClipPoligonFrontClipSpace(Vector4* input, Vector4* output, int* vertexCount)
+{
+    int flags = 0;
+    int index = 0;
+    int initCount = *vertexCount;
+    int finalCount = 0;
+
+    Vector4 p0 = input[initCount - 1];
+    if (p0.z > p0.w) flags += 2;
+
+    for (int i = 0; i < initCount; i++)
+    {
+        flags >>= 1;
+
+        Vector4 p1 = input[i];
+        if (p1.z > p1.w) flags += 2;
+
+        switch (flags)
+        {
+            case 0:
+            {
+                output[index] = p0; index++;
+
+                finalCount += 1;
+
+                break;
+            }
+            case 1:
+            {
+                Vector4 newPoint;
+
+                float t0 = p0.w - p0.z;
+                float t1 = p1.w - p1.z;
+
+                float t = t0 / (t0 - t1);
+
+                newPoint = Vector4Lerp(p0, p1, t);
+
+                output[index] = newPoint; index++;
+
+                finalCount += 1;
+
+                break;
+            }
+            case 2:
+            {
+                Vector4 newPoint;
+
+                float t0 = p0.w - p0.z;
+                float t1 = p1.w - p1.z;
+
+                float t = t0 / (t0 - t1);
+
+                newPoint = Vector4Lerp(p0, p1, t);
+
+                output[index] = p0;       index++;
+                output[index] = newPoint; index++;
+
+                finalCount += 2;
+
+                break;
+            }
+            default:
+            {
+                break;
+            }
+        }
+
+        p0 = p1;
+    }
+
+    *vertexCount = finalCount;
+}
+inline void ClipPoligonLeftClipSpace(Vector4* input, Vector4* output, int* vertexCount)
+{
+    int flags = 0;
+    int index = 0;
+    int initCount = *vertexCount;
+    int finalCount = 0;
+
+    Vector4 p0 = input[initCount - 1];
+    if (p0.x < -p0.w) flags += 2;
+
+    for (int i = 0; i < initCount; i++)
+    {
+        flags >>= 1;
+
+        Vector4 p1 = input[i];
+        if (p1.x < -p1.w) flags += 2;
+
+        switch (flags)
+        {
+            case 0:
+            {
+                output[index] = p0; index++;
+
+                finalCount += 1;
+
+                break;
+            }
+            case 1:
+            {
+                Vector4 newPoint;
+
+                float t0 = p0.w + p0.x;
+                float t1 = p1.w + p1.x;
+
+                float t = t0 / (t0 - t1);
+
+                newPoint = Vector4Lerp(p0, p1, t);
+
+                output[index] = newPoint; index++;
+
+                finalCount += 1;
+
+                break;
+            }
+            case 2:
+            {
+                Vector4 newPoint;
+
+                float t0 = p0.w + p0.x;
+                float t1 = p1.w + p1.x;
+
+                float t = t0 / (t0 - t1);
+
+                newPoint = Vector4Lerp(p0, p1, t);
+
+                output[index] = p0;       index++;
+                output[index] = newPoint; index++;
+
+                finalCount += 2;
+
+                break;
+            }
+            default:
+            {
+                break;
+            }
+        }
+
+        p0 = p1;
+    }
+
+    *vertexCount = finalCount;
+}
+inline void ClipPoligonRightClipSpace(Vector4* input, Vector4* output, int* vertexCount)
+{
+    int flags = 0;
+    int index = 0;
+    int initCount = *vertexCount;
+    int finalCount = 0;
+
+    Vector4 p0 = input[initCount - 1];
+    if (p0.x > p0.w) flags += 2;
+
+    for (int i = 0; i < initCount; i++)
+    {
+        flags >>= 1;
+
+        Vector4 p1 = input[i];
+        if (p1.x > p1.w) flags += 2;
+
+        switch (flags)
+        {
+            case 0:
+            {
+                output[index] = p0; index++;
+
+                finalCount += 1;
+
+                break;
+            }
+            case 1:
+            {
+                Vector4 newPoint;
+
+                float t0 = p0.w - p0.x;
+                float t1 = p1.w - p1.x;
+
+                float t = t0 / (t0 - t1);
+
+                newPoint = Vector4Lerp(p0, p1, t);
+
+                output[index] = newPoint; index++;
+
+                finalCount += 1;
+
+                break;
+            }
+            case 2:
+            {
+                Vector4 newPoint;
+
+                float t0 = p0.w - p0.x;
+                float t1 = p1.w - p1.x;
+
+                float t = t0 / (t0 - t1);
+
+                newPoint = Vector4Lerp(p0, p1, t);
+
+                output[index] = p0;       index++;
+                output[index] = newPoint; index++;
+
+                finalCount += 2;
+
+                break;
+            }
+            default:
+            {
+                break;
+            }
+        }
+
+        p0 = p1;
+    }
+
+    *vertexCount = finalCount;
+}
+inline void ClipPoligonDownClipSpace(Vector4* input, Vector4* output, int* vertexCount)
+{
+    int flags = 0;
+    int index = 0;
+    int initCount = *vertexCount;
+    int finalCount = 0;
+
+    Vector4 p0 = input[initCount - 1];
+    if (p0.y < -p0.w) flags += 2;
+
+    for (int i = 0; i < initCount; i++)
+    {
+        flags >>= 1;
+
+        Vector4 p1 = input[i];
+        if (p1.y < -p1.w) flags += 2;
+
+        switch (flags)
+        {
+            case 0:
+            {
+                output[index] = p0; index++;
+
+                finalCount += 1;
+
+                break;
+            }
+            case 1:
+            {
+                Vector4 newPoint;
+
+                float t0 = p0.w + p0.y;
+                float t1 = p1.w + p1.y;
+
+                float t = t0 / (t0 - t1);
+
+                newPoint = Vector4Lerp(p0, p1, t);
+
+                output[index] = newPoint; index++;
+
+                finalCount += 1;
+
+                break;
+            }
+            case 2:
+            {
+                Vector4 newPoint;
+
+                float t0 = p0.w + p0.y;
+                float t1 = p1.w + p1.y;
+
+                float t = t0 / (t0 - t1);
+
+                newPoint = Vector4Lerp(p0, p1, t);
+
+                output[index] = p0;       index++;
+                output[index] = newPoint; index++;
+
+                finalCount += 2;
+
+                break;
+            }
+            default:
+            {
+                break;
+            }
+        }
+
+        p0 = p1;
+    }
+
+    *vertexCount = finalCount;
+}
+inline void ClipPoligonUpClipSpace(Vector4* input, Vector4* output, int* vertexCount)
+{
+    int flags = 0;
+    int index = 0;
+    int initCount = *vertexCount;
+    int finalCount = 0;
+
+    Vector4 p0 = input[initCount - 1];
+    if (p0.y > p0.w) flags += 2;
+
+    for (int i = 0; i < initCount; i++)
+    {
+        flags >>= 1;
+
+        Vector4 p1 = input[i];
+        if (p1.y > p1.w) flags += 2;
+
+        switch (flags)
+        {
+            case 0:
+            {
+                output[index] = p0; index++;
+
+                finalCount += 1;
+
+                break;
+            }
+            case 1:
+            {
+                Vector4 newPoint;
+
+                float t0 = p0.w - p0.y;
+                float t1 = p1.w - p1.y;
+
+                float t = t0 / (t0 - t1);
+
+                newPoint = Vector4Lerp(p0, p1, t);
+
+                output[index] = newPoint; index++;
+
+                finalCount += 1;
+
+                break;
+            }
+            case 2:
+            {
+                Vector4 newPoint;
+
+                float t0 = p0.w - p0.y;
+                float t1 = p1.w - p1.y;
+
+                float t = t0 / (t0 - t1);
+
+                newPoint = Vector4Lerp(p0, p1, t);
 
                 output[index] = p0;       index++;
                 output[index] = newPoint; index++;
