@@ -1,3 +1,7 @@
+// https://fabiensanglard.net/polygon_codec/
+// https://fabiensanglard.net/polygon_codec/clippingdocument/p245-blinn.pdf
+// https://fabiensanglard.net/polygon_codec/clippingdocument/Clipping.pdf
+
 #pragma once
 
 #include "BaseExt.h"
