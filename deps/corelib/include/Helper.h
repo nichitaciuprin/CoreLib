@@ -1583,6 +1583,39 @@ inline bool LineSegmentIntersection(Vector3 start, Vector3 end, Sphere sphere)
     return true;
 }
 
+bool RaycastTriangle(Vector3 v1, Vector3 v2, Vector3 v3, Vector3 origin, Vector3 dirNorm)
+{
+    Vector3 d1 = Vector3Sub(v2, v1);
+    Vector3 d2 = Vector3Sub(v3, v1);
+
+    Vector3 vec1 = Vector3Cross(dirNorm, d2);
+
+    float det = Vector3Dot(vec1, d1);
+
+    float epsilon = 0.000001f;
+
+    if (-epsilon < det && det < epsilon)
+        return false;
+
+    float deti = 1.0f / det;
+
+    Vector3 vec2 = Vector3Sub(origin, v1);
+
+    float u = deti * Vector3Dot(vec2, vec1);
+
+    if (u < 0.0f || 1.0f < u)
+        return false;
+
+    Vector3 vec3 = Vector3Cross(vec2, d1);
+
+    float v = deti * Vector3Dot(vec3, dirNorm);
+
+    if (v < 0.0f || 1.0f < u + v)
+        return false;
+
+    return true;
+}
+
 inline Pose GetLocalPose(Pose parentWorld, Pose childWorld)
 {
     childWorld.rotation = Vector3Sub(childWorld.rotation, parentWorld.rotation);
