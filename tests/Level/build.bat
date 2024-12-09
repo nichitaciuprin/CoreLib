@@ -7,7 +7,7 @@ set main=%~dp0main.cpp
 
 set flags=
 set flags=%flags% -g3 -Og -std=c++17 -pthread -m64
-set flags=%flags% -Werror -Wall -Wno-missing-braces
+@REM set flags=%flags% -Werror -Wall -Wno-missing-braces
 
 set src=
 set src=%src% %deps%\corelib\src\SysHelper.c

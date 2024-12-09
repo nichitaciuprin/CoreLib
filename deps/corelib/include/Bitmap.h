@@ -1,5 +1,9 @@
 #pragma once
 
+// https://www.youtube.com/results?search_query=shadow+volume
+// https://www.youtube.com/watch?v=QCIKgyL3ePo
+// https://www.youtube.com/watch?v=oO0LJWy5COg
+
 #include "float.h"
 #include "assert.h"
 #include "string.h"
@@ -12,12 +16,14 @@ typedef struct Bitmap
 {
     uint32_t* pixels;
     float* zbuffer;
+    float* wbuffer;
     int width;
     int height;
     int maxX;
     int maxY;
     int pixelsSize;
     int zbufferSize;
+    int wbufferSize;
     Matrix view;
     Matrix proj;
     float near;
@@ -41,9 +47,11 @@ Bitmap BitmapCreate(int width, int height)
 
     instance.pixelsSize = size;
     instance.zbufferSize = size;
+    instance.wbufferSize = size;
 
     instance.pixels = (uint32_t*)malloc(sizeof(uint32_t) * size);
     instance.zbuffer = (float*)malloc(sizeof(float) * size);
+    instance.wbuffer = (float*)malloc(sizeof(float) * size);
 
     instance.view = MatrixIdentity();
     instance.proj = MatrixIdentity();
@@ -82,10 +90,12 @@ void BitmapResize(Bitmap* instance, int width, int height)
 
 void BitmapReset(Bitmap* instance)
 {
-    memset((void*)instance->pixels, 0, instance->zbufferSize * sizeof(uint32_t));
+    int pixelCount = instance->pixelsSize;
+
+    memset((void*)instance->pixels, 0, pixelCount * sizeof(uint32_t));
 
     // can we, somehow, do memset here?
-    for (int i = 0; i < instance->zbufferSize; i++)
+    for (int i = 0; i < pixelCount; i++)
         instance->zbuffer[i] = FLT_MAX;
 }
 void BitmapSetView(Bitmap* instance, Camera* camera)
@@ -123,6 +133,19 @@ void BitmapSetPixelZ(Bitmap* instance, int x, int y, float z, Color color)
 
     instance->pixels[i] = color;
 }
+void BitmapSetPixelZW(Bitmap* instance, int x, int y, float z, float w, Color color)
+{
+    assert(0 <= x && x < instance->width);
+    assert(0 <= y && y < instance->height);
+
+    int i = x + y * instance->width;
+
+    if (instance->zbuffer[i] < z) return;
+
+    instance->pixels[i] = color;
+    instance->zbuffer[i] = z;
+    instance->wbuffer[i] = w;
+}
 void BitmapSetPixelZScaled(Bitmap* instance, int x, int y, float z, Color color, int scale)
 {
     int minx = MathClampInt(x - scale, 0, instance->maxX);
@@ -154,6 +177,22 @@ void BitmapSetLineZ(Bitmap* instance, int y, int xl, int xr, float zl, float zr,
         int x = xl + i;
         BitmapSetPixelZ(instance, x, y, zl, color);
         zl += offset;
+    }
+}
+void BitmapSetLineZW(Bitmap* instance, int y, int xl, int xr, float zl, float zr, float wl, float wr, Color color)
+{
+    int count = xr - xl;
+    float diff = zr - zl;
+    float diff2 = wr - wl;
+    float offset = diff / count;
+    float offset2 = diff2 / count;
+
+    for (int i = 0; i < count + 1; i++)
+    {
+        int x = xl + i;
+        BitmapSetPixelZW(instance, x, y, zl, wl, color);
+        zl += offset;
+        wl += offset2;
     }
 }
 
@@ -222,6 +261,36 @@ void BitmapToScreenSpace(Bitmap* instance, Vector3* v)
     v->y /= 2.0f;
     v->x = instance->maxX * v->x;
     v->y = instance->maxY * v->y;
+}
+void BitmapToScreenSpace(Bitmap* instance, Vector4* v)
+{
+    v->y = -v->y;
+    v->x += 1.0f;
+    v->y += 1.0f;
+    v->x /= 2.0f;
+    v->y /= 2.0f;
+    v->x = instance->maxX * v->x;
+    v->y = instance->maxY * v->y;
+}
+void BitmapFromScreenSpace(Bitmap* instance, Vector3* v)
+{
+    v->x /= instance->maxX;
+    v->y /= instance->maxY;
+    v->x *= 2.0f;
+    v->y *= 2.0f;
+    v->x -= 1.0f;
+    v->y -= 1.0f;
+    v->y = -v->y;
+}
+void BitmapFromScreenSpace(Bitmap* instance, Vector4* v)
+{
+    v->x /= instance->maxX;
+    v->y /= instance->maxY;
+    v->x *= 2.0f;
+    v->y *= 2.0f;
+    v->x -= 1.0f;
+    v->y -= 1.0f;
+    v->y = -v->y;
 }
 
 float GetArea(Vector3 v1, Vector3 v2, Vector3 v3)
@@ -613,6 +682,100 @@ void BitmapDrawTriangleScreenspaceV2(Bitmap* instance, Vector3 v0, Vector3 v1, V
     }
     BitmapSetLineZ(instance, y0, *xl, *xr, *zl, *zr, color);
 }
+void BitmapDrawTriangleScreenspaceV3(Bitmap* instance, Vector4 v0, Vector4 v1, Vector4 v2, Color color)
+{
+    // TODO not accurate, improve
+
+    // v0 is top
+    // v1 is middle
+    // v2 is bottom
+
+    if (v0.y > v1.y) swap(v0, v1);
+    if (v1.y > v2.y) swap(v1, v2);
+    if (v0.y > v1.y) swap(v0, v1);
+
+    int x0 = (int)v0.x;
+    int x1 = (int)v1.x;
+    int x2 = (int)v2.x;
+
+    int y0 = (int)v0.y;
+    int y1 = (int)v1.y;
+    int y2 = (int)v2.y;
+
+    float z0 = v0.z;
+    float z1 = v1.z;
+    float z2 = v2.z;
+
+    float w0 = v0.w;
+    float w1 = v1.w;
+    float w2 = v2.w;
+
+    int dx1 = x2 - x0;
+    int dx2 = x1 - x0;
+    int dx3 = x2 - x1;
+
+    int dy1 = y2 - y0;
+    int dy2 = y1 - y0;
+    int dy3 = y2 - y1;
+
+    int dir1 = MathSignInt(dx1);
+    int dir2 = MathSignInt(dx2);
+    int dir3 = MathSignInt(dx3);
+
+    int dx1abs = MathAbsInt(dx1);
+    int dx2abs = MathAbsInt(dx2);
+    int dx3abs = MathAbsInt(dx3);
+
+    int err1 = dy1 - dx1abs;
+    int err2 = dy2 - dx2abs;
+    int err3 = dy3 - dx3abs;
+
+    // TODO check for 0 division?
+    float offset1 = (z2 - z0) / dy1;
+    float offset2 = (z1 - z0) / dy2;
+    float offset3 = (z2 - z1) / dy3;
+
+    float offset1w = (w2 - w0) / dy1;
+    float offset2w = (w1 - w0) / dy2;
+    float offset3w = (w2 - w1) / dy3;
+
+    if (dy2 > 0) { x1 = x0; z1 = z0; }
+    else         { x1 = x1; z1 = z1; }
+
+    int cross = dx1 * dy2 - dy1 * dx2;
+
+    int* xl; int* xr; float* zl; float* zr; float* wl; float* wr;
+    if (cross < 0) { xl = &x0; xr = &x1; zl = &z0; zr = &z1; wl = &w0; wr = &w1; }
+    else           { xl = &x1; xr = &x0; zl = &z1; zr = &z0; wl = &w1; wr = &w0; }
+
+    for (int i = 0; i < dy2; i++)
+    {
+        while (err1 < 0) { err1 += dy1; x0 += dir1; }
+        while (err2 < 0) { err2 += dy2; x1 += dir2; }
+        BitmapSetLineZW(instance, y0, *xl, *xr, *zl, *zr, *wl, *wr, color);
+        y0++;
+        err1 -= dx1abs;
+        err2 -= dx2abs;
+        z0 += offset1;
+        z1 += offset2;
+        w0 += offset1w;
+        w1 += offset2w;
+    }
+    for (int i = 0; i < dy3; i++)
+    {
+        while (err1 < 0) { err1 += dy1; x0 += dir1; }
+        while (err3 < 0) { err3 += dy3; x1 += dir3; }
+        BitmapSetLineZW(instance, y0, *xl, *xr, *zl, *zr, *wl, *wr, color);
+        y0++;
+        err1 -= dx1abs;
+        err3 -= dx3abs;
+        z0 += offset1;
+        z1 += offset3;
+        w0 += offset1w;
+        w1 += offset3w;
+    }
+    BitmapSetLineZW(instance, y0, *xl, *xr, *zl, *zr, *wl, *wr, color);
+}
 void BitmapDrawTriangleScreenspace(Bitmap* instance, Vector3 v0, Vector3 v1, Vector3 v2, Color color)
 {
     // BitmapDrawTriangleScreenspaceV1(instance, v0, v1, v2, color);
@@ -639,17 +802,37 @@ void BitmapDrawTriangleNdc(Bitmap* instance, Vector3 v0, Vector3 v1, Vector3 v2,
 
     BitmapDrawTriangleScreenspace(instance, v0, v1, v2, color);
 }
+void BitmapDrawTriangleNdcW(Bitmap* instance, Vector4 v0, Vector4 v1, Vector4 v2, Color color)
+{
+    // vertex must be in this range
+    // -1 <= x <= 1
+    // -1 <= y <= 1
+    //  0 <= z <= inf
+
+    assert(-1 <= v0.x && v0.x <= 1);
+    assert(-1 <= v1.x && v1.x <= 1);
+    assert(-1 <= v2.x && v2.x <= 1);
+
+    assert(-1 <= v0.y && v0.y <= 1);
+    assert(-1 <= v1.y && v1.y <= 1);
+    assert(-1 <= v2.y && v2.y <= 1);
+
+    BitmapToScreenSpace(instance, &v0);
+    BitmapToScreenSpace(instance, &v1);
+    BitmapToScreenSpace(instance, &v2);
+
+    BitmapDrawTriangleScreenspaceV3(instance, v0, v1, v2, color);
+
+    // BitmapDrawTriangleScreenspace(instance, v0, v1, v2, color);
+}
 
 void BitmapDrawLineWire(Bitmap* instance, Vector3 p0, Vector3 p1, Color color)
 {
-    float near = instance->near;
     Matrix view = instance->view;
     Matrix proj = instance->proj;
 
     p0 = MatrixMultiply3L(p0, view);
     p1 = MatrixMultiply3L(p1, view);
-
-    if (ClipLineBack(&p0, &p1, near)) return;
 
     Vector4 _v0 = { p0.x, p0.y, p0.z, 1 };
     Vector4 _v1 = { p1.x, p1.y, p1.z, 1 };
@@ -657,7 +840,14 @@ void BitmapDrawLineWire(Bitmap* instance, Vector3 p0, Vector3 p1, Color color)
     _v0 = MatrixMultiply4L(_v0, proj);
     _v1 = MatrixMultiply4L(_v1, proj);
 
-    // TODO div by 0 should not happen here
+    if (ClipLineWClipSpace      (&_v0, &_v1)) return;
+    if (ClipLineBackClipSpace   (&_v0, &_v1)) return;
+    if (ClipLineFrontClipSpace  (&_v0, &_v1)) return;
+    if (ClipLineLeftClipSpace   (&_v0, &_v1)) return;
+    if (ClipLineRightClipSpace  (&_v0, &_v1)) return;
+    if (ClipLineDownClipSpace   (&_v0, &_v1)) return;
+    if (ClipLineUpClipSpace     (&_v0, &_v1)) return;
+
     _v0.x /= _v0.w;
     _v0.y /= _v0.w;
     _v0.z /= _v0.w;
@@ -665,16 +855,19 @@ void BitmapDrawLineWire(Bitmap* instance, Vector3 p0, Vector3 p1, Color color)
     _v1.y /= _v1.w;
     _v1.z /= _v1.w;
 
+    // removing clip errors
+    _v0.x = MathClampFloat(_v0.x, -1, +1);
+    _v0.y = MathClampFloat(_v0.y, -1, +1);
+    _v0.z = MathClampFloat(_v0.z, -1, +1);
+    _v1.x = MathClampFloat(_v1.x, -1, +1);
+    _v1.y = MathClampFloat(_v1.y, -1, +1);
+    _v1.z = MathClampFloat(_v1.z, -1, +1);
+
+    _v0.z += 1.0f;
+    _v1.z += 1.0f;
+
     p0 = { _v0.x, _v0.y, _v0.z };
     p1 = { _v1.x, _v1.y, _v1.z };
-
-    if (ClipLineLeft   (&p0, &p1, -1)) return;
-    if (ClipLineRight  (&p0, &p1, +1)) return;
-    if (ClipLineDown   (&p0, &p1, -1)) return;
-    if (ClipLineUp     (&p0, &p1, +1)) return;
-
-    p0.z += 0.5f;
-    p1.z += 0.5f;
 
     BitmapDrawLineNdc(instance, p0, p1, color);
 }
@@ -708,7 +901,6 @@ void BitmapDrawSphereWire(Bitmap* instance, Vector3 position, Vector3 rotation, 
 
 void BitmapDrawTriangle(Bitmap* instance, Vector3 p0, Vector3 p1, Vector3 p2, Color color)
 {
-    float near = instance->near;
     Matrix view = instance->view;
     Matrix proj = instance->proj;
 
@@ -718,38 +910,56 @@ void BitmapDrawTriangle(Bitmap* instance, Vector3 p0, Vector3 p1, Vector3 p2, Co
 
     int vertexCount = 3;
 
-    Vector3 v0[6];
-    Vector3 v1[6];
+    Vector4 v0[6];
+    Vector4 v1[6];
 
-    v0[0] = { p0.x, p0.y, p0.z };
-    v0[1] = { p1.x, p1.y, p1.z };
-    v0[2] = { p2.x, p2.y, p2.z };
+    v0[0] = { p0.x, p0.y, p0.z, 1 };
+    v0[1] = { p1.x, p1.y, p1.z, 1 };
+    v0[2] = { p2.x, p2.y, p2.z, 1 };
 
-    ClipPoligonBack   (v0, v1, &vertexCount, near); if (vertexCount < 3) return; swap(v0, v1);
+    v0[0] *= proj;
+    v0[1] *= proj;
+    v0[2] *= proj;
+
+    ClipPoligonWClipSpace      (v0, v1, &vertexCount); if (vertexCount < 3) return; swap(v0, v1);
+    ClipPoligonBackClipSpace   (v0, v1, &vertexCount); if (vertexCount < 3) return; swap(v0, v1);
+    ClipPoligonFrontClipSpace  (v0, v1, &vertexCount); if (vertexCount < 3) return; swap(v0, v1);
+    ClipPoligonLeftClipSpace   (v0, v1, &vertexCount); if (vertexCount < 3) return; swap(v0, v1);
+    ClipPoligonRightClipSpace  (v0, v1, &vertexCount); if (vertexCount < 3) return; swap(v0, v1);
+    ClipPoligonDownClipSpace   (v0, v1, &vertexCount); if (vertexCount < 3) return; swap(v0, v1);
+    ClipPoligonUpClipSpace     (v0, v1, &vertexCount); if (vertexCount < 3) return; swap(v0, v1);
 
     for (int i = 0; i < vertexCount; i++)
     {
-        Vector4 _v = { v0[i].x, v0[i].y, v0[i].z, 1 };
-        _v *= proj;
-        // TODO 0 div should not happen here
-        _v.x /= _v.w;
-        _v.y /= _v.w;
-        _v.z /= _v.w;
-        v0[i] = { _v.x, _v.y, _v.z };
+        v0[i].x /= v0[i].w;
+        v0[i].y /= v0[i].w;
+        v0[i].z /= v0[i].w;
     }
 
     // if (!Vector3TriangleIsClockwise(v0[0], v0[1], v0[2])) return;
 
-    ClipPoligonLeft   (v0, v1, &vertexCount, -1.0f); if (vertexCount < 3) return; swap(v0, v1);
-    ClipPoligonRight  (v0, v1, &vertexCount, +1.0f); if (vertexCount < 3) return; swap(v0, v1);
-    ClipPoligonDown   (v0, v1, &vertexCount, -1.0f); if (vertexCount < 3) return; swap(v0, v1);
-    ClipPoligonUp     (v0, v1, &vertexCount, +1.0f); if (vertexCount < 3) return; swap(v0, v1);
+    for (int i = 0; i < vertexCount; i++)
+    {
+        v0[i].x = MathClampFloat(v0[i].x, -1, +1);
+        v0[i].y = MathClampFloat(v0[i].y, -1, +1);
+        v0[i].z = MathClampFloat(v0[i].z, -1, +1);
+    }
 
     for (int i = 0; i < vertexCount; i++)
-        v0[i].z += 0.5f;
+        v0[i].z += 1.0f;
 
     for (int i = 1; i < vertexCount - 1; i++)
-        BitmapDrawTriangleNdc(instance, v0[0], v0[i], v0[i+1], color);
+    {
+        Vector4 _p0 = v0[0];
+        Vector4 _p1 = v0[i];
+        Vector4 _p2 = v0[i+1];
+
+        // Vector3 p0 = { _p0.x, _p0.y, _p0.z };
+        // Vector3 p1 = { _p1.x, _p1.y, _p1.z };
+        // Vector3 p2 = { _p2.x, _p2.y, _p2.z };
+
+        BitmapDrawTriangleNdcW(instance, _p0, _p1, _p2, color);
+    }
 }
 void BitmapDrawPoligon(Bitmap* instance, Vector3 p0, Vector3 p1, Vector3 p2, Vector3 p3, Color color)
 {
