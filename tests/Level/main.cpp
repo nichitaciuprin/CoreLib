@@ -6,8 +6,6 @@
 #include "BaseExt.h"
 #include "Print.h"
 
-vector<Vector3> points;
-
 void DrawCube(Bitmap* bitmap, Vector3 position, float time)
 {
     Vector3 rotation = { 0, time, 0 };
@@ -89,49 +87,53 @@ void Draw(Bitmap* bitmap, Camera camera)
     //     // BitmapSetPixel(bitmap, x, y, COLOR_RED);
     // }
 
-    points.clear();
+    vector<Vector3> points;
 
     for (int x = 0; x < bitmap->width; x++)
     for (int y = 0; y < bitmap->height; y++)
     {
         int i = x + y * bitmap->width;
-
         float z = bitmap->zbuffer[i];
 
         if (z == FLT_MAX) continue;
 
-        float w = bitmap->wbuffer[i];
-
-        Vector4 p = { (float)x, (float)y, z, w };
-
+        z -= 1.0f;
+        Vector3 p = { (float)x, (float)y, z };
         BitmapFromScreenSpace(bitmap, &p);
 
-        p.z -= 1.0f;
+        // if (p.x < -1) abort();
+        // if (p.x > +1) abort();
+        // if (p.y < -1) abort();
+        // if (p.y > +1) abort();
+        // if (p.z < -1) abort();
+        // if (p.z > +1) abort();
 
-        p.x *= p.w;
-        p.y *= p.w;
-        p.z *= p.w;
-
-        p *= proji;
+        p = NdcToWorld(p, proji);
         p *= viewi;
 
-        points.push_back({ p.x, p.y, p.z });
+        points.push_back(p);
 
-        // float dist = Vector3Distance(lightPosition, _p);
+        // Vector3 p1 = p0 + Vector3Up() / 10;
 
-        // float t = 1 - (dist / 10);
-
-        // bitmap->pixels[i] = ColorSetLightValueF(bitmap->pixels[i], t);
-
-        // BitmapSetPixel(bitmap, x, y, COLOR_RED);
+        // BitmapDrawLineWire(bitmap, p0, p1, COLOR_RED);
     }
+
+    static int draw = 0;
+
 
     for (size_t i = 0; i < points.size(); i++)
     {
         Vector3 p0 = points[i];
         Vector3 p1 = p0 + Vector3Up() / 10;
-        // Vector3 p1 = p0 + Vector3Up();
-        BitmapDrawLineWire(bitmap, p0, p1, COLOR_RED);
+        if (draw == 3)
+        {
+            draw = 0;
+            BitmapDrawLineWire(bitmap, p0, p1, COLOR_RED);
+        }
+        else
+        {
+            draw++;
+        }
     }
 
     // BitmapDrawLineWire(bitmap, _p, p2, COLOR_RED);
