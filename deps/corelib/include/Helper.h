@@ -1265,6 +1265,16 @@ inline Vector3 GetAxisZ(Camera* camera)
     return result;
 }
 
+Vector3 NdcToWorld(Vector3 p, Matrix projInverse)
+{
+    Vector4 _p = { p.x, p.y, p.z, 1 };
+    _p = MatrixMultiply4L(_p, projInverse);
+    _p.x /= _p.w;
+    _p.y /= _p.w;
+    _p.z /= _p.w;
+    return { _p.x, _p.y, _p.z };
+}
+
 inline bool InFrustum(Vector3 point)
 {
     if (point.z / MathAbs(point.x) < 1) return false;
@@ -1287,7 +1297,7 @@ inline void UpdateCameraRotation(Camera* camera, float deltaTime, bool left, boo
     while (camera->yaw <= -MY_PI_MUL_2) camera->yaw += MY_PI_MUL_2;
 
     // Clamp pitch to stop camera flipping upside down
-    float degree = MathToRadians(85);
+    float degree = MathToRadians(89.9f);
     if (camera->pitch >  degree) camera->pitch =  degree;
     if (camera->pitch < -degree) camera->pitch = -degree;
 }

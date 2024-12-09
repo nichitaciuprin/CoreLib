@@ -30,6 +30,10 @@ typedef struct Bitmap
 }
 Bitmap;
 
+Vector4 temp0;
+Vector4 temp1;
+Vector4 temp2;
+
 Bitmap BitmapCreate(int width, int height)
 {
     Bitmap instance;
@@ -166,6 +170,40 @@ void BitmapSetPixelZScaled(Bitmap* instance, int x, int y, float z, Color color,
     }
 }
 
+float GetArea(Vector3 v1, Vector3 v2, Vector3 v3)
+{
+    int r1 = (int)v1.x * ((int)v2.y - (int)v3.y);
+    int r2 = (int)v2.x * ((int)v3.y - (int)v1.y);
+    int r3 = (int)v3.x * ((int)v1.y - (int)v2.y);
+    return abs((r1 + r2 + r3) / 2.0f);
+}
+bool IsInside(Vector3 v1, Vector3 v2, Vector3 v3, Vector3 p)
+{
+    float A0 = GetArea(v1, v2, v3);
+    float A1 = GetArea( p, v2, v3);
+    float A2 = GetArea(v1,  p, v3);
+    float A3 = GetArea(v1, v2,  p);
+    return A0 == (A1 + A2 + A3);
+}
+float GetDepth(Vector3 p1, Vector3 p2, Vector3 p3, float x, float y)
+{
+    // Barycentric coordinates
+    float det = (p2.y - p3.y) * (p1.x - p3.x) + (p3.x - p2.x) * (p1.y - p3.y);
+    float l1 = ((p2.y - p3.y) * (x - p3.x) + (p3.x - p2.x) * (y - p3.y)) / det;
+    float l2 = ((p3.y - p1.y) * (x - p3.x) + (p1.x - p3.x) * (y - p3.y)) / det;
+    float l3 = 1.0f - l1 - l2;
+    return l1 * p1.z + l2 * p2.z + l3 * p3.z;
+}
+float GetDepthW(Vector4 p1, Vector4 p2, Vector4 p3, float x, float y)
+{
+    // Barycentric coordinates
+    float det = (p2.y - p3.y) * (p1.x - p3.x) + (p3.x - p2.x) * (p1.y - p3.y);
+    float l1 = ((p2.y - p3.y) * (x - p3.x) + (p3.x - p2.x) * (y - p3.y)) / det;
+    float l2 = ((p3.y - p1.y) * (x - p3.x) + (p1.x - p3.x) * (y - p3.y)) / det;
+    float l3 = 1.0f - l1 - l2;
+    return l1 * p1.w + l2 * p2.w + l3 * p3.w;
+}
+
 void BitmapSetLineZ(Bitmap* instance, int y, int xl, int xr, float zl, float zr, Color color)
 {
     int count = xr - xl;
@@ -193,6 +231,7 @@ void BitmapSetLineZW(Bitmap* instance, int y, int xl, int xr, float zl, float zr
         BitmapSetPixelZW(instance, x, y, zl, wl, color);
         zl += offset;
         wl += offset2;
+        // wl = GetDepthW(temp0, temp1, temp2, x, y);
     }
 }
 
@@ -291,31 +330,6 @@ void BitmapFromScreenSpace(Bitmap* instance, Vector4* v)
     v->x -= 1.0f;
     v->y -= 1.0f;
     v->y = -v->y;
-}
-
-float GetArea(Vector3 v1, Vector3 v2, Vector3 v3)
-{
-    int r1 = (int)v1.x * ((int)v2.y - (int)v3.y);
-    int r2 = (int)v2.x * ((int)v3.y - (int)v1.y);
-    int r3 = (int)v3.x * ((int)v1.y - (int)v2.y);
-    return abs((r1 + r2 + r3) / 2.0f);
-}
-bool IsInside(Vector3 v1, Vector3 v2, Vector3 v3, Vector3 p)
-{
-    float A0 = GetArea(v1, v2, v3);
-    float A1 = GetArea( p, v2, v3);
-    float A2 = GetArea(v1,  p, v3);
-    float A3 = GetArea(v1, v2,  p);
-    return A0 == (A1 + A2 + A3);
-}
-float GetDepth(Vector3 p1, Vector3 p2, Vector3 p3, float x, float y)
-{
-    // Barycentric coordinates
-    float det = (p2.y - p3.y) * (p1.x - p3.x) + (p3.x - p2.x) * (p1.y - p3.y);
-    float l1 = ((p2.y - p3.y) * (x - p3.x) + (p3.x - p2.x) * (y - p3.y)) / det;
-    float l2 = ((p3.y - p1.y) * (x - p3.x) + (p1.x - p3.x) * (y - p3.y)) / det;
-    float l3 = 1.0f - l1 - l2;
-    return l1 * p1.z + l2 * p2.z + l3 * p3.z;
 }
 
 void BitmapDrawLineScreenSpaceV1(Bitmap* instance, Vector3 v0, Vector3 v1, Color color)
@@ -684,6 +698,10 @@ void BitmapDrawTriangleScreenspaceV2(Bitmap* instance, Vector3 v0, Vector3 v1, V
 }
 void BitmapDrawTriangleScreenspaceV3(Bitmap* instance, Vector4 v0, Vector4 v1, Vector4 v2, Color color)
 {
+    temp0 = v0;
+    temp1 = v1;
+    temp2 = v2;
+
     // TODO not accurate, improve
 
     // v0 is top
