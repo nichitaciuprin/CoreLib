@@ -4,6 +4,9 @@
 #include "Bitmap.h"
 #include "BitmapResize.h"
 #include "BaseExt.h"
+#include "Print.h"
+
+vector<Vector3> points;
 
 void DrawCube(Bitmap* bitmap, Vector3 position, float time)
 {
@@ -11,7 +14,7 @@ void DrawCube(Bitmap* bitmap, Vector3 position, float time)
     Vector3 scale = { 1, 1, 1 };
 
     BitmapDrawCubeColored(bitmap, position, rotation, scale);
-    BitmapDrawCubeWire(bitmap, position, rotation, scale, COLOR_RED);
+    // BitmapDrawCubeWire(bitmap, position, rotation, scale, COLOR_RED);
 
     // Vector3 offset = Vector3Right() + Vector3Up();
 
@@ -33,25 +36,120 @@ void DrawPlane(Bitmap* bitmap, Vector3 position)
 }
 void Draw(Bitmap* bitmap, Camera camera)
 {
-    float time = GetTime();
+    // float time = GetTime();
 
     BitmapReset(bitmap);
     BitmapSetView(bitmap, &camera);
 
+    // Vector3 p0 = {  1, 3, 5 };
+    // Vector3 p1 = { -5, 3, 2 };
+    // Vector3 p2 = {  5, 5, 2 };
+    // bool isHit = RaycastTriangle(p0, p1, p2, camera.position, GetAxisZ(&camera));
+    // auto color = isHit ? COLOR_RED : COLOR_GREEN;
+    // BitmapDrawTriangle(bitmap, p0, p1, p2, color);
+
     DrawPlane(bitmap, { 0, 0, 0 });
-    DrawPlane(bitmap, { 0, 0, 100 });
-    DrawCube(bitmap, { 0, 0.5f, 0 }, (float)time / 3000);
-    DrawCube(bitmap, { 0, 0.5f, 100 }, (float)time / 600);
-    DrawCube(bitmap, { 0, 1.5f, 100 }, (float)time / 300);
+    // DrawCube(bitmap, { 0, 0.5f, 0 }, (float)time / 3000);
+
+    Matrix viewi = MatrixInvert(bitmap->view);
+    Matrix proji = MatrixInvert(bitmap->proj);
+
+    // Vector3 lightPosition = { 0, 10, 0 };
+
+    // lightPosition *= viewi;
+
+    // for (int x = 0; x < bitmap->width; x++)
+    // for (int y = 0; y < bitmap->height; y++)
+    // {
+    //     int i = x + y * bitmap->width;
+
+    //     float z = bitmap->zbuffer[i];
+
+    //     if (z == FLT_MAX) continue;
+
+    //     float w = bitmap->wbuffer[i];
+
+    //     Vector4 p = { (float)x, (float)y, z, w };
+
+    //     BitmapFromScreenSpace(bitmap, &p);
+
+    //     p.z *= p.w;
+    //     p *= proji;
+    //     p *= viewi;
+
+    //     Vector3 _p = { p.x, p.y, p.z };
+    //     Vector3 _p2 = _p + Vector3Up();
+
+    //     float dist = Vector3Distance(lightPosition, _p);
+
+    //     float t = 1 - (dist / 10);
+
+    //     // bitmap->pixels[i] = ColorSetLightValueF(bitmap->pixels[i], t);
+
+    //     // BitmapSetPixel(bitmap, x, y, COLOR_RED);
+    // }
+
+    points.clear();
+
+    for (int x = 0; x < bitmap->width; x++)
+    for (int y = 0; y < bitmap->height; y++)
+    {
+        int i = x + y * bitmap->width;
+
+        float z = bitmap->zbuffer[i];
+
+        if (z == FLT_MAX) continue;
+
+        float w = bitmap->wbuffer[i];
+
+        Vector4 p = { (float)x, (float)y, z, w };
+
+        BitmapFromScreenSpace(bitmap, &p);
+
+        p.z -= 1.0f;
+
+        p.x *= p.w;
+        p.y *= p.w;
+        p.z *= p.w;
+
+        p *= proji;
+        p *= viewi;
+
+        points.push_back({ p.x, p.y, p.z });
+
+        // float dist = Vector3Distance(lightPosition, _p);
+
+        // float t = 1 - (dist / 10);
+
+        // bitmap->pixels[i] = ColorSetLightValueF(bitmap->pixels[i], t);
+
+        // BitmapSetPixel(bitmap, x, y, COLOR_RED);
+    }
+
+    for (size_t i = 0; i < points.size(); i++)
+    {
+        Vector3 p0 = points[i];
+        Vector3 p1 = p0 + Vector3Up() / 10;
+        // Vector3 p1 = p0 + Vector3Up();
+        BitmapDrawLineWire(bitmap, p0, p1, COLOR_RED);
+    }
+
+    // BitmapDrawLineWire(bitmap, _p, p2, COLOR_RED);
+
+    // BitmapFillCross(bitmap, COLOR_WHITE);
+
+    // DrawPlane(bitmap, { 0, 0, 100 });
+    // DrawCube(bitmap, { 0, 0.5f, 100 }, (float)time / 600);
+    // DrawCube(bitmap, { 0, 1.5f, 100 }, (float)time / 300);
 
     // bridge
-    {
-        Vector3 p0 = { -1, 0,  2 };
-        Vector3 p1 = { -1, 0, 95 };
-        Vector3 p2 = {  1, 0, 95 };
-        Vector3 p3 = {  1, 0,  2 };
-        BitmapDrawPoligon(bitmap, p0, p1, p2, p3, COLOR_WHITE);
-    }
+    // {
+    //     Vector3 p0 = { -1, 0,  2 };
+    //     Vector3 p1 = { -1, 0, 95 };
+    //     Vector3 p2 = {  1, 0, 95 };
+    //     Vector3 p3 = {  1, 0,  2 };
+    //     BitmapDrawPoligon(bitmap, p0, p1, p2, p3, COLOR_WHITE);
+    // }
 
     // TODO fix this
     // bitmap->ApplyBlackWhiteColorDepth();
