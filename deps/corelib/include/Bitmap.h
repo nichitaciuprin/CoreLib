@@ -653,14 +653,11 @@ void BitmapDrawTriangleNdc(Bitmap* instance, Vector3 v0, Vector3 v1, Vector3 v2,
 
 void BitmapDrawLineWire(Bitmap* instance, Vector3 p0, Vector3 p1, Color color)
 {
-    float near = instance->near;
     Matrix view = instance->view;
     Matrix proj = instance->proj;
 
     p0 = MatrixMultiply3L(p0, view);
     p1 = MatrixMultiply3L(p1, view);
-
-    if (ClipLineBack(&p0, &p1, near)) return;
 
     Vector4 _v0 = { p0.x, p0.y, p0.z, 1 };
     Vector4 _v1 = { p1.x, p1.y, p1.z, 1 };
@@ -668,7 +665,14 @@ void BitmapDrawLineWire(Bitmap* instance, Vector3 p0, Vector3 p1, Color color)
     _v0 = MatrixMultiply4L(_v0, proj);
     _v1 = MatrixMultiply4L(_v1, proj);
 
-    // TODO div by 0 should not happen here
+    if (ClipLineWClipSpace      (&_v0, &_v1)) return;
+    if (ClipLineBackClipSpace   (&_v0, &_v1)) return;
+    if (ClipLineFrontClipSpace  (&_v0, &_v1)) return;
+    if (ClipLineLeftClipSpace   (&_v0, &_v1)) return;
+    if (ClipLineRightClipSpace  (&_v0, &_v1)) return;
+    if (ClipLineDownClipSpace   (&_v0, &_v1)) return;
+    if (ClipLineUpClipSpace     (&_v0, &_v1)) return;
+
     _v0.x /= _v0.w;
     _v0.y /= _v0.w;
     _v0.z /= _v0.w;
@@ -676,16 +680,19 @@ void BitmapDrawLineWire(Bitmap* instance, Vector3 p0, Vector3 p1, Color color)
     _v1.y /= _v1.w;
     _v1.z /= _v1.w;
 
+    // removing clip errors
+    _v0.x = MathClampFloat(_v0.x, -1, +1);
+    _v0.y = MathClampFloat(_v0.y, -1, +1);
+    _v0.z = MathClampFloat(_v0.z, -1, +1);
+    _v1.x = MathClampFloat(_v1.x, -1, +1);
+    _v1.y = MathClampFloat(_v1.y, -1, +1);
+    _v1.z = MathClampFloat(_v1.z, -1, +1);
+
+    _v0.z += 1.0f;
+    _v1.z += 1.0f;
+
     p0 = { _v0.x, _v0.y, _v0.z };
     p1 = { _v1.x, _v1.y, _v1.z };
-
-    if (ClipLineLeft   (&p0, &p1, -1)) return;
-    if (ClipLineRight  (&p0, &p1, +1)) return;
-    if (ClipLineDown   (&p0, &p1, -1)) return;
-    if (ClipLineUp     (&p0, &p1, +1)) return;
-
-    p0.z += 0.5f;
-    p1.z += 0.5f;
 
     BitmapDrawLineNdc(instance, p0, p1, color);
 }
