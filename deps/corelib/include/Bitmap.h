@@ -82,10 +82,12 @@ void BitmapResize(Bitmap* instance, int width, int height)
 
 void BitmapReset(Bitmap* instance)
 {
-    memset((void*)instance->pixels, 0, instance->zbufferSize * sizeof(uint32_t));
+    int pixelCount = instance->pixelsSize;
+
+    memset((void*)instance->pixels, 0, pixelCount * sizeof(uint32_t));
 
     // can we, somehow, do memset here?
-    for (int i = 0; i < instance->zbufferSize; i++)
+    for (int i = 0; i < pixelCount; i++)
         instance->zbuffer[i] = FLT_MAX;
 }
 void BitmapSetView(Bitmap* instance, Camera* camera)
