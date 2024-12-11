@@ -81,3 +81,20 @@ inline float ColorGetLightValueF(uint32_t color)
 
     return value;
 }
+inline uint32_t ColorSetLightValueF(uint32_t color, float t)
+{
+    // try me, see what happens
+    // uint8_t r = (color >> 8 * 2) * t;
+    // uint8_t g = (color >> 8 * 1) * t;
+    // uint8_t b = (color >> 8 * 0) * t;
+
+    uint8_t r = color >> (8 * 2);
+    uint8_t g = color >> (8 * 1);
+    uint8_t b = color >> (8 * 0);
+
+    r *= t;
+    g *= t;
+    b *= t;
+
+    return ColorCreate(0, r, g, b);
+}
