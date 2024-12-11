@@ -225,6 +225,16 @@ void BitmapToScreenSpace(Bitmap* instance, Vector3* v)
     v->x = instance->maxX * v->x;
     v->y = instance->maxY * v->y;
 }
+void BitmapFromScreenSpace(Bitmap* instance, Vector3* v)
+{
+    v->x /= instance->maxX;
+    v->y /= instance->maxY;
+    v->x *= 2.0f;
+    v->y *= 2.0f;
+    v->x -= 1.0f;
+    v->y -= 1.0f;
+    v->y = -v->y;
+}
 
 float GetArea(Vector3 v1, Vector3 v2, Vector3 v3)
 {
