@@ -1637,6 +1637,30 @@ bool RaycastTriangle(Vector3 v1, Vector3 v2, Vector3 v3, Vector3 origin, Vector3
     return true;
 }
 
+float GetArea(Vector3 v1, Vector3 v2, Vector3 v3)
+{
+    int r1 = (int)v1.x * ((int)v2.y - (int)v3.y);
+    int r2 = (int)v2.x * ((int)v3.y - (int)v1.y);
+    int r3 = (int)v3.x * ((int)v1.y - (int)v2.y);
+    return abs((r1 + r2 + r3) / 2.0f);
+}
+bool IsInside(Vector3 v1, Vector3 v2, Vector3 v3, Vector3 p)
+{
+    float A0 = GetArea(v1, v2, v3);
+    float A1 = GetArea( p, v2, v3);
+    float A2 = GetArea(v1,  p, v3);
+    float A3 = GetArea(v1, v2,  p);
+    return A0 == (A1 + A2 + A3);
+}
+float Barycentric(Vector3 p1, Vector3 p2, Vector3 p3, float x, float y)
+{
+    float det = (p2.y - p3.y) * (p1.x - p3.x) + (p3.x - p2.x) * (p1.y - p3.y);
+    float l1 = ((p2.y - p3.y) * (x - p3.x) + (p3.x - p2.x) * (y - p3.y)) / det;
+    float l2 = ((p3.y - p1.y) * (x - p3.x) + (p1.x - p3.x) * (y - p3.y)) / det;
+    float l3 = 1.0f - l1 - l2;
+    return l1 * p1.z + l2 * p2.z + l3 * p3.z;
+}
+
 inline Pose GetLocalPose(Pose parentWorld, Pose childWorld)
 {
     childWorld.rotation = Vector3Sub(childWorld.rotation, parentWorld.rotation);
