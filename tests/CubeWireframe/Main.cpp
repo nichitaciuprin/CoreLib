@@ -1,33 +1,43 @@
 #include "BaseExt.h"
 #include "SysHelper.h"
-#include "Helper.h"
+#include "HelperExt.h"
 #include "BitmapClass.h"
 #include "Window.h"
 
 int main()
 {
-    auto width = 400;
-    auto height = 400;
+    auto size = 512;
 
-    auto bitmap = make_unique<BitmapClass>(width, height);
-    auto window = make_unique<Window>(700, 100, width, height);
+    auto _bitmap = BitmapCreate(size, size);
+    auto bitmap = &_bitmap;
+    auto window = SysWindow_Create(700, 100, size, size);
 
-    while (window->Exists())
+    BitmapSetPerspective(bitmap, size, size, 0.1f, 1000.0f);
+
+    while (SysWindow_Exists(window))
     {
-        bitmap->Reset();
+        FixedTimeStart();
+
+        BitmapReset(bitmap);
 
         auto time = (float)clock() / 400;
-        Camera camera = { 0, 0, 0 };
-        auto view = MatrixView3(&camera);
-        Vector3 position = { 0, 0, 2 };
-        Vector3 rotation = { 0, time, 0 };
-        Vector3 scale = { 1, 1, 1 };
-        auto world = MatrixWorld2(position, rotation, scale);
-        bitmap->DrawCubeWireframe(world * view, COLOR_RED);
 
-        bitmap->FillBorder(COLOR_GREEN);
-        window->SetPixels(bitmap->pixels, bitmap->Width(), bitmap->Height());
-        window->Update();
+        Camera camera = { 0, 0, 0 };
+
+        BitmapReset(bitmap);
+        BitmapSetView(bitmap, &camera);
+
+        {
+            Vector3 position = { 0, 0, 2 };
+            Vector3 rotation = { 0, time, 0 };
+            Vector3 scale = { 1, 1, 1 };
+            BitmapDrawCubeWire(bitmap, position, rotation, scale, COLOR_RED);
+        }
+
+        SysWindow_SetPixels(window, bitmap->pixels, bitmap->width, bitmap->height);
+        SysWindow_Update(window);
+
+        FixedTimeEnd();
     }
 
     return 0;
