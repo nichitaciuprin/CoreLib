@@ -1308,7 +1308,9 @@ inline void UpdateCameraRotation(Camera* camera, float deltaTime, bool left, boo
     while (camera->yaw <= -MY_PI_MUL_2) camera->yaw += MY_PI_MUL_2;
 
     // Clamp pitch to stop camera flipping upside down
-    float degree = MathToRadians(85);
+    // maybe absolite, maybe set to 90
+    float degree = MathToRadians(89.9f);
+
     if (camera->pitch >  degree) camera->pitch =  degree;
     if (camera->pitch < -degree) camera->pitch = -degree;
 }
