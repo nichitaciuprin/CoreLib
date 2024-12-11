@@ -1265,6 +1265,17 @@ inline Vector3 GetAxisZ(Camera* camera)
     return result;
 }
 
+Vector3 WorldToNdc(Vector3 p, Matrix proj)
+{
+    Vector4 _p = { p.x, p.y, p.z, 1 };
+    _p = MatrixMultiply4L(_p, proj);
+    _p.x /= _p.w;
+    _p.y /= _p.w;
+    _p.z /= _p.w;
+    p = { _p.x, _p.y, _p.z };
+    return p;
+}
+
 inline bool InFrustum(Vector3 point)
 {
     if (point.z / MathAbs(point.x) < 1) return false;
