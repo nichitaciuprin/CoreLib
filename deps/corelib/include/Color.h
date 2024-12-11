@@ -67,3 +67,17 @@ inline uint8_t ColorGetLightValue(uint32_t color)
 
     return value;
 }
+inline float ColorGetLightValueF(uint32_t color)
+{
+    uint8_t r = color >> (8 * 2);
+    uint8_t g = color >> (8 * 1);
+    uint8_t b = color >> (8 * 0);
+
+    r /= 255.0f;
+    g /= 255.0f;
+    b /= 255.0f;
+
+    float value = (r + g + b) / 3;
+
+    return value;
+}
