@@ -251,9 +251,8 @@ bool IsInside(Vector3 v1, Vector3 v2, Vector3 v3, Vector3 p)
     float A3 = GetArea(v1, v2,  p);
     return A0 == (A1 + A2 + A3);
 }
-float GetDepth(Vector3 p1, Vector3 p2, Vector3 p3, float x, float y)
+float Barycentric(Vector3 p1, Vector3 p2, Vector3 p3, float x, float y)
 {
-    // Barycentric coordinates
     float det = (p2.y - p3.y) * (p1.x - p3.x) + (p3.x - p2.x) * (p1.y - p3.y);
     float l1 = ((p2.y - p3.y) * (x - p3.x) + (p3.x - p2.x) * (y - p3.y)) / det;
     float l2 = ((p3.y - p1.y) * (x - p3.x) + (p1.x - p3.x) * (y - p3.y)) / det;
@@ -539,7 +538,7 @@ void BitmapDrawTriangleScreenspaceV1(Bitmap* instance, Vector3 v0, Vector3 v1, V
     {
         Vector3 v = { (float)x, (float)y, 0 };
         if (!IsInside(v0, v1, v2, v)) continue;
-        float z = GetDepth(v0, v1, v2, x, y);
+        float z = Barycentric(v0, v1, v2, x, y);
         BitmapSetPixelZ(instance, x, y, z, color);
     }
 }
