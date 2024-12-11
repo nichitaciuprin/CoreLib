@@ -1,5 +1,9 @@
 #pragma once
 
+// https://www.youtube.com/results?search_query=shadow+volume
+// https://www.youtube.com/watch?v=QCIKgyL3ePo
+// https://www.youtube.com/watch?v=oO0LJWy5COg
+
 #include "float.h"
 #include "assert.h"
 #include "string.h"
@@ -726,7 +730,6 @@ void BitmapDrawSphereWire(Bitmap* instance, Vector3 position, Vector3 rotation, 
 
 void BitmapDrawTriangle(Bitmap* instance, Vector3 p0, Vector3 p1, Vector3 p2, Color color)
 {
-    float near = instance->near;
     Matrix view = instance->view;
     Matrix proj = instance->proj;
 
@@ -736,38 +739,56 @@ void BitmapDrawTriangle(Bitmap* instance, Vector3 p0, Vector3 p1, Vector3 p2, Co
 
     int vertexCount = 3;
 
-    Vector3 v0[6];
-    Vector3 v1[6];
+    Vector4 v0[6];
+    Vector4 v1[6];
 
-    v0[0] = { p0.x, p0.y, p0.z };
-    v0[1] = { p1.x, p1.y, p1.z };
-    v0[2] = { p2.x, p2.y, p2.z };
+    v0[0] = { p0.x, p0.y, p0.z, 1 };
+    v0[1] = { p1.x, p1.y, p1.z, 1 };
+    v0[2] = { p2.x, p2.y, p2.z, 1 };
 
-    ClipPoligonBack   (v0, v1, &vertexCount, near); if (vertexCount < 3) return; swap(v0, v1);
+    v0[0] *= proj;
+    v0[1] *= proj;
+    v0[2] *= proj;
+
+    ClipPoligonWClipSpace      (v0, v1, &vertexCount); if (vertexCount < 3) return; swap(v0, v1);
+    ClipPoligonBackClipSpace   (v0, v1, &vertexCount); if (vertexCount < 3) return; swap(v0, v1);
+    ClipPoligonFrontClipSpace  (v0, v1, &vertexCount); if (vertexCount < 3) return; swap(v0, v1);
+    ClipPoligonLeftClipSpace   (v0, v1, &vertexCount); if (vertexCount < 3) return; swap(v0, v1);
+    ClipPoligonRightClipSpace  (v0, v1, &vertexCount); if (vertexCount < 3) return; swap(v0, v1);
+    ClipPoligonDownClipSpace   (v0, v1, &vertexCount); if (vertexCount < 3) return; swap(v0, v1);
+    ClipPoligonUpClipSpace     (v0, v1, &vertexCount); if (vertexCount < 3) return; swap(v0, v1);
 
     for (int i = 0; i < vertexCount; i++)
     {
-        Vector4 _v = { v0[i].x, v0[i].y, v0[i].z, 1 };
-        _v *= proj;
-        // TODO 0 div should not happen here
-        _v.x /= _v.w;
-        _v.y /= _v.w;
-        _v.z /= _v.w;
-        v0[i] = { _v.x, _v.y, _v.z };
+        v0[i].x /= v0[i].w;
+        v0[i].y /= v0[i].w;
+        v0[i].z /= v0[i].w;
     }
 
     // if (!Vector3TriangleIsClockwise(v0[0], v0[1], v0[2])) return;
 
-    ClipPoligonLeft   (v0, v1, &vertexCount, -1.0f); if (vertexCount < 3) return; swap(v0, v1);
-    ClipPoligonRight  (v0, v1, &vertexCount, +1.0f); if (vertexCount < 3) return; swap(v0, v1);
-    ClipPoligonDown   (v0, v1, &vertexCount, -1.0f); if (vertexCount < 3) return; swap(v0, v1);
-    ClipPoligonUp     (v0, v1, &vertexCount, +1.0f); if (vertexCount < 3) return; swap(v0, v1);
+    for (int i = 0; i < vertexCount; i++)
+    {
+        v0[i].x = MathClampFloat(v0[i].x, -1, +1);
+        v0[i].y = MathClampFloat(v0[i].y, -1, +1);
+        v0[i].z = MathClampFloat(v0[i].z, -1, +1);
+    }
 
     for (int i = 0; i < vertexCount; i++)
-        v0[i].z += 0.5f;
+        v0[i].z += 1.0f;
 
     for (int i = 1; i < vertexCount - 1; i++)
-        BitmapDrawTriangleNdc(instance, v0[0], v0[i], v0[i+1], color);
+    {
+        Vector4 _p0 = v0[0];
+        Vector4 _p1 = v0[i];
+        Vector4 _p2 = v0[i+1];
+
+        p0 = { _p0.x, _p0.y, _p0.z };
+        p1 = { _p1.x, _p1.y, _p1.z };
+        p2 = { _p2.x, _p2.y, _p2.z };
+
+        BitmapDrawTriangleNdc(instance, p0, p1, p2, color);
+    }
 }
 void BitmapDrawPoligon(Bitmap* instance, Vector3 p0, Vector3 p1, Vector3 p2, Vector3 p3, Color color)
 {
