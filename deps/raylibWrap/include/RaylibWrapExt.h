@@ -336,8 +336,9 @@ Vector2 GetWasdInput()
     if (Ray_IsKeyDown(RAY_KEY_A)) x--;
     if (Ray_IsKeyDown(RAY_KEY_S)) y--;
     if (Ray_IsKeyDown(RAY_KEY_D)) x++;
-    Vector2 result = Vector2Normalize({ (float)x, (float)y });
-    return (Vector2){ result.x, result.y };
+    Vector2 result = { (float)x, (float)y };
+    result = Vector2Normalize(result);
+    return result;
 }
 Vector2 GetArrowInput()
 {
@@ -347,8 +348,9 @@ Vector2 GetArrowInput()
     if (Ray_IsKeyDown(RAY_KEY_LEFT))  x--;
     if (Ray_IsKeyDown(RAY_KEY_DOWN))  y--;
     if (Ray_IsKeyDown(RAY_KEY_RIGHT)) x++;
-    Vector2 result = Vector2Normalize({ (float)x, (float)y });
-    return (Vector2){ result.x, result.y };
+    Vector2 result = { (float)x, (float)y };
+    result = Vector2Normalize(result);
+    return result;
 }
 Vector2 GetMouseInput()
 {
