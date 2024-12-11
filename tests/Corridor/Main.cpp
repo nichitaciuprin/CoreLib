@@ -4,44 +4,40 @@
 #include "BitmapClass.h"
 #include "Window.h"
 
-void main2()
+int main()
 {
-    auto width = 400;
-    auto height = 400;
+    auto size = 512;
 
-    auto bitmap = make_unique<BitmapClass>(width, height);
-    auto window = make_unique<Window>(700, 100, width, height);
+    auto _bitmap = BitmapCreate(size, size);
+    auto bitmap = &_bitmap;
+    auto window = SysWindow_Create(700, 100, size, size);
 
-    while (window->Exists())
+    BitmapSetPerspective(bitmap, size, size, 0.1f, 1000.0f);
+
+    while (SysWindow_Exists(window))
     {
-        bitmap->Reset();
+        FixedTimeStart();
+
+        BitmapReset(bitmap);
 
         auto time = (float)clock() / 1000;
+
         Camera camera = { Vector3Zero(), time, 0 };
-        auto view = MatrixView3(&camera);
+
+        BitmapReset(bitmap);
+        BitmapSetView(bitmap, &camera);
+
         {
             Vector3 position = { 0, 0, 0 };
             Vector3 rotation = { 0, 0, 0 };
             Vector3 scale = { 1, 1, 4 };
-            auto world = MatrixWorld2(position, rotation, scale);
-            bitmap->DrawCubeWireframe(world * view, COLOR_RED);
+            BitmapDrawCubeWire(bitmap, position, rotation, scale, COLOR_RED);
         }
 
-        bitmap->FillBorder(COLOR_GREEN);
-        window->SetPixels(bitmap->pixels, bitmap->Width(), bitmap->Height());
-        window->Update();
-    }
-}
+        SysWindow_SetPixels(window, bitmap->pixels, bitmap->width, bitmap->height);
+        SysWindow_Update(window);
 
-int main()
-{
-    try
-    {
-        main2();
-    }
-    catch (const exception& e)
-    {
-        cerr << e.what() << endl;
+        FixedTimeEnd();
     }
 
     return 0;

@@ -26,7 +26,7 @@ int main()
             p0 = { 250,  50 };
             p1 = { 200, 100 };
             p2 = { 300, 150 };
-            bitmap->DrawTriangleScreenspace(p0, p1, p2, COLOR_COLOR_RED);
+            bitmap->DrawTriangleScreenspace(p0, p1, p2, COLOR_RED);
 
             p0 = { 150,  50 };
             p1 = { 200, 100 };

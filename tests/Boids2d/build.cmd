@@ -2,6 +2,7 @@
 setlocal
 
 set deps=%~dp0..\..\deps
+set build=%~dp0build
 set main=%~dp0main.cpp
 
 set flags=
@@ -16,7 +17,7 @@ set lib=
 set lib=%lib% -L%deps%\raylib\lib -lraylib
 set lib=%lib% -lglmf32 -lgdi32 -lwinmm
 
-if exist build rmdir /S /Q build
-   mkdir build
+if exist %build% rmdir /S /Q %build%
+   mkdir %build%
 
-g++ %main%.cpp %src% -o build/main.exe %include% %lib% %flags%
+g++ %main% %src% -o build/main.exe %include% %lib% %flags%
