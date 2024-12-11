@@ -12,13 +12,6 @@ void DrawCube(Bitmap* bitmap, Vector3 position, float time)
 
     BitmapDrawCubeColored(bitmap, position, rotation, scale);
     BitmapDrawCubeWire(bitmap, position, rotation, scale, COLOR_RED);
-
-    // Vector3 offset = Vector3Right() + Vector3Up();
-
-    // offset /= 2;
-
-    // auto mvp2 = MatrixWorld2(position + offset, rotation, scale);
-    // BitmapDrawCubeWireframe(bitmap, mvp2, COLOR_GREEN);
 }
 void DrawPlane(Bitmap* bitmap, Vector3 position)
 {
@@ -38,9 +31,14 @@ void Draw(Bitmap* bitmap, Camera camera)
     BitmapReset(bitmap);
     BitmapSetView(bitmap, &camera);
 
+    // Vector3 lightPosition = { 0, 10, 0 };
+    // Vector3 lightPosition = { 0, 10, MathPingPong(GetTime()/50, 120) - 10 };
+    Vector3 lightPosition = camera.position;
+
     DrawPlane(bitmap, { 0, 0, 0 });
-    DrawPlane(bitmap, { 0, 0, 100 });
     DrawCube(bitmap, { 0, 0.5f, 0 }, (float)time / 3000);
+
+    DrawPlane(bitmap, { 0, 0, 100 });
     DrawCube(bitmap, { 0, 0.5f, 100 }, (float)time / 600);
     DrawCube(bitmap, { 0, 1.5f, 100 }, (float)time / 300);
 
@@ -53,8 +51,7 @@ void Draw(Bitmap* bitmap, Camera camera)
         BitmapDrawPoligon(bitmap, p0, p1, p2, p3, COLOR_WHITE);
     }
 
-    // TODO fix this
-    // bitmap->ApplyBlackWhiteColorDepth();
+    BitmapApplyLight(bitmap, lightPosition);
 }
 
 int main()
@@ -87,7 +84,7 @@ int main()
         auto q = SysWindow_KeyDown_Q(window);
 
         UpdateCameraRotation(&camera, 0.0230f, left, up, down, right);
-        UpdateCameraPosition(&camera, 0.0080f, w, a, s, d, e, q);
+        UpdateCameraPosition(&camera, 0.0020f, w, a, s, d, e, q);
 
         Draw(&bitmap, camera);
 
