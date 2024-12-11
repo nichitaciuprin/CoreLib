@@ -1275,6 +1275,16 @@ Vector3 WorldToNdc(Vector3 p, Matrix proj)
     p = { _p.x, _p.y, _p.z };
     return p;
 }
+Vector3 NdcToWorld(Vector3 p, Matrix projInv)
+{
+    Vector4 _p = { p.x, p.y, p.z, 1 };
+    _p = MatrixMultiply4L(_p, projInv);
+    _p.x /= _p.w;
+    _p.y /= _p.w;
+    _p.z /= _p.w;
+    p = { _p.x, _p.y, _p.z };
+    return p;
+}
 
 inline bool InFrustum(Vector3 point)
 {
