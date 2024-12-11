@@ -616,19 +616,19 @@ inline Vector3 Vector3Forward()
 inline Vector2 Vector2Normalize(Vector2 v)
 {
     float length = Vector2Length(v);
-    if (length < 0) return Vector2Zero();
+    if (length == 0) return v;
     return Vector2Div(v, length);
 }
 inline Vector3 Vector3Normalize(Vector3 v)
 {
     float length = Vector3Length(v);
-    if (length < 0) return Vector3Zero();
+    if (length == 0) return v;
     return Vector3Div(v, length);
 }
 inline Vector4 Vector4Normalize(Vector4 v)
 {
     float length = Vector4Length(v);
-    if (length < 0) return Vector4Zero();
+    if (length == 0) return v;
     return Vector4Div(v, length);
 }
 
