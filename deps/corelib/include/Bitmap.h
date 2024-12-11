@@ -239,6 +239,38 @@ void BitmapFromScreenSpace(Bitmap* instance, Vector3* v)
     v->y -= 1.0f;
     v->y = -v->y;
 }
+void BitmapApplyLight(Bitmap* instance, Vector3 lightPosition)
+{
+    int width = instance->width;
+    int height = instance->height;
+
+    Matrix view = instance->view;
+    Matrix proj = instance->proj;
+
+    Matrix viewi = MatrixInvert(view);
+    Matrix proji = MatrixInvert(proj);
+
+    for (int x = 0; x < width; x++)
+    for (int y = 0; y < height; y++)
+    {
+        int i = x + y * width;
+        float z = instance->zbuffer[i];
+
+        if (z == FLT_MAX) continue;
+
+        z -= 1.0f;
+        Vector3 p = { (float)x, (float)y, z };
+        BitmapFromScreenSpace(instance, &p);
+
+        p = NdcToWorld(p, proji);
+        p *= viewi;
+
+        float dist = Vector3Distance(lightPosition, p) / 13;
+        float t = 1 - MathClampFloat(dist, 0, 1);
+
+        instance->pixels[i] = ColorSetLightValueF(instance->pixels[i], t);
+    }
+}
 
 float GetArea(Vector3 v1, Vector3 v2, Vector3 v3)
 {
