@@ -1265,7 +1265,7 @@ inline Vector3 GetAxisZ(Camera* camera)
     return result;
 }
 
-Vector3 WorldToNdc(Vector3 p, Matrix proj)
+inline Vector3 WorldToNdc(Vector3 p, Matrix proj)
 {
     Vector4 _p = { p.x, p.y, p.z, 1 };
     _p = MatrixMultiply4L(_p, proj);
@@ -1275,7 +1275,7 @@ Vector3 WorldToNdc(Vector3 p, Matrix proj)
     p = { _p.x, _p.y, _p.z };
     return p;
 }
-Vector3 NdcToWorld(Vector3 p, Matrix projInv)
+inline Vector3 NdcToWorld(Vector3 p, Matrix projInv)
 {
     Vector4 _p = { p.x, p.y, p.z, 1 };
     _p = MatrixMultiply4L(_p, projInv);
@@ -1606,7 +1606,7 @@ inline bool LineSegmentIntersection(Vector3 start, Vector3 end, Sphere sphere)
     return true;
 }
 
-bool RaycastTriangle(Vector3 v1, Vector3 v2, Vector3 v3, Vector3 origin, Vector3 dirNorm)
+inline bool RaycastTriangle(Vector3 v1, Vector3 v2, Vector3 v3, Vector3 origin, Vector3 dirNorm)
 {
     Vector3 d1 = Vector3Sub(v2, v1);
     Vector3 d2 = Vector3Sub(v3, v1);
@@ -1639,14 +1639,14 @@ bool RaycastTriangle(Vector3 v1, Vector3 v2, Vector3 v3, Vector3 origin, Vector3
     return true;
 }
 
-float GetArea(Vector3 v1, Vector3 v2, Vector3 v3)
+inline float GetArea(Vector3 v1, Vector3 v2, Vector3 v3)
 {
     int r1 = (int)v1.x * ((int)v2.y - (int)v3.y);
     int r2 = (int)v2.x * ((int)v3.y - (int)v1.y);
     int r3 = (int)v3.x * ((int)v1.y - (int)v2.y);
     return abs((r1 + r2 + r3) / 2.0f);
 }
-bool IsInside(Vector3 v1, Vector3 v2, Vector3 v3, Vector3 p)
+inline bool IsInside(Vector3 v1, Vector3 v2, Vector3 v3, Vector3 p)
 {
     float A0 = GetArea(v1, v2, v3);
     float A1 = GetArea( p, v2, v3);
@@ -1654,7 +1654,7 @@ bool IsInside(Vector3 v1, Vector3 v2, Vector3 v3, Vector3 p)
     float A3 = GetArea(v1, v2,  p);
     return A0 == (A1 + A2 + A3);
 }
-float Barycentric(Vector3 p1, Vector3 p2, Vector3 p3, float x, float y)
+inline float Barycentric(Vector3 p1, Vector3 p2, Vector3 p3, float x, float y)
 {
     float det = (p2.y - p3.y) * (p1.x - p3.x) + (p3.x - p2.x) * (p1.y - p3.y);
     float l1 = ((p2.y - p3.y) * (x - p3.x) + (p3.x - p2.x) * (y - p3.y)) / det;
