@@ -4,6 +4,8 @@
 // https://www.youtube.com/watch?v=QCIKgyL3ePo
 // https://www.youtube.com/watch?v=oO0LJWy5COg
 
+#include "stdlib.h"
+#include "stdint.h"
 #include "float.h"
 #include "assert.h"
 #include "string.h"
@@ -263,7 +265,7 @@ void BitmapApplyLight(Bitmap* instance, Vector3 lightPosition)
         BitmapFromScreenSpace(instance, &p);
 
         p = NdcToWorld(p, proji);
-        p *= viewi;
+        p = MatrixMultiply3L(p, viewi);
 
         float dist = Vector3Distance(lightPosition, p) / 13;
         float t = 1 - MathClampFloat(dist, 0, 1);
@@ -444,9 +446,9 @@ void BitmapDrawTriangleWireframeScreenspaceV1(Bitmap* instance, Vector3 v0, Vect
     // v1 is middle
     // v2 is bottom
 
-    if (v0.y > v1.y) swap(v0, v1);
-    if (v1.y > v2.y) swap(v1, v2);
-    if (v0.y > v1.y) swap(v0, v1);
+    if (v0.y > v1.y) SwapVector3(&v0, &v1);
+    if (v1.y > v2.y) SwapVector3(&v1, &v2);
+    if (v0.y > v1.y) SwapVector3(&v0, &v1);
 
     BitmapDrawLineScreenSpaceV3(instance, v0, v1, color);
     BitmapDrawLineScreenSpaceV3(instance, v0, v2, color);
@@ -471,9 +473,9 @@ void BitmapDrawTriangleWireframeScreenspaceV2(Bitmap* instance, Vector3 v0, Vect
     // v1 is middle
     // v2 is bottom
 
-    if (v0.y > v1.y) swap(v0, v1);
-    if (v1.y > v2.y) swap(v1, v2);
-    if (v0.y > v1.y) swap(v0, v1);
+    if (v0.y > v1.y) SwapVector3(&v0, &v1);
+    if (v1.y > v2.y) SwapVector3(&v1, &v2);
+    if (v0.y > v1.y) SwapVector3(&v0, &v1);
 
     int x0 = (int)v0.x;
     int y0 = (int)v0.y;
@@ -522,7 +524,7 @@ void BitmapDrawTriangleWireframeScreenspaceV2(Bitmap* instance, Vector3 v0, Vect
         BitmapDrawLineStep(&_x0, &_y0, &_x1, &_y1, &_err, _dx, _dy, _sx, _sy, &_x);
         // BitmapSetPixel(instance,  x,  y, color);
         // BitmapSetPixel(instance, _x, _y, color);
-        if (x > _x) swap(x, _x);
+        if (x > _x) SwapInt(&x, &_x);
         BitmapSetLineZ(instance, y, x, _x, 0, 0, color);
         y++;
     }
@@ -532,7 +534,7 @@ void BitmapDrawTriangleWireframeScreenspaceV2(Bitmap* instance, Vector3 v0, Vect
         BitmapDrawLineStep(&__x0, &__y0, &__x1, &__y1, &__err, __dx, __dy, __sx, __sy, &__x);
         // BitmapSetPixel(instance,  x,  y, color);
         // BitmapSetPixel(instance, __x, __y, color);
-        if (x > __x) swap(x, __x);
+        if (x > __x) SwapInt(&x, &_x);
         BitmapSetLineZ(instance, y, x, __x, 0, 0, color);
         y++;
     }
@@ -562,9 +564,9 @@ void BitmapDrawTriangleScreenspaceV2(Bitmap* instance, Vector3 v0, Vector3 v1, V
     // v1 is middle
     // v2 is bottom
 
-    if (v0.y > v1.y) swap(v0, v1);
-    if (v1.y > v2.y) swap(v1, v2);
-    if (v0.y > v1.y) swap(v0, v1);
+    if (v0.y > v1.y) SwapVector3(&v0, &v1);
+    if (v1.y > v2.y) SwapVector3(&v1, &v2);
+    if (v0.y > v1.y) SwapVector3(&v0, &v1);
 
     int x0 = (int)v0.x;
     int x1 = (int)v1.x;
@@ -703,8 +705,12 @@ void BitmapDrawLineWire(Bitmap* instance, Vector3 p0, Vector3 p1, Color color)
     _v0.z += 1.0f;
     _v1.z += 1.0f;
 
-    p0 = { _v0.x, _v0.y, _v0.z };
-    p1 = { _v1.x, _v1.y, _v1.z };
+    p0.x = _v0.x;
+    p0.y = _v0.y;
+    p0.z = _v0.z;
+    p1.x = _v1.x;
+    p1.y = _v1.y;
+    p1.z = _v1.z;
 
     BitmapDrawLineNdc(instance, p0, p1, color);
 }
@@ -726,8 +732,8 @@ void BitmapDrawCubeWire(Bitmap* instance, Vector3 position, Vector3 rotation, Ve
         int i1 = ModelCubeIndecesLine[i][1];
         Vector3 v0 = ModelCubeVerteces[i0];
         Vector3 v1 = ModelCubeVerteces[i1];
-        v0 *= model;
-        v1 *= model;
+        v0 = MatrixMultiply3L(v0, model);
+        v1 = MatrixMultiply3L(v1, model);
         BitmapDrawLineWire(instance, v0, v1, color);
     }
 }
@@ -750,50 +756,50 @@ void BitmapDrawTriangle(Bitmap* instance, Vector3 p0, Vector3 p1, Vector3 p2, Co
     Vector4 v0[6];
     Vector4 v1[6];
 
-    v0[0] = { p0.x, p0.y, p0.z, 1 };
-    v0[1] = { p1.x, p1.y, p1.z, 1 };
-    v0[2] = { p2.x, p2.y, p2.z, 1 };
+    v0[0] = (Vector4){ p0.x, p0.y, p0.z, 1 };
+    v0[1] = (Vector4){ p1.x, p1.y, p1.z, 1 };
+    v0[2] = (Vector4){ p2.x, p2.y, p2.z, 1 };
 
-    v0[0] *= proj;
-    v0[1] *= proj;
-    v0[2] *= proj;
+    v0[0] = MatrixMultiply4L(v0[0], proj);
+    v0[1] = MatrixMultiply4L(v0[1], proj);
+    v0[2] = MatrixMultiply4L(v0[2], proj);
 
-    ClipPoligonWClipSpace      (v0, v1, &vertexCount); if (vertexCount < 3) return; swap(v0, v1);
-    ClipPoligonBackClipSpace   (v0, v1, &vertexCount); if (vertexCount < 3) return; swap(v0, v1);
-    ClipPoligonFrontClipSpace  (v0, v1, &vertexCount); if (vertexCount < 3) return; swap(v0, v1);
-    ClipPoligonLeftClipSpace   (v0, v1, &vertexCount); if (vertexCount < 3) return; swap(v0, v1);
-    ClipPoligonRightClipSpace  (v0, v1, &vertexCount); if (vertexCount < 3) return; swap(v0, v1);
-    ClipPoligonDownClipSpace   (v0, v1, &vertexCount); if (vertexCount < 3) return; swap(v0, v1);
-    ClipPoligonUpClipSpace     (v0, v1, &vertexCount); if (vertexCount < 3) return; swap(v0, v1);
-
-    for (int i = 0; i < vertexCount; i++)
-    {
-        v0[i].x /= v0[i].w;
-        v0[i].y /= v0[i].w;
-        v0[i].z /= v0[i].w;
-    }
-
-    // if (!Vector3TriangleIsClockwise(v0[0], v0[1], v0[2])) return;
+    ClipPoligonWClipSpace      (v0, v1, &vertexCount); if (vertexCount < 3) return;
+    ClipPoligonBackClipSpace   (v1, v0, &vertexCount); if (vertexCount < 3) return;
+    ClipPoligonFrontClipSpace  (v0, v1, &vertexCount); if (vertexCount < 3) return;
+    ClipPoligonLeftClipSpace   (v1, v0, &vertexCount); if (vertexCount < 3) return;
+    ClipPoligonRightClipSpace  (v0, v1, &vertexCount); if (vertexCount < 3) return;
+    ClipPoligonDownClipSpace   (v1, v0, &vertexCount); if (vertexCount < 3) return;
+    ClipPoligonUpClipSpace     (v0, v1, &vertexCount); if (vertexCount < 3) return;
 
     for (int i = 0; i < vertexCount; i++)
     {
-        v0[i].x = MathClampFloat(v0[i].x, -1, +1);
-        v0[i].y = MathClampFloat(v0[i].y, -1, +1);
-        v0[i].z = MathClampFloat(v0[i].z, -1, +1);
+        v1[i].x /= v1[i].w;
+        v1[i].y /= v1[i].w;
+        v1[i].z /= v1[i].w;
+    }
+
+    // if (!Vector3TriangleIsClockwise(v1[0], v1[1], v1[2])) return;
+
+    for (int i = 0; i < vertexCount; i++)
+    {
+        v1[i].x = MathClampFloat(v1[i].x, -1, +1);
+        v1[i].y = MathClampFloat(v1[i].y, -1, +1);
+        v1[i].z = MathClampFloat(v1[i].z, -1, +1);
     }
 
     for (int i = 0; i < vertexCount; i++)
-        v0[i].z += 1.0f;
+        v1[i].z += 1.0f;
 
     for (int i = 1; i < vertexCount - 1; i++)
     {
-        Vector4 _p0 = v0[0];
-        Vector4 _p1 = v0[i];
-        Vector4 _p2 = v0[i+1];
+        Vector4 _p0 = v1[0];
+        Vector4 _p1 = v1[i];
+        Vector4 _p2 = v1[i+1];
 
-        p0 = { _p0.x, _p0.y, _p0.z };
-        p1 = { _p1.x, _p1.y, _p1.z };
-        p2 = { _p2.x, _p2.y, _p2.z };
+        p0 = (Vector3){ _p0.x, _p0.y, _p0.z };
+        p1 = (Vector3){ _p1.x, _p1.y, _p1.z };
+        p2 = (Vector3){ _p2.x, _p2.y, _p2.z };
 
         BitmapDrawTriangleNdc(instance, p0, p1, p2, color);
     }
@@ -817,10 +823,10 @@ void BitmapDrawCube(Bitmap* instance, Vector3 position, Vector3 rotation, Vector
         Vector3 p1 = ModelCubeVerteces[i1];                   \
         Vector3 p2 = ModelCubeVerteces[i2];                   \
         Vector3 p3 = ModelCubeVerteces[i3];                   \
-        p0 *= model;                                          \
-        p1 *= model;                                          \
-        p2 *= model;                                          \
-        p3 *= model;                                          \
+        p0 = MatrixMultiply3L(p0, model);                     \
+        p1 = MatrixMultiply3L(p1, model);                     \
+        p2 = MatrixMultiply3L(p2, model);                     \
+        p3 = MatrixMultiply3L(p3, model);                     \
         BitmapDrawPoligon(instance, p0, p1, p2, p3, COLOR);   \
     }                                                         \
 
@@ -852,10 +858,10 @@ void BitmapDrawCubeColored(Bitmap* instance, Vector3 position, Vector3 rotation,
         Vector3 p1 = ModelCubeVerteces[i1];                  \
         Vector3 p2 = ModelCubeVerteces[i2];                  \
         Vector3 p3 = ModelCubeVerteces[i3];                  \
-        p0 *= model;                                         \
-        p1 *= model;                                         \
-        p2 *= model;                                         \
-        p3 *= model;                                         \
+        p0 = MatrixMultiply3L(p0, model);                    \
+        p1 = MatrixMultiply3L(p1, model);                    \
+        p2 = MatrixMultiply3L(p2, model);                    \
+        p3 = MatrixMultiply3L(p3, model);                    \
         BitmapDrawPoligon(instance, p0, p1, p2, p3, COLOR);  \
     }                                                        \
 
