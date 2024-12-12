@@ -89,6 +89,19 @@ typedef struct Pose
 }
 Pose;
 
+static inline void SwapInt(int* l, int* r)
+{
+    int temp = *l;
+    *l = *r;
+    *r = temp;
+}
+static inline void SwapVector3(Vector3* l, Vector3* r)
+{
+    Vector3 temp = *l;
+    *l = *r;
+    *r = temp;
+}
+
 static inline int MathSignInt(int value)
 {
     if (value > 0) { return  1; }
