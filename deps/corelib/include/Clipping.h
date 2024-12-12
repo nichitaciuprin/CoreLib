@@ -1,7 +1,6 @@
 #pragma once
 
-#include "BaseExt.h"
-#include "HelperExt.h"
+#include "Helper.h"
 
 // https://fabiensanglard.net/polygon_codec/
 // https://fabiensanglard.net/polygon_codec/clippingdocument/p245-blinn.pdf
@@ -15,7 +14,7 @@
 // -1 <= y <= +1
 // -1 <= z <= +1
 
-inline bool ClipLineBack(Vector3* v0, Vector3* v1, float offset)
+static inline bool ClipLineBack(Vector3* v0, Vector3* v1, float offset)
 {
     int flags = 0;
 
@@ -54,7 +53,7 @@ inline bool ClipLineBack(Vector3* v0, Vector3* v1, float offset)
         }
     }
 }
-inline bool ClipLineFront(Vector3* v0, Vector3* v1, float offset)
+static inline bool ClipLineFront(Vector3* v0, Vector3* v1, float offset)
 {
     int flags = 0;
 
@@ -93,7 +92,7 @@ inline bool ClipLineFront(Vector3* v0, Vector3* v1, float offset)
         }
     }
 }
-inline bool ClipLineLeft(Vector3* v0, Vector3* v1, float offset)
+static inline bool ClipLineLeft(Vector3* v0, Vector3* v1, float offset)
 {
     int flags = 0;
 
@@ -132,7 +131,7 @@ inline bool ClipLineLeft(Vector3* v0, Vector3* v1, float offset)
         }
     }
 }
-inline bool ClipLineRight(Vector3* v0, Vector3* v1, float offset)
+static inline bool ClipLineRight(Vector3* v0, Vector3* v1, float offset)
 {
     int flags = 0;
 
@@ -171,7 +170,7 @@ inline bool ClipLineRight(Vector3* v0, Vector3* v1, float offset)
         }
     }
 }
-inline bool ClipLineDown(Vector3* v0, Vector3* v1, float offset)
+static inline bool ClipLineDown(Vector3* v0, Vector3* v1, float offset)
 {
     int flags = 0;
 
@@ -210,7 +209,7 @@ inline bool ClipLineDown(Vector3* v0, Vector3* v1, float offset)
         }
     }
 }
-inline bool ClipLineUp(Vector3* v0, Vector3* v1, float offset)
+static inline bool ClipLineUp(Vector3* v0, Vector3* v1, float offset)
 {
     int flags = 0;
 
@@ -250,7 +249,7 @@ inline bool ClipLineUp(Vector3* v0, Vector3* v1, float offset)
     }
 }
 
-inline void ClipPoligonBack(Vector3* input, Vector3* output, int* vertexCount, float offset)
+static inline void ClipPoligonBack(Vector3* input, Vector3* output, int* vertexCount, float offset)
 {
     int flags = 0;
     int index = 0;
@@ -321,7 +320,7 @@ inline void ClipPoligonBack(Vector3* input, Vector3* output, int* vertexCount, f
 
     *vertexCount = finalCount;
 }
-inline void ClipPoligonFront(Vector3* input, Vector3* output, int* vertexCount, float offset)
+static inline void ClipPoligonFront(Vector3* input, Vector3* output, int* vertexCount, float offset)
 {
     int flags = 0;
     int index = 0;
@@ -392,7 +391,7 @@ inline void ClipPoligonFront(Vector3* input, Vector3* output, int* vertexCount, 
 
     *vertexCount = finalCount;
 }
-inline void ClipPoligonLeft(Vector3* input, Vector3* output, int* vertexCount, float offset)
+static inline void ClipPoligonLeft(Vector3* input, Vector3* output, int* vertexCount, float offset)
 {
     int flags = 0;
     int index = 0;
@@ -463,7 +462,7 @@ inline void ClipPoligonLeft(Vector3* input, Vector3* output, int* vertexCount, f
 
     *vertexCount = finalCount;
 }
-inline void ClipPoligonRight(Vector3* input, Vector3* output, int* vertexCount, float offset)
+static inline void ClipPoligonRight(Vector3* input, Vector3* output, int* vertexCount, float offset)
 {
     int flags = 0;
     int index = 0;
@@ -534,7 +533,7 @@ inline void ClipPoligonRight(Vector3* input, Vector3* output, int* vertexCount, 
 
     *vertexCount = finalCount;
 }
-inline void ClipPoligonDown(Vector3* input, Vector3* output, int* vertexCount, float offset)
+static inline void ClipPoligonDown(Vector3* input, Vector3* output, int* vertexCount, float offset)
 {
     int flags = 0;
     int index = 0;
@@ -605,7 +604,7 @@ inline void ClipPoligonDown(Vector3* input, Vector3* output, int* vertexCount, f
 
     *vertexCount = finalCount;
 }
-inline void ClipPoligonUp(Vector3* input, Vector3* output, int* vertexCount, float offset)
+static inline void ClipPoligonUp(Vector3* input, Vector3* output, int* vertexCount, float offset)
 {
     int flags = 0;
     int index = 0;
@@ -677,7 +676,7 @@ inline void ClipPoligonUp(Vector3* input, Vector3* output, int* vertexCount, flo
     *vertexCount = finalCount;
 }
 
-inline bool ClipLineWClipSpace(Vector4* p0, Vector4* p1)
+static inline bool ClipLineWClipSpace(Vector4* p0, Vector4* p1)
 {
     int flags = 0;
 
@@ -718,7 +717,7 @@ inline bool ClipLineWClipSpace(Vector4* p0, Vector4* p1)
         }
     }
 }
-inline bool ClipLineBackClipSpace(Vector4* p0, Vector4* p1)
+static inline bool ClipLineBackClipSpace(Vector4* p0, Vector4* p1)
 {
     int flags = 0;
 
@@ -759,7 +758,7 @@ inline bool ClipLineBackClipSpace(Vector4* p0, Vector4* p1)
         }
     }
 }
-inline bool ClipLineFrontClipSpace(Vector4* p0, Vector4* p1)
+static inline bool ClipLineFrontClipSpace(Vector4* p0, Vector4* p1)
 {
     int flags = 0;
 
@@ -800,7 +799,7 @@ inline bool ClipLineFrontClipSpace(Vector4* p0, Vector4* p1)
         }
     }
 }
-inline bool ClipLineLeftClipSpace(Vector4* p0, Vector4* p1)
+static inline bool ClipLineLeftClipSpace(Vector4* p0, Vector4* p1)
 {
     int flags = 0;
 
@@ -841,7 +840,7 @@ inline bool ClipLineLeftClipSpace(Vector4* p0, Vector4* p1)
         }
     }
 }
-inline bool ClipLineRightClipSpace(Vector4* p0, Vector4* p1)
+static inline bool ClipLineRightClipSpace(Vector4* p0, Vector4* p1)
 {
     int flags = 0;
 
@@ -882,7 +881,7 @@ inline bool ClipLineRightClipSpace(Vector4* p0, Vector4* p1)
         }
     }
 }
-inline bool ClipLineDownClipSpace(Vector4* p0, Vector4* p1)
+static inline bool ClipLineDownClipSpace(Vector4* p0, Vector4* p1)
 {
     int flags = 0;
 
@@ -923,7 +922,7 @@ inline bool ClipLineDownClipSpace(Vector4* p0, Vector4* p1)
         }
     }
 }
-inline bool ClipLineUpClipSpace(Vector4* p0, Vector4* p1)
+static inline bool ClipLineUpClipSpace(Vector4* p0, Vector4* p1)
 {
     int flags = 0;
 
@@ -965,7 +964,7 @@ inline bool ClipLineUpClipSpace(Vector4* p0, Vector4* p1)
     }
 }
 
-inline void ClipPoligonWClipSpace(Vector4* input, Vector4* output, int* vertexCount)
+static inline void ClipPoligonWClipSpace(Vector4* input, Vector4* output, int* vertexCount)
 {
     int flags = 0;
     int index = 0;
@@ -1038,7 +1037,7 @@ inline void ClipPoligonWClipSpace(Vector4* input, Vector4* output, int* vertexCo
 
     *vertexCount = finalCount;
 }
-inline void ClipPoligonBackClipSpace(Vector4* input, Vector4* output, int* vertexCount)
+static inline void ClipPoligonBackClipSpace(Vector4* input, Vector4* output, int* vertexCount)
 {
     int flags = 0;
     int index = 0;
@@ -1111,7 +1110,7 @@ inline void ClipPoligonBackClipSpace(Vector4* input, Vector4* output, int* verte
 
     *vertexCount = finalCount;
 }
-inline void ClipPoligonFrontClipSpace(Vector4* input, Vector4* output, int* vertexCount)
+static inline void ClipPoligonFrontClipSpace(Vector4* input, Vector4* output, int* vertexCount)
 {
     int flags = 0;
     int index = 0;
@@ -1184,7 +1183,7 @@ inline void ClipPoligonFrontClipSpace(Vector4* input, Vector4* output, int* vert
 
     *vertexCount = finalCount;
 }
-inline void ClipPoligonLeftClipSpace(Vector4* input, Vector4* output, int* vertexCount)
+static inline void ClipPoligonLeftClipSpace(Vector4* input, Vector4* output, int* vertexCount)
 {
     int flags = 0;
     int index = 0;
@@ -1257,7 +1256,7 @@ inline void ClipPoligonLeftClipSpace(Vector4* input, Vector4* output, int* verte
 
     *vertexCount = finalCount;
 }
-inline void ClipPoligonRightClipSpace(Vector4* input, Vector4* output, int* vertexCount)
+static inline void ClipPoligonRightClipSpace(Vector4* input, Vector4* output, int* vertexCount)
 {
     int flags = 0;
     int index = 0;
@@ -1330,7 +1329,7 @@ inline void ClipPoligonRightClipSpace(Vector4* input, Vector4* output, int* vert
 
     *vertexCount = finalCount;
 }
-inline void ClipPoligonDownClipSpace(Vector4* input, Vector4* output, int* vertexCount)
+static inline void ClipPoligonDownClipSpace(Vector4* input, Vector4* output, int* vertexCount)
 {
     int flags = 0;
     int index = 0;
@@ -1403,7 +1402,7 @@ inline void ClipPoligonDownClipSpace(Vector4* input, Vector4* output, int* verte
 
     *vertexCount = finalCount;
 }
-inline void ClipPoligonUpClipSpace(Vector4* input, Vector4* output, int* vertexCount)
+static inline void ClipPoligonUpClipSpace(Vector4* input, Vector4* output, int* vertexCount)
 {
     int flags = 0;
     int index = 0;

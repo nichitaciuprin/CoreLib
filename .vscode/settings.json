@@ -128,7 +128,12 @@
         "helper.h": "c",
         "stdbool.h": "c",
         "baseext.h": "c",
-        "helperext.h": "c"
+        "helperext.h": "c",
+        "bitmap.h": "c",
+        "color.h": "c",
+        "models.h": "c",
+        "clipping.h": "c",
+        "bitmapresize.h": "c"
     },
     "C_Cpp.errorSquiggles": "disabled"
 }
