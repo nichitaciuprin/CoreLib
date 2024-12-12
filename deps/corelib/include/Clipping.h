@@ -1,7 +1,6 @@
 #pragma once
 
-#include "BaseExt.h"
-#include "HelperExt.h"
+#include "Helper.h"
 
 // https://fabiensanglard.net/polygon_codec/
 // https://fabiensanglard.net/polygon_codec/clippingdocument/p245-blinn.pdf
