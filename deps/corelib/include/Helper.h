@@ -89,111 +89,111 @@ typedef struct Pose
 }
 Pose;
 
-inline int MathSignInt(int value)
+static inline int MathSignInt(int value)
 {
     if (value > 0) { return  1; }
     if (value < 0) { return -1; }
                      return  0;
 }
-inline int MathAbsInt(int value)
+static inline int MathAbsInt(int value)
 {
     return abs(value);
 }
-inline int MathMinInt(int v1, int v2)
+static inline int MathMinInt(int v1, int v2)
 {
     return fmin(v1, v2);
 }
-inline int MathMaxInt(int v1, int v2)
+static inline int MathMaxInt(int v1, int v2)
 {
     return fmax(v1, v2);
 }
-inline int MathClampInt(int value, int min, int max)
+static inline int MathClampInt(int value, int min, int max)
 {
     if (value < min) { return min; };
     if (value > max) { return max; };
                        return value;
 }
 
-inline float MathSignFloat(float value)
+static inline float MathSignFloat(float value)
 {
     if (value > 0) { return  1; }
     if (value < 0) { return -1; }
                      return  0;
 }
-inline float MathMinFloat(float value1, float value2)
+static inline float MathMinFloat(float value1, float value2)
 {
     return fminf(value1, value2);
 }
-inline float MathMaxFloat(float value1, float value2)
+static inline float MathMaxFloat(float value1, float value2)
 {
     return fmaxf(value1, value2);
 }
-inline float MathAbs(float value)
+static inline float MathAbs(float value)
 {
     return fabsf(value);
 }
-inline float MathSqrt(float value)
+static inline float MathSqrt(float value)
 {
     return sqrtf(value);
 }
-inline float MathClampFloat(float value, float min, float max)
+static inline float MathClampFloat(float value, float min, float max)
 {
     if (value < min) { return min; };
     if (value > max) { return max; };
                        return value;
 }
-inline float MathSin(float f)
+static inline float MathSin(float f)
 {
     return sinf(f);
 }
-inline float MathCos(float f)
+static inline float MathCos(float f)
 {
     return cosf(f);
 }
-inline float MathLerp(float a, float b, float t)
+static inline float MathLerp(float a, float b, float t)
 {
     return a + (b - a) * t;
 }
-inline float MathInverseLerp(float a, float b, float value)
+static inline float MathInverseLerp(float a, float b, float value)
 {
     return (value - a) / (b - a);
 }
-inline float MathMod(float value, float div)
+static inline float MathMod(float value, float div)
 {
     return fmodf(value, div);
 }
-inline float MathPingPong(float value, float length)
+static inline float MathPingPong(float value, float length)
 {
     value = MathAbs(value);
     int whole = (int)(value/length);
     float rem = fmodf(value,length);
     return whole % 2 == 0 ? rem : length-rem;
 }
-inline float MathToDegree(float radians)
+static inline float MathToDegree(float radians)
 {
     float _180_div_pi = (float)57.2957795130823208768;
     return _180_div_pi * radians;
 }
-inline float MathToRadians(float degree)
+static inline float MathToRadians(float degree)
 {
     float _pi_div_180 = (float)0.01745329251994329576;
     return _pi_div_180 * degree;
 }
 
-inline bool Vector2Equal(Vector2 l, Vector2 r)
+static inline bool Vector2Equal(Vector2 l, Vector2 r)
 {
     return
     l.x == r.x &&
     l.y == r.y;
 }
-inline bool Vector3Equal(Vector3 l, Vector3 r)
+static inline bool Vector3Equal(Vector3 l, Vector3 r)
 {
     return
     l.x == r.x &&
     l.y == r.y &&
     l.z == r.z;
 }
-inline bool Vector4Equal(Vector4 l, Vector4 r)
+static inline bool Vector4Equal(Vector4 l, Vector4 r)
 {
     return
     l.x == r.x &&
@@ -202,20 +202,20 @@ inline bool Vector4Equal(Vector4 l, Vector4 r)
     l.w == r.w;
 }
 
-inline Vector2 Vector2Neg(Vector2 r)
+static inline Vector2 Vector2Neg(Vector2 r)
 {
     r.x = -r.x;
     r.y = -r.y;
     return r;
 }
-inline Vector3 Vector3Neg(Vector3 r)
+static inline Vector3 Vector3Neg(Vector3 r)
 {
     r.x = -r.x;
     r.y = -r.y;
     r.z = -r.z;
     return r;
 }
-inline Vector4 Vector4Neg(Vector4 r)
+static inline Vector4 Vector4Neg(Vector4 r)
 {
     r.x = -r.x;
     r.y = -r.y;
@@ -224,20 +224,20 @@ inline Vector4 Vector4Neg(Vector4 r)
     return r;
 }
 
-inline Vector2 Vector2Add(Vector2 l, Vector2 r)
+static inline Vector2 Vector2Add(Vector2 l, Vector2 r)
 {
     l.x += r.x;
     l.y += r.y;
     return l;
 }
-inline Vector3 Vector3Add(Vector3 l, Vector3 r)
+static inline Vector3 Vector3Add(Vector3 l, Vector3 r)
 {
     l.x += r.x;
     l.y += r.y;
     l.z += r.z;
     return l;
 }
-inline Vector4 Vector4Add(Vector4 l, Vector4 r)
+static inline Vector4 Vector4Add(Vector4 l, Vector4 r)
 {
     l.x += r.x;
     l.y += r.y;
@@ -246,20 +246,20 @@ inline Vector4 Vector4Add(Vector4 l, Vector4 r)
     return l;
 }
 
-inline Vector2 Vector2Sub(Vector2 l, Vector2 r)
+static inline Vector2 Vector2Sub(Vector2 l, Vector2 r)
 {
     l.x -= r.x;
     l.y -= r.y;
     return l;
 }
-inline Vector3 Vector3Sub(Vector3 l, Vector3 r)
+static inline Vector3 Vector3Sub(Vector3 l, Vector3 r)
 {
     l.x -= r.x;
     l.y -= r.y;
     l.z -= r.z;
     return l;
 }
-inline Vector4 Vector4Sub(Vector4 l, Vector4 r)
+static inline Vector4 Vector4Sub(Vector4 l, Vector4 r)
 {
     l.x -= r.x;
     l.y -= r.y;
@@ -268,20 +268,20 @@ inline Vector4 Vector4Sub(Vector4 l, Vector4 r)
     return l;
 }
 
-inline Vector2 Vector2Mul(Vector2 l, float r)
+static inline Vector2 Vector2Mul(Vector2 l, float r)
 {
     l.x *= r;
     l.y *= r;
     return l;
 }
-inline Vector3 Vector3Mul(Vector3 l, float r)
+static inline Vector3 Vector3Mul(Vector3 l, float r)
 {
     l.x *= r;
     l.y *= r;
     l.z *= r;
     return l;
 }
-inline Vector4 Vector4Mul(Vector4 l, float r)
+static inline Vector4 Vector4Mul(Vector4 l, float r)
 {
     l.x *= r;
     l.y *= r;
@@ -290,20 +290,20 @@ inline Vector4 Vector4Mul(Vector4 l, float r)
     return l;
 }
 
-inline Vector2 Vector2Div(Vector2 l, float r)
+static inline Vector2 Vector2Div(Vector2 l, float r)
 {
     l.x /= r;
     l.y /= r;
     return l;
 }
-inline Vector3 Vector3Div(Vector3 l, float r)
+static inline Vector3 Vector3Div(Vector3 l, float r)
 {
     l.x /= r;
     l.y /= r;
     l.z /= r;
     return l;
 }
-inline Vector4 Vector4Div(Vector4 l, float r)
+static inline Vector4 Vector4Div(Vector4 l, float r)
 {
     l.x /= r;
     l.y /= r;
@@ -312,20 +312,20 @@ inline Vector4 Vector4Div(Vector4 l, float r)
     return l;
 }
 
-inline float Vector2Dot(Vector2 l, Vector2 r)
+static inline float Vector2Dot(Vector2 l, Vector2 r)
 {
     float x = l.x * r.x;
     float y = l.y * r.y;
     return x + y;
 }
-inline float Vector3Dot(Vector3 l, Vector3 r)
+static inline float Vector3Dot(Vector3 l, Vector3 r)
 {
     float x = l.x * r.x;
     float y = l.y * r.y;
     float z = l.z * r.z;
     return x + y + z;
 }
-inline float Vector4Dot(Vector4 l, Vector4 r)
+static inline float Vector4Dot(Vector4 l, Vector4 r)
 {
     float x = l.x * r.x;
     float y = l.y * r.y;
@@ -334,7 +334,7 @@ inline float Vector4Dot(Vector4 l, Vector4 r)
     return x + y + z + w;
 }
 
-inline Vector2 MatrixMultiply2L(Vector2 v, Matrix m)
+static inline Vector2 MatrixMultiply2L(Vector2 v, Matrix m)
 {
     Vector4 col0 = { m.m[0][0], m.m[1][0], m.m[2][0], m.m[3][0] };
     Vector4 col1 = { m.m[0][1], m.m[1][1], m.m[2][1], m.m[3][1] };
@@ -346,7 +346,7 @@ inline Vector2 MatrixMultiply2L(Vector2 v, Matrix m)
 
     return v;
 }
-inline Vector3 MatrixMultiply3L(Vector3 v, Matrix m)
+static inline Vector3 MatrixMultiply3L(Vector3 v, Matrix m)
 {
     Vector4 col0 = { m.m[0][0], m.m[1][0], m.m[2][0], m.m[3][0] };
     Vector4 col1 = { m.m[0][1], m.m[1][1], m.m[2][1], m.m[3][1] };
@@ -360,7 +360,7 @@ inline Vector3 MatrixMultiply3L(Vector3 v, Matrix m)
 
     return v;
 }
-inline Vector4 MatrixMultiply4L(Vector4 v, Matrix m)
+static inline Vector4 MatrixMultiply4L(Vector4 v, Matrix m)
 {
     Vector4 col0 = { m.m[0][0], m.m[1][0], m.m[2][0], m.m[3][0] };
     Vector4 col1 = { m.m[0][1], m.m[1][1], m.m[2][1], m.m[3][1] };
@@ -377,7 +377,7 @@ inline Vector4 MatrixMultiply4L(Vector4 v, Matrix m)
     return v;
 }
 
-inline Vector2 MatrixMultiply2R(Matrix m, Vector2 v)
+static inline Vector2 MatrixMultiply2R(Matrix m, Vector2 v)
 {
     Vector4 col0 = { m.m[0][0], m.m[0][1], m.m[0][2], m.m[0][3] };
     Vector4 col1 = { m.m[1][0], m.m[1][1], m.m[1][2], m.m[1][3] };
@@ -389,7 +389,7 @@ inline Vector2 MatrixMultiply2R(Matrix m, Vector2 v)
 
     return v;
 }
-inline Vector3 MatrixMultiply3R(Matrix m, Vector3 v)
+static inline Vector3 MatrixMultiply3R(Matrix m, Vector3 v)
 {
     Vector4 col0 = { m.m[0][0], m.m[0][1], m.m[0][2], m.m[0][3] };
     Vector4 col1 = { m.m[1][0], m.m[1][1], m.m[1][2], m.m[1][3] };
@@ -403,7 +403,7 @@ inline Vector3 MatrixMultiply3R(Matrix m, Vector3 v)
 
     return v;
 }
-inline Vector4 MatrixMultiply4R(Matrix m, Vector4 v)
+static inline Vector4 MatrixMultiply4R(Matrix m, Vector4 v)
 {
     Vector4 col0 = { m.m[0][0], m.m[0][1], m.m[0][2], m.m[0][3] };
     Vector4 col1 = { m.m[1][0], m.m[1][1], m.m[1][2], m.m[1][3] };
@@ -420,20 +420,20 @@ inline Vector4 MatrixMultiply4R(Matrix m, Vector4 v)
     return v;
 }
 
-inline Vector2 Vector2Abs(Vector2 v)
+static inline Vector2 Vector2Abs(Vector2 v)
 {
     v.x = fabs(v.x);
     v.y = fabs(v.y);
     return v;
 }
-inline Vector3 Vector3Abs(Vector3 v)
+static inline Vector3 Vector3Abs(Vector3 v)
 {
     v.x = fabs(v.x);
     v.y = fabs(v.y);
     v.z = fabs(v.z);
     return v;
 }
-inline Vector4 Vector4Abs(Vector4 v)
+static inline Vector4 Vector4Abs(Vector4 v)
 {
     v.x = fabs(v.x);
     v.y = fabs(v.y);
@@ -442,20 +442,20 @@ inline Vector4 Vector4Abs(Vector4 v)
     return v;
 }
 
-inline float Vector2Length(Vector2 v)
+static inline float Vector2Length(Vector2 v)
 {
     float x = v.x * v.x;
     float y = v.y * v.y;
     return MathSqrt(x + y);
 }
-inline float Vector3Length(Vector3 v)
+static inline float Vector3Length(Vector3 v)
 {
     float x = v.x * v.x;
     float y = v.y * v.y;
     float z = v.z * v.z;
     return MathSqrt(x + y + z);
 }
-inline float Vector4Length(Vector4 v)
+static inline float Vector4Length(Vector4 v)
 {
     float x = v.x * v.x;
     float y = v.y * v.y;
@@ -464,20 +464,20 @@ inline float Vector4Length(Vector4 v)
     return MathSqrt(x + y + z + w);
 }
 
-inline float Vector2LengthSquared(Vector2 v)
+static inline float Vector2LengthSquared(Vector2 v)
 {
     float x = v.x * v.x;
     float y = v.y * v.y;
     return x + y;
 }
-inline float Vector3LengthSquared(Vector3 v)
+static inline float Vector3LengthSquared(Vector3 v)
 {
     float x = v.x * v.x;
     float y = v.y * v.y;
     float z = v.z * v.z;
     return x + y + z;
 }
-inline float Vector4LengthSquared(Vector4 v)
+static inline float Vector4LengthSquared(Vector4 v)
 {
     float x = v.x * v.x;
     float y = v.y * v.y;
@@ -486,14 +486,14 @@ inline float Vector4LengthSquared(Vector4 v)
     return x + y + z + w;
 }
 
-inline float Vector2Distance(Vector2 a, Vector2 b)
+static inline float Vector2Distance(Vector2 a, Vector2 b)
 {
     Vector2 v = Vector2Sub(a, b);
     float x = v.x * v.x;
     float y = v.y * v.y;
     return MathSqrt(x + y);
 }
-inline float Vector3Distance(Vector3 a, Vector3 b)
+static inline float Vector3Distance(Vector3 a, Vector3 b)
 {
     Vector3 v = Vector3Sub(a, b);
     float x = v.x * v.x;
@@ -501,7 +501,7 @@ inline float Vector3Distance(Vector3 a, Vector3 b)
     float z = v.z * v.z;
     return MathSqrt(x + y + z);
 }
-inline float Vector4Distance(Vector4 a, Vector4 b)
+static inline float Vector4Distance(Vector4 a, Vector4 b)
 {
     Vector4 v = Vector4Sub(a, b);
     float x = v.x * v.x;
@@ -511,14 +511,14 @@ inline float Vector4Distance(Vector4 a, Vector4 b)
     return MathSqrt(x + y + z + w);
 }
 
-inline float Vector2DistanceSquared(Vector2 a, Vector2 b)
+static inline float Vector2DistanceSquared(Vector2 a, Vector2 b)
 {
     Vector2 v = Vector2Sub(a, b);
     float x = v.x * v.x;
     float y = v.y * v.y;
     return x + y;
 }
-inline float Vector3DistanceSquared(Vector3 a, Vector3 b)
+static inline float Vector3DistanceSquared(Vector3 a, Vector3 b)
 {
     Vector3 v = Vector3Sub(a, b);
     float x = v.x * v.x;
@@ -526,7 +526,7 @@ inline float Vector3DistanceSquared(Vector3 a, Vector3 b)
     float z = v.z * v.z;
     return x + y + z;
 }
-inline float Vector4DistanceSquared(Vector4 a, Vector4 b)
+static inline float Vector4DistanceSquared(Vector4 a, Vector4 b)
 {
     Vector4 v = Vector4Sub(a, b);
     float x = v.x * v.x;
@@ -536,20 +536,20 @@ inline float Vector4DistanceSquared(Vector4 a, Vector4 b)
     return x + y + z + w;
 }
 
-inline Vector3 Vector2Lerp(Vector3 a, Vector3 b, float t)
+static inline Vector3 Vector2Lerp(Vector3 a, Vector3 b, float t)
 {
     a.x = MathLerp(a.x, b.x, t);
     a.y = MathLerp(a.y, b.y, t);
     return a;
 }
-inline Vector3 Vector3Lerp(Vector3 a, Vector3 b, float t)
+static inline Vector3 Vector3Lerp(Vector3 a, Vector3 b, float t)
 {
     a.x = MathLerp(a.x, b.x, t);
     a.y = MathLerp(a.y, b.y, t);
     a.z = MathLerp(a.z, b.z, t);
     return a;
 }
-inline Vector4 Vector4Lerp(Vector4 a, Vector4 b, float t)
+static inline Vector4 Vector4Lerp(Vector4 a, Vector4 b, float t)
 {
     a.x = MathLerp(a.x, b.x, t);
     a.y = MathLerp(a.y, b.y, t);
@@ -558,81 +558,81 @@ inline Vector4 Vector4Lerp(Vector4 a, Vector4 b, float t)
     return a;
 }
 
-inline Vector2 Vector2Zero()
+static inline Vector2 Vector2Zero()
 {
     return (Vector2){};
 }
-inline Vector3 Vector3Zero()
+static inline Vector3 Vector3Zero()
 {
     return (Vector3){};
 }
-inline Vector4 Vector4Zero()
+static inline Vector4 Vector4Zero()
 {
     return (Vector4){};
 }
 
-inline Vector2 Vector2Left()
+static inline Vector2 Vector2Left()
 {
     return (Vector2) { -1, 0 };
 }
-inline Vector2 Vector2Right()
+static inline Vector2 Vector2Right()
 {
     return (Vector2) { +1, 0 };
 }
-inline Vector2 Vector2Down()
+static inline Vector2 Vector2Down()
 {
     return (Vector2) { 0, -1 };
 }
-inline Vector2 Vector2Up()
+static inline Vector2 Vector2Up()
 {
     return (Vector2) { 0, +1 };
 }
 
-inline Vector3 Vector3Left()
+static inline Vector3 Vector3Left()
 {
     return (Vector3){ -1, 0, 0 };
 }
-inline Vector3 Vector3Right()
+static inline Vector3 Vector3Right()
 {
     return (Vector3){ 1, 0, 0 };
 }
-inline Vector3 Vector3Up()
+static inline Vector3 Vector3Up()
 {
     return (Vector3){ 0, 1, 0 };
 }
-inline Vector3 Vector3Down()
+static inline Vector3 Vector3Down()
 {
     return (Vector3){ 0, 1, 0 };
 }
-inline Vector3 Vector3Backward()
+static inline Vector3 Vector3Backward()
 {
     return (Vector3){ 0, 0, -1 };
 }
-inline Vector3 Vector3Forward()
+static inline Vector3 Vector3Forward()
 {
     return (Vector3){ 0, 0, 1 };
 }
 
-inline Vector2 Vector2Normalize(Vector2 v)
+static inline Vector2 Vector2Normalize(Vector2 v)
 {
     float length = Vector2Length(v);
     if (length == 0) return v;
     return Vector2Div(v, length);
 }
-inline Vector3 Vector3Normalize(Vector3 v)
+static inline Vector3 Vector3Normalize(Vector3 v)
 {
     float length = Vector3Length(v);
     if (length == 0) return v;
     return Vector3Div(v, length);
 }
-inline Vector4 Vector4Normalize(Vector4 v)
+static inline Vector4 Vector4Normalize(Vector4 v)
 {
     float length = Vector4Length(v);
     if (length == 0) return v;
     return Vector4Div(v, length);
 }
 
-inline Vector2 Vector2ClampLength(Vector2 vector, float min, float max)
+static inline Vector2 Vector2ClampLength(Vector2 vector, float min, float max)
 {
     float length = Vector2Length(vector);
     if (length <= 0)  return Vector2Zero();
@@ -640,7 +640,7 @@ inline Vector2 Vector2ClampLength(Vector2 vector, float min, float max)
     if (length < min) return Vector2Mul(vector, (min/length));
     return vector;
 }
-inline Vector3 Vector3ClampLength(Vector3 vector, float min, float max)
+static inline Vector3 Vector3ClampLength(Vector3 vector, float min, float max)
 {
     float length = Vector3Length(vector);
     if (length <= 0)  return Vector3Zero();
@@ -648,7 +648,7 @@ inline Vector3 Vector3ClampLength(Vector3 vector, float min, float max)
     if (length < min) return Vector3Mul(vector, (min/length));
     return vector;
 }
-inline Vector4 Vector4ClampLength(Vector4 vector, float min, float max)
+static inline Vector4 Vector4ClampLength(Vector4 vector, float min, float max)
 {
     float length = Vector4Length(vector);
     if (length <= 0)  return Vector4Zero();
@@ -657,7 +657,7 @@ inline Vector4 Vector4ClampLength(Vector4 vector, float min, float max)
     return vector;
 }
 
-inline float Vector2Rotation(Vector2 v)
+static inline float Vector2Rotation(Vector2 v)
 {
     // atan2( 0.0f,  1.0f ) = 0.0000
     // atan2( 1.0f,  1.0f ) = 0.7853
@@ -666,11 +666,11 @@ inline float Vector2Rotation(Vector2 v)
     // atan2( 0.0f, -1.0f ) = 3.1415
     return atan2(v.x, v.y);
 }
-inline float Vector2Cross(Vector2 a, Vector2 b)
+static inline float Vector2Cross(Vector2 a, Vector2 b)
 {
     return a.x * b.y - a.y * b.x;
 }
-inline Vector2 Vector2MoveTowards(Vector2 from, Vector2 target, float delta)
+static inline Vector2 Vector2MoveTowards(Vector2 from, Vector2 target, float delta)
 {
     if (Vector2Equal(from, target)) return from;
     Vector2 diff = Vector2Sub(target, from);
@@ -680,7 +680,7 @@ inline Vector2 Vector2MoveTowards(Vector2 from, Vector2 target, float delta)
     Vector2 moveVec = Vector2Mul(diff, delta);
     return Vector2Add(from, moveVec);
 }
-inline Vector2 Vector2MoveTowardsLimit(Vector2 from, Vector2 target, float delta, float limit)
+static inline Vector2 Vector2MoveTowardsLimit(Vector2 from, Vector2 target, float delta, float limit)
 {
     if (Vector2Equal(from, target)) return from;
     Vector2 diff = Vector2Sub(target, from);
@@ -692,7 +692,7 @@ inline Vector2 Vector2MoveTowardsLimit(Vector2 from, Vector2 target, float delta
     return Vector2Add(from, moveVec);
 }
 
-inline Vector3 Vector3Cross(Vector3 a, Vector3 b)
+static inline Vector3 Vector3Cross(Vector3 a, Vector3 b)
 {
     return (Vector3)
     {
@@ -701,7 +701,7 @@ inline Vector3 Vector3Cross(Vector3 a, Vector3 b)
         a.x*b.y - a.y*b.x
     };
 }
-inline Vector3 Vector3RotateX(Vector3 v, float rot)
+static inline Vector3 Vector3RotateX(Vector3 v, float rot)
 {
     float sin = sinf(rot);
     float cos = cosf(rot);
@@ -709,7 +709,7 @@ inline Vector3 Vector3RotateX(Vector3 v, float rot)
     float z = v.y * (-sin) + v.z * ( cos);
     return (Vector3){ v.x, y, z };
 }
-inline Vector3 Vector3RotateY(Vector3 v, float rot)
+static inline Vector3 Vector3RotateY(Vector3 v, float rot)
 {
     float sin = sinf(rot);
     float cos = cosf(rot);
@@ -717,7 +717,7 @@ inline Vector3 Vector3RotateY(Vector3 v, float rot)
     float z = v.x * ( sin) + v.z * ( cos);
     return (Vector3){ x, v.y, z };
 }
-inline Vector3 Vector3RotateZ(Vector3 v, float rot)
+static inline Vector3 Vector3RotateZ(Vector3 v, float rot)
 {
     float sin = sinf(rot);
     float cos = cosf(rot);
@@ -725,14 +725,14 @@ inline Vector3 Vector3RotateZ(Vector3 v, float rot)
     float y = v.x * (-sin) + v.y * ( cos);
     return (Vector3){ x, y, v.z };
 }
-inline Vector3 Vector3Rotate(Vector3 v, Vector3 rot)
+static inline Vector3 Vector3Rotate(Vector3 v, Vector3 rot)
 {
     v = Vector3RotateX(v, rot.x);
     v = Vector3RotateY(v, rot.y);
     v = Vector3RotateZ(v, rot.z);
     return v;
 }
-inline Vector3 Vector3MoveTowards(Vector3 source, Vector3 target, float delta)
+static inline Vector3 Vector3MoveTowards(Vector3 source, Vector3 target, float delta)
 {
     if (Vector3Equal(source, target)) return source;
     Vector3 diff = Vector3Sub(target, source);
@@ -742,7 +742,7 @@ inline Vector3 Vector3MoveTowards(Vector3 source, Vector3 target, float delta)
     Vector3 moveVec = Vector3Mul(diff, delta);
     return Vector3Add(source, moveVec);
 }
-inline Vector3 Vector3MoveTowards2(Vector3 source, Vector3 target, float acc, float deltaTime)
+static inline Vector3 Vector3MoveTowards2(Vector3 source, Vector3 target, float acc, float deltaTime)
 {
     // like easeOut function
 
@@ -750,7 +750,7 @@ inline Vector3 Vector3MoveTowards2(Vector3 source, Vector3 target, float acc, fl
     float speed = MathSqrt(2 * dist * acc);
     return Vector3MoveTowards(source, target, speed * deltaTime);
 }
-inline Vector3 Vector3MoveTowards3(Vector3 source, Vector3 target, Vector3* velocity, float acc, float maxSpeed, float deltaTime)
+static inline Vector3 Vector3MoveTowards3(Vector3 source, Vector3 target, Vector3* velocity, float acc, float maxSpeed, float deltaTime)
 {
     // like easeInOut function
     // but source will decelerate only on rotations
@@ -775,7 +775,7 @@ inline Vector3 Vector3MoveTowards3(Vector3 source, Vector3 target, Vector3* velo
 
     return result;
 }
-inline Vector3 Vector3MoveTowards4(Vector3 source, Vector3 target, Vector3* velocity, float acc, float deltaTime)
+static inline Vector3 Vector3MoveTowards4(Vector3 source, Vector3 target, Vector3* velocity, float acc, float deltaTime)
 {
     // like easeInOut function
 
@@ -802,7 +802,7 @@ inline Vector3 Vector3MoveTowards4(Vector3 source, Vector3 target, Vector3* velo
 
     return result;
 }
-inline Vector3 Vector3MoveTowards5(Vector3 source, Vector3 target, Vector3* velocity, float acc, float deltaTime)
+static inline Vector3 Vector3MoveTowards5(Vector3 source, Vector3 target, Vector3* velocity, float acc, float deltaTime)
 {
     // like easeInOut function
     // but removes jittering near target
@@ -836,7 +836,7 @@ inline Vector3 Vector3MoveTowards5(Vector3 source, Vector3 target, Vector3* velo
     return result;
 }
 
-inline Matrix MatrixMultiply(Matrix l, Matrix r)
+static inline Matrix MatrixMultiply(Matrix l, Matrix r)
 {
     Vector4 row0 = { l.m[0][0], l.m[0][1], l.m[0][2], l.m[0][3] };
     Vector4 row1 = { l.m[1][0], l.m[1][1], l.m[1][2], l.m[1][3] };
@@ -876,7 +876,7 @@ inline Matrix MatrixMultiply(Matrix l, Matrix r)
         m30,m31,m32,m33
     };
 }
-inline Matrix MatrixIdentity()
+static inline Matrix MatrixIdentity()
 {
     return (Matrix)
     {
@@ -886,7 +886,7 @@ inline Matrix MatrixIdentity()
         0,0,0,1,
     };
 }
-inline Matrix MatrixTranspose(Matrix a)
+static inline Matrix MatrixTranspose(Matrix a)
 {
     return (Matrix)
     {
@@ -896,7 +896,7 @@ inline Matrix MatrixTranspose(Matrix a)
         a.m[0][3],a.m[1][3],a.m[2][3],a.m[3][3]
     };
 }
-inline Matrix MatrixInvert(Matrix mat)
+static inline Matrix MatrixInvert(Matrix mat)
 {
     Matrix result;
 
@@ -939,7 +939,7 @@ inline Matrix MatrixInvert(Matrix mat)
 
     return result;
 }
-inline Matrix MatrixTranslate(Vector3 v)
+static inline Matrix MatrixTranslate(Vector3 v)
 {
     return (Matrix)
     {
@@ -949,7 +949,7 @@ inline Matrix MatrixTranslate(Vector3 v)
         v.x, v.y, v.z, 1
     };
 }
-inline Matrix MatrixRotateX(float rad)
+static inline Matrix MatrixRotateX(float rad)
 {
     float sin = sinf(rad);
     float cos = cosf(rad);
@@ -961,7 +961,7 @@ inline Matrix MatrixRotateX(float rad)
         0,   0,    0,    1
     };
 }
-inline Matrix MatrixRotateY(float rad)
+static inline Matrix MatrixRotateY(float rad)
 {
     float sin = sinf(rad);
     float cos = cosf(rad);
@@ -973,7 +973,7 @@ inline Matrix MatrixRotateY(float rad)
            0,   0,    0,   1
     };
 }
-inline Matrix MatrixRotateZ(float rad)
+static inline Matrix MatrixRotateZ(float rad)
 {
     float sin = sinf(rad);
     float cos = cosf(rad);
@@ -985,7 +985,7 @@ inline Matrix MatrixRotateZ(float rad)
         0,    0,    0,   1
     };
 }
-inline Matrix MatrixRotate(Vector3 rotation)
+static inline Matrix MatrixRotate(Vector3 rotation)
 {
     Matrix result;
     Matrix matX = MatrixRotateX(rotation.x);
@@ -996,7 +996,7 @@ inline Matrix MatrixRotate(Vector3 rotation)
     result = MatrixMultiply(result, matZ);
     return result;
 }
-inline Matrix MatrixScale(Vector3 scale)
+static inline Matrix MatrixScale(Vector3 scale)
 {
     float x = scale.x;
     float y = scale.y;
@@ -1009,7 +1009,7 @@ inline Matrix MatrixScale(Vector3 scale)
         0, 0, 0, 1
     };
 }
-inline Matrix MatrixWorld(Vector3 position, Vector3 direction)
+static inline Matrix MatrixWorld(Vector3 position, Vector3 direction)
 {
     Vector3 zAxis = direction;
             zAxis = Vector3Normalize(zAxis); // maybe remove
@@ -1031,7 +1031,7 @@ inline Matrix MatrixWorld(Vector3 position, Vector3 direction)
               x,       y,       z, 1.0f
     };
 }
-inline Matrix MatrixWorld2(Vector3 position, Vector3 rotation, Vector3 scale)
+static inline Matrix MatrixWorld2(Vector3 position, Vector3 rotation, Vector3 scale)
 {
     Matrix result;
     Matrix mat1 = MatrixScale(scale);
@@ -1042,7 +1042,7 @@ inline Matrix MatrixWorld2(Vector3 position, Vector3 rotation, Vector3 scale)
     result = MatrixMultiply(result, mat3);
     return result;
 }
-inline Matrix MatrixView(Vector3 eye, float yaw, float pitch)
+static inline Matrix MatrixView(Vector3 eye, float yaw, float pitch)
 {
     eye = Vector3Neg(eye);
     Matrix mat1 = MatrixTranslate(eye);
@@ -1054,7 +1054,7 @@ inline Matrix MatrixView(Vector3 eye, float yaw, float pitch)
     result = MatrixMultiply(result, mat3);
     return result;
 }
-inline Matrix MatrixView2(Vector3 eye, Vector3 target, Vector3 up)
+static inline Matrix MatrixView2(Vector3 eye, Vector3 target, Vector3 up)
 {
     // it almost works, try fixing it
     /*
@@ -1099,11 +1099,11 @@ inline Matrix MatrixView2(Vector3 eye, Vector3 target, Vector3 up)
 
     return result;
 }
-inline Matrix MatrixView3(const Camera* camera)
+static inline Matrix MatrixView3(const Camera* camera)
 {
     return MatrixView(camera->position, camera->yaw, camera->pitch);
 }
-inline Matrix MatrixOrthographic(float width, float height, float zNear, float zFar)
+static inline Matrix MatrixOrthographic(float width, float height, float zNear, float zFar)
 {
     float w = 2.0f / width;
     float h = 2.0f / height;
@@ -1117,7 +1117,7 @@ inline Matrix MatrixOrthographic(float width, float height, float zNear, float z
         0, 0, b, 1
     };
 }
-inline Matrix MatrixPerspectiveCube(float width, float height, float near, float far)
+static inline Matrix MatrixPerspectiveCube(float width, float height, float near, float far)
 {
     width /= height;
     height = 1;
@@ -1149,7 +1149,7 @@ inline Matrix MatrixPerspectiveCube(float width, float height, float near, float
         0,  0, -o,  0
     };
 }
-inline Matrix MatrixPerspectiveCubeHalf(float width, float height, float near, float far)
+static inline Matrix MatrixPerspectiveCubeHalf(float width, float height, float near, float far)
 {
     float n = near;
     float f = far;
@@ -1169,7 +1169,7 @@ inline Matrix MatrixPerspectiveCubeHalf(float width, float height, float near, f
         0,  0, -o,  0
     };
 }
-inline Matrix MatrixPerspectiveCubeHalf2(float ratio, float fov, float near, float far)
+static inline Matrix MatrixPerspectiveCubeHalf2(float ratio, float fov, float near, float far)
 {
     // float ratio = width / height;
     // float fov = (float)(MY_PI_DIV_2);
@@ -1188,7 +1188,7 @@ inline Matrix MatrixPerspectiveCubeHalf2(float ratio, float fov, float near, flo
     };
 }
 
-inline Vector3 ToEuler(Vector4 q)
+static inline Vector3 ToEuler(Vector4 q)
 {
     Vector3 result;
 
@@ -1212,7 +1212,7 @@ inline Vector3 ToEuler(Vector4 q)
 
     return result;
 }
-inline Vector4 ToQuaternion(Vector3 e)
+static inline Vector4 ToQuaternion(Vector3 e)
 {
     Vector4 result;
 
@@ -1235,7 +1235,7 @@ inline Vector4 ToQuaternion(Vector3 e)
     return result;
 }
 
-inline bool Vector3TriangleIsClockwise(Vector3 p1, Vector3 p2, Vector3 p3)
+static inline bool Vector3TriangleIsClockwise(Vector3 p1, Vector3 p2, Vector3 p3)
 {
     Vector3 v1 = Vector3Sub(p2, p1);
     Vector3 v2 = Vector3Sub(p3, p1);
@@ -1243,21 +1243,21 @@ inline bool Vector3TriangleIsClockwise(Vector3 p1, Vector3 p2, Vector3 p3)
     return crossZ < 0;
 }
 
-inline Vector3 GetAxisX(Camera* camera)
+static inline Vector3 GetAxisX(Camera* camera)
 {
     Vector3 result = { 1, 0, 0 };
     result = Vector3RotateX(result, camera->pitch);
     result = Vector3RotateY(result, -camera->yaw);
     return result;
 }
-inline Vector3 GetAxisY(Camera* camera)
+static inline Vector3 GetAxisY(Camera* camera)
 {
     Vector3 result = { 0, 1, 0 };
     result = Vector3RotateX(result, camera->pitch);
     result = Vector3RotateY(result, -camera->yaw);
     return result;
 }
-inline Vector3 GetAxisZ(Camera* camera)
+static inline Vector3 GetAxisZ(Camera* camera)
 {
     Vector3 result = { 0, 0, 1 };
     result = Vector3RotateX(result, camera->pitch);
@@ -1265,7 +1265,7 @@ inline Vector3 GetAxisZ(Camera* camera)
     return result;
 }
 
-inline Vector3 WorldToNdc(Vector3 p, Matrix proj)
+static inline Vector3 WorldToNdc(Vector3 p, Matrix proj)
 {
     Vector4 _p = { p.x, p.y, p.z, 1 };
     _p = MatrixMultiply4L(_p, proj);
@@ -1274,7 +1274,7 @@ inline Vector3 WorldToNdc(Vector3 p, Matrix proj)
     _p.z /= _p.w;
     return (Vector3){ _p.x, _p.y, _p.z };
 }
-inline Vector3 NdcToWorld(Vector3 p, Matrix projInv)
+static inline Vector3 NdcToWorld(Vector3 p, Matrix projInv)
 {
     Vector4 _p = { p.x, p.y, p.z, 1 };
     _p = MatrixMultiply4L(_p, projInv);
@@ -1284,14 +1284,14 @@ inline Vector3 NdcToWorld(Vector3 p, Matrix projInv)
     return (Vector3){ _p.x, _p.y, _p.z };
 }
 
-inline bool InFrustum(Vector3 point)
+static inline bool InFrustum(Vector3 point)
 {
     if (point.z / MathAbs(point.x) < 1) return false;
     if (point.z / MathAbs(point.y) < 1) return false;
     return true;
 }
 
-inline void UpdateCameraRotation(Camera* camera, float deltaTime, bool left, bool up, bool down, bool right)
+static inline void UpdateCameraRotation(Camera* camera, float deltaTime, bool left, bool up, bool down, bool right)
 {
     float speed = (float)MY_PI;
     float speedDelta = speed * deltaTime;
@@ -1312,7 +1312,7 @@ inline void UpdateCameraRotation(Camera* camera, float deltaTime, bool left, boo
     if (camera->pitch >  degree) camera->pitch =  degree;
     if (camera->pitch < -degree) camera->pitch = -degree;
 }
-inline void UpdateCameraRotation2(Camera* camera, float rotX, float rotY)
+static inline void UpdateCameraRotation2(Camera* camera, float rotX, float rotY)
 {
     // inverses horizontal rotation when upsidedown
     // makes movement easy
@@ -1323,7 +1323,7 @@ inline void UpdateCameraRotation2(Camera* camera, float rotX, float rotY)
     camera->yaw += rotX;
     camera->pitch += rotY;
 }
-inline void UpdateCameraPosition(Camera* camera, float deltaTime, bool w, bool a, bool s, bool d, bool e, bool q)
+static inline void UpdateCameraPosition(Camera* camera, float deltaTime, bool w, bool a, bool s, bool d, bool e, bool q)
 {
     Vector3 x = GetAxisX(camera);
     Vector3 y = GetAxisY(camera);
@@ -1343,7 +1343,7 @@ inline void UpdateCameraPosition(Camera* camera, float deltaTime, bool w, bool a
     if (w) camera->position = Vector3Add      (camera->position, z);
     if (s) camera->position = Vector3Sub (camera->position, z);
 }
-inline void UpdateCameraPosition2(Camera* camera, Vector3 move)
+static inline void UpdateCameraPosition2(Camera* camera, Vector3 move)
 {
     // TODO double check it works
 
@@ -1360,7 +1360,7 @@ inline void UpdateCameraPosition2(Camera* camera, Vector3 move)
     camera->position = Vector3Add(camera->position, x);
 }
 
-inline void UpdateCameraFpsRotation(Camera* camera, Vector2 rot)
+static inline void UpdateCameraFpsRotation(Camera* camera, Vector2 rot)
 {
     camera->yaw += rot.x;
     camera->pitch += rot.y;
@@ -1370,7 +1370,7 @@ inline void UpdateCameraFpsRotation(Camera* camera, Vector2 rot)
 
     camera->pitch = MathClampFloat(camera->pitch, MathToRadians(-90.0f), MathToRadians(90.0f));
 }
-inline void UpdateCameraFpsMovement(Camera* camera, Vector2 move)
+static inline void UpdateCameraFpsMovement(Camera* camera, Vector2 move)
 {
     Vector3 up = { 0, 1, 0 };
     Vector3 forward = { 0, 0, 1 };
@@ -1387,37 +1387,37 @@ inline void UpdateCameraFpsMovement(Camera* camera, Vector2 move)
     camera->position = Vector3Add(camera->position, forward);
     camera->position = Vector3Add(camera->position, right);
 }
-inline void UpdateCameraFps(Camera* camera, Vector2 move, Vector2 rot)
+static inline void UpdateCameraFps(Camera* camera, Vector2 move, Vector2 rot)
 {
     UpdateCameraFpsRotation(camera, rot);
     UpdateCameraFpsMovement(camera, move);
 }
 
-inline float BoundMinX(Bound* bound)
+static inline float BoundMinX(Bound* bound)
 {
     return fminf(bound->p0.x, bound->p1.x);
 }
-inline float BoundMaxX(Bound* bound)
+static inline float BoundMaxX(Bound* bound)
 {
     return fmaxf(bound->p0.x, bound->p1.x);
 }
-inline float BoundMinY(Bound* bound)
+static inline float BoundMinY(Bound* bound)
 {
     return fminf(bound->p0.y, bound->p1.y);
 }
-inline float BoundMaxY(Bound* bound)
+static inline float BoundMaxY(Bound* bound)
 {
     return fmaxf(bound->p0.y, bound->p1.y);
 }
-inline float BoundMinZ(Bound* bound)
+static inline float BoundMinZ(Bound* bound)
 {
     return fminf(bound->p0.z, bound->p1.z);
 }
-inline float BoundMaxZ(Bound* bound)
+static inline float BoundMaxZ(Bound* bound)
 {
     return fmaxf(bound->p0.z, bound->p1.z);
 }
-inline Vector3 BoundSize(const Bound* bound)
+static inline Vector3 BoundSize(const Bound* bound)
 {
     Vector3 result = Vector3Sub(bound->p0, bound->p1);
     result.x = MathAbs(result.x);
@@ -1425,7 +1425,7 @@ inline Vector3 BoundSize(const Bound* bound)
     result.z = MathAbs(result.z);
     return result;
 }
-inline Vector3 BoundCenter(const Bound* bound)
+static inline Vector3 BoundCenter(const Bound* bound)
 {
     Vector3 result;
     result = Vector3Add(bound->p0, bound->p1);
@@ -1433,14 +1433,14 @@ inline Vector3 BoundCenter(const Bound* bound)
     return result;
 }
 
-inline Vector3 RandomPointInside(Subgen* subgen, Bound* bound)
+static inline Vector3 RandomPointInside(Subgen* subgen, Bound* bound)
 {
     float x = SubgenRange(subgen, BoundMinX(bound), BoundMaxX(bound));
     float y = SubgenRange(subgen, BoundMinY(bound), BoundMaxY(bound));
     float z = SubgenRange(subgen, BoundMinZ(bound), BoundMaxZ(bound));
     return (Vector3){ x, y, z };
 }
-inline Vector3 RandomPointTopFace(Subgen* subgen, Bound* bound)
+static inline Vector3 RandomPointTopFace(Subgen* subgen, Bound* bound)
 {
     float maxY = BoundMaxY(bound);
 
@@ -1455,7 +1455,7 @@ inline Vector3 RandomPointTopFace(Subgen* subgen, Bound* bound)
 
     return (Vector3){ randX, maxY, randZ };
 }
-inline Vector3 WrapAround(Bound* bound, Vector3 point)
+static inline Vector3 WrapAround(Bound* bound, Vector3 point)
 {
     Vector3 size = BoundSize(bound);
     if      (point.x < BoundMinX(bound)) point.x += size.x;
@@ -1466,7 +1466,7 @@ inline Vector3 WrapAround(Bound* bound, Vector3 point)
     else if (point.z > BoundMaxZ(bound)) point.z -= size.z;
     return point;
 }
-inline Vector3 BoundShortPathIn(Bound* aabb, Vector3 point)
+static inline Vector3 BoundShortPathIn(Bound* aabb, Vector3 point)
 {
     Vector3 result = Vector3Zero();
     if      (point.x < BoundMinX(aabb)) result.x = BoundMinX(aabb) - point.x;
@@ -1478,12 +1478,12 @@ inline Vector3 BoundShortPathIn(Bound* aabb, Vector3 point)
     return result;
 }
 
-inline bool InsideSphere(Vector3 point, Sphere sphere)
+static inline bool InsideSphere(Vector3 point, Sphere sphere)
 {
     Vector3 diff = Vector3Sub(point, sphere.position);
     return Vector3LengthSquared(diff) <= sphere.radius * sphere.radius;
 }
-inline bool RaycastFull1(Vector3 origin, Vector3 dirNorm, Sphere sphere)
+static inline bool RaycastFull1(Vector3 origin, Vector3 dirNorm, Sphere sphere)
 {
     // TODO must be tested
 
@@ -1513,7 +1513,7 @@ inline bool RaycastFull1(Vector3 origin, Vector3 dirNorm, Sphere sphere)
 
     return true;
 }
-inline bool RaycastFull2(Vector3 origin, Vector3 dirNorm, Sphere sphere)
+static inline bool RaycastFull2(Vector3 origin, Vector3 dirNorm, Sphere sphere)
 {
     // TODO must be tested
 
@@ -1541,7 +1541,7 @@ inline bool RaycastFull2(Vector3 origin, Vector3 dirNorm, Sphere sphere)
 
     return true;
 }
-inline bool Raycast(Vector3 origin, Vector3 dirNorm, Sphere sphere, float* outDistance, Vector3* outPoint, Vector3* outNormal)
+static inline bool Raycast(Vector3 origin, Vector3 dirNorm, Sphere sphere, float* outDistance, Vector3* outPoint, Vector3* outNormal)
 {
     // TODO must be tested
     // Assuming the origin is outside the sphere
@@ -1572,7 +1572,7 @@ inline bool Raycast(Vector3 origin, Vector3 dirNorm, Sphere sphere, float* outDi
 
     return true;
 }
-inline bool LineSegmentIntersection(Vector3 start, Vector3 end, Sphere sphere)
+static inline bool LineSegmentIntersection(Vector3 start, Vector3 end, Sphere sphere)
 {
     // TODO must be tested
 
@@ -1604,7 +1604,7 @@ inline bool LineSegmentIntersection(Vector3 start, Vector3 end, Sphere sphere)
     return true;
 }
 
-inline bool RaycastTriangle(Vector3 v1, Vector3 v2, Vector3 v3, Vector3 origin, Vector3 dirNorm)
+static inline bool RaycastTriangle(Vector3 v1, Vector3 v2, Vector3 v3, Vector3 origin, Vector3 dirNorm)
 {
     Vector3 d1 = Vector3Sub(v2, v1);
     Vector3 d2 = Vector3Sub(v3, v1);
@@ -1637,14 +1637,14 @@ inline bool RaycastTriangle(Vector3 v1, Vector3 v2, Vector3 v3, Vector3 origin, 
     return true;
 }
 
-inline float GetArea(Vector3 v1, Vector3 v2, Vector3 v3)
+static inline float GetArea(Vector3 v1, Vector3 v2, Vector3 v3)
 {
     int r1 = (int)v1.x * ((int)v2.y - (int)v3.y);
     int r2 = (int)v2.x * ((int)v3.y - (int)v1.y);
     int r3 = (int)v3.x * ((int)v1.y - (int)v2.y);
     return abs((r1 + r2 + r3) / 2.0f);
 }
-inline bool IsInside(Vector3 v1, Vector3 v2, Vector3 v3, Vector3 p)
+static inline bool IsInside(Vector3 v1, Vector3 v2, Vector3 v3, Vector3 p)
 {
     float A0 = GetArea(v1, v2, v3);
     float A1 = GetArea( p, v2, v3);
@@ -1652,7 +1652,7 @@ inline bool IsInside(Vector3 v1, Vector3 v2, Vector3 v3, Vector3 p)
     float A3 = GetArea(v1, v2,  p);
     return A0 == (A1 + A2 + A3);
 }
-inline float Barycentric(Vector3 p1, Vector3 p2, Vector3 p3, float x, float y)
+static inline float Barycentric(Vector3 p1, Vector3 p2, Vector3 p3, float x, float y)
 {
     float det = (p2.y - p3.y) * (p1.x - p3.x) + (p3.x - p2.x) * (p1.y - p3.y);
     float l1 = ((p2.y - p3.y) * (x - p3.x) + (p3.x - p2.x) * (y - p3.y)) / det;
@@ -1661,7 +1661,7 @@ inline float Barycentric(Vector3 p1, Vector3 p2, Vector3 p3, float x, float y)
     return l1 * p1.z + l2 * p2.z + l3 * p3.z;
 }
 
-inline Pose GetLocalPose(Pose parentWorld, Pose childWorld)
+static inline Pose GetLocalPose(Pose parentWorld, Pose childWorld)
 {
     childWorld.rotation = Vector3Sub(childWorld.rotation, parentWorld.rotation);
     childWorld.position = Vector3Sub(childWorld.position, parentWorld.position);
@@ -1670,7 +1670,7 @@ inline Pose GetLocalPose(Pose parentWorld, Pose childWorld)
     childWorld.position = Vector3RotateX(childWorld.position, -parentWorld.rotation.x);
     return childWorld;
 }
-inline Pose GetWorldPose(Pose parentWorld, Pose childLocal)
+static inline Pose GetWorldPose(Pose parentWorld, Pose childLocal)
 {
     childLocal.position = Vector3RotateX(childLocal.position, parentWorld.rotation.x);
     childLocal.position = Vector3RotateY(childLocal.position, parentWorld.rotation.y);
