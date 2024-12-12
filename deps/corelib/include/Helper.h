@@ -1272,8 +1272,7 @@ inline Vector3 WorldToNdc(Vector3 p, Matrix proj)
     _p.x /= _p.w;
     _p.y /= _p.w;
     _p.z /= _p.w;
-    p = { _p.x, _p.y, _p.z };
-    return p;
+    return (Vector3){ _p.x, _p.y, _p.z };
 }
 inline Vector3 NdcToWorld(Vector3 p, Matrix projInv)
 {
@@ -1282,8 +1281,7 @@ inline Vector3 NdcToWorld(Vector3 p, Matrix projInv)
     _p.x /= _p.w;
     _p.y /= _p.w;
     _p.z /= _p.w;
-    p = { _p.x, _p.y, _p.z };
-    return p;
+    return (Vector3){ _p.x, _p.y, _p.z };
 }
 
 inline bool InFrustum(Vector3 point)
