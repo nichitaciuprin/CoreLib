@@ -1524,7 +1524,7 @@ static inline bool RaycastTriangle(Vector3 origin, Vector3 dirNorm, Vector3 v0, 
     return true;
 }
 
-static inline float GetArea(Vector3 v0, Vector3 v1, Vector3 v2)
+static inline float TriangleGetArea(Vector3 v0, Vector3 v1, Vector3 v2)
 {
     int r1 = (int)v0.x * ((int)v1.y - (int)v2.y);
     int r2 = (int)v1.x * ((int)v2.y - (int)v0.y);
@@ -1533,10 +1533,10 @@ static inline float GetArea(Vector3 v0, Vector3 v1, Vector3 v2)
 }
 static inline bool TriangleIsInside(Vector3 v0, Vector3 v1, Vector3 v2, Vector3 p)
 {
-    float A0 = GetArea(v0, v1, v2);
-    float A1 = GetArea( p, v1, v2);
-    float A2 = GetArea(v0,  p, v2);
-    float A3 = GetArea(v0, v1,  p);
+    float A0 = TriangleGetArea(v0, v1, v2);
+    float A1 = TriangleGetArea( p, v1, v2);
+    float A2 = TriangleGetArea(v0,  p, v2);
+    float A3 = TriangleGetArea(v0, v1,  p);
     return A0 == (A1 + A2 + A3);
 }
 static inline float Barycentric(Vector3 v0, Vector3 v1, Vector3 v2, float x, float y)
