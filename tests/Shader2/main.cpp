@@ -114,8 +114,8 @@ void DrawPixel(Bitmap* bitmap, int x, int y)
 }
 void Draw(Bitmap* bitmap, Camera camera)
 {
-    for (int x = 0; x < bitmap->width;  x++)
     for (int y = 0; y < bitmap->height; y++)
+    for (int x = 0; x < bitmap->width;  x++)
         DrawPixel(bitmap, x, y);
 
     // cout << "DONE" << endl;
