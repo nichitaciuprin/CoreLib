@@ -1,6 +1,6 @@
 #include "SysHelper.h"
 #include "SysWindow.h"
-#include "HelperExt.h"
+#include "BaseMath.hpp"
 #include "Bitmap.h"
 #include "BitmapResize.h"
 #include "BaseExt.h"

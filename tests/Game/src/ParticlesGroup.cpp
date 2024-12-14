@@ -1,5 +1,5 @@
 #include "ParticlesGroup.h"
-#include "HelperExt.h"
+#include "BaseMath.hpp"
 
 ParticlesGroup::ParticlesGroup(Vector3 position, Subgen* subgen)
 {

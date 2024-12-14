@@ -1,5 +1,5 @@
 #include "StaticBound.h"
-#include "HelperExt.h"
+#include "BaseMath.hpp"
 
 StaticBound::StaticBound(WorldPhysics& worldPhysics, Bound bound) : worldPhysics(worldPhysics)
 {
