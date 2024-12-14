@@ -281,7 +281,6 @@ void BitmapApplyLight(Bitmap* instance, Vector3 lightPosition)
 
         if (z == FLT_MAX) continue;
 
-        z -= 1.0f;
         Vector3 p = { (float)x, (float)y, z };
         BitmapFromScreenSpace(instance, &p);
 
@@ -311,7 +310,6 @@ void BitmapApplyLightAndShadows(Bitmap* instance, Vector3 lightPosition)
 
         if (z == FLT_MAX) continue;
 
-        z -= 1.0f;
         Vector3 p = { (float)x, (float)y, z };
         BitmapFromScreenSpace(instance, &p);
 
@@ -751,9 +749,6 @@ void BitmapDrawLineWire(Bitmap* instance, Vector3 p0, Vector3 p1, Color color)
     _v1.y = MathClampFloat(_v1.y, -1, +1);
     _v1.z = MathClampFloat(_v1.z, -1, +1);
 
-    _v0.z += 1.0f;
-    _v1.z += 1.0f;
-
     p0.x = _v0.x;
     p0.y = _v0.y;
     p0.z = _v0.z;
@@ -838,9 +833,6 @@ void BitmapDrawTriangle(Bitmap* instance, Vector3 p0, Vector3 p1, Vector3 p2, Co
         v1[i].y = MathClampFloat(v1[i].y, -1, +1);
         v1[i].z = MathClampFloat(v1[i].z, -1, +1);
     }
-
-    for (int i = 0; i < vertexCount; i++)
-        v1[i].z += 1.0f;
 
     for (int i = 1; i < vertexCount - 1; i++)
     {
