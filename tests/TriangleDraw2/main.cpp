@@ -1,6 +1,6 @@
 #include "BaseExt.h"
 #include "BaseMath.hpp"
-#include "BitmapClass.h"
+#include "Bitmap.hpp"
 #include "Window.h"
 #include "Subgen1.h"
 #include "Print.h"

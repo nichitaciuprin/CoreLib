@@ -1,7 +1,7 @@
 #include "SysHelper.h"
 #include "BaseExt.h"
 #include "BaseMath.hpp"
-#include "BitmapClass.h"
+#include "Bitmap.hpp"
 #include "Window.h"
 
 float scale = 10;

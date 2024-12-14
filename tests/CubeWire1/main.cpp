@@ -1,7 +1,7 @@
 #include "BaseExt.h"
 #include "SysHelper.h"
 #include "BaseMath.hpp"
-#include "BitmapClass.h"
+#include "Bitmap.hpp"
 #include "Window.h"
 
 int main()
