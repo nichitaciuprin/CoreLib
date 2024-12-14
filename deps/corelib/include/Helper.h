@@ -1297,11 +1297,12 @@ static inline Vector3 NdcToWorld(Vector3 p, Matrix projInv)
     return (Vector3){ _p.x, _p.y, _p.z };
 }
 
-static inline bool InFrustum(Vector3 point)
+static inline bool InFrustum(Vector4 p)
 {
-    if (point.z / MathAbs(point.x) < 1) return false;
-    if (point.z / MathAbs(point.y) < 1) return false;
-    return true;
+    return
+    (-p.w <= p.x && p.x <= p.w) &&
+    (-p.w <= p.y && p.y <= p.w) &&
+    (-p.w <= p.z && p.z <= p.w);
 }
 
 static inline void UpdateCameraRotation(Camera* camera, float deltaTime, bool left, bool up, bool down, bool right)

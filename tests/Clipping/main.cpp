@@ -11,13 +11,6 @@ float far = 5;
 Matrix view = MatrixView(Vector3Up(), 0, MathToRadians(-90));
 Matrix proj = MatrixPerspectiveCube(1, 1, near, far);
 
-bool InFrustum(Vector4 p)
-{
-    return
-    (-p.w <= p.x && p.x <= p.w) &&
-    (-p.w <= p.y && p.y <= p.w) &&
-    (-p.w <= p.z && p.z <= p.w);
-}
 Vector4 ToNdcTest(Vector4 v)
 {
     v = v * proj;
