@@ -830,7 +830,7 @@ void BitmapDrawTriangle(Bitmap* instance, Vector3 p0, Vector3 p1, Vector3 p2, Co
         v1[i].z /= v1[i].w;
     }
 
-    // if (!Vector3TriangleIsClockwise(v1[0], v1[1], v1[2])) return;
+    // if (!TriangleIsClockwise(v1[0], v1[1], v1[2])) return;
 
     for (int i = 0; i < vertexCount; i++)
     {

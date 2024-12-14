@@ -1220,7 +1220,7 @@ static inline Vector4 ToQuaternion(Vector3 e)
     return result;
 }
 
-static inline bool Vector3TriangleIsClockwise(Vector3 v0, Vector3 v1, Vector3 v2)
+static inline bool TriangleIsClockwise(Vector3 v0, Vector3 v1, Vector3 v2)
 {
     Vector3 d0 = Vector3Sub(v1, v0);
     Vector3 d1 = Vector3Sub(v2, v0);
