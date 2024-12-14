@@ -1452,37 +1452,6 @@ static inline bool InsideSphere(Vector3 point, Sphere sphere)
     float diffLengthSquared = Vector3LengthSquared(diff);
     return diffLengthSquared <= radiusSquared;
 }
-static inline bool LineSegmentIntersection(Vector3 start, Vector3 end, Sphere sphere)
-{
-    // TODO must be tested
-
-    Vector3 origin = start;
-    Vector3 dir = Vector3Sub(end, start);
-    Vector3 dirNorm = Vector3Normalize(dir);
-
-    Vector3 v1 = Vector3Sub(sphere.position, origin);
-    float v2Length = Vector3Dot(dirNorm, v1);
-    Vector3 v2 = Vector3Mul(dirNorm, v2Length);
-    Vector3 v3 = Vector3Sub(v2, v1);
-    float v3LengthSquared = Vector3LengthSquared(v3);
-    float radiusSquared = sphere.radius * sphere.radius;
-
-    // no intersection
-    if (v3LengthSquared > radiusSquared) return false;
-
-    float offset = MathSqrt(radiusSquared - v3LengthSquared);
-    float dist1 = v2Length - offset;
-    float dist2 = v2Length + offset;
-    float maxDist = MathMaxFloat(dist1, dist2);
-
-    // all points behind
-    if (maxDist < 0) return false;
-
-    // segment is short
-    if (Vector3LengthSquared(dir) < maxDist * maxDist) return false;
-
-    return true;
-}
 
 static inline bool RaycastSphere(Vector3 origin, Vector3 dirNorm, Sphere sphere)
 {
