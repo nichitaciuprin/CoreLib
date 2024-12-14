@@ -3,7 +3,7 @@
 #include "BaseMath.hpp"
 #include "Bitmap.h"
 #include "BitmapResize.h"
-#include "BaseExt.h"
+#include "BaseLang.hpp"
 
 #define MAX_STEPS 100
 #define MAX_DIST 100.0
