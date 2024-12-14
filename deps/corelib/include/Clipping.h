@@ -672,6 +672,14 @@ static inline void ClipPoligonUp(Vector3* input, Vector3* output, int* vertexCou
     *vertexCount = finalCount;
 }
 
+static inline bool InFrustum(Vector4 p)
+{
+    return
+    (-p.w <= p.x && p.x <= p.w) &&
+    (-p.w <= p.y && p.y <= p.w) &&
+    (-p.w <= p.z && p.z <= p.w);
+}
+
 static inline bool ClipLineWClipSpace(Vector4* p0, Vector4* p1)
 {
     int flags = 0;

@@ -1243,14 +1243,6 @@ static inline Vector3 NdcToWorld(Vector3 p, Matrix viewInv, Matrix projInv)
     return p;
 }
 
-static inline bool InFrustum(Vector4 p)
-{
-    return
-    (-p.w <= p.x && p.x <= p.w) &&
-    (-p.w <= p.y && p.y <= p.w) &&
-    (-p.w <= p.z && p.z <= p.w);
-}
-
 static inline Vector3 CameraGetAxisX(Camera* camera)
 {
     Vector3 result = { 1, 0, 0 };
