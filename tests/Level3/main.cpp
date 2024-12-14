@@ -5,9 +5,9 @@
 #include "BitmapResize.h"
 #include "BaseExt.h"
 
-void DrawCube(Bitmap* bitmap, Vector3 position, float time)
+void DrawCube(Bitmap* bitmap, Vector3 position)
 {
-    Vector3 rotation = { 0, time, 0 };
+    Vector3 rotation = { 0, 0, 0 };
     Vector3 scale = { 1, 1, 1 };
 
     BitmapDrawCubeColored(bitmap, position, rotation, scale);
@@ -27,85 +27,31 @@ void DrawPlane(Bitmap* bitmap, Vector3 position)
 }
 void Draw(Bitmap* bitmap, Camera camera)
 {
-    float time = GetTime();
-
     BitmapReset(bitmap);
     BitmapSetView(bitmap, &camera);
 
-    // Vector3 lightPosition = { 0, 10, 0 };
-    // Vector3 lightPosition = { 0, 10, MathPingPong(GetTime()/50, 120) - 10 };
-    // Vector3 lightPosition = camera.position;
-
-    // DrawPlane(bitmap, { 0, 0, 0 });
-    // DrawCube(bitmap, { 0, 0.5f, 0 }, (float)time / 3000);
-
-    // DrawPlane(bitmap, { 0, 0, 100 });
-    // DrawCube(bitmap, { 0, 0.5f, 100 }, (float)time / 600);
-    // DrawCube(bitmap, { 0, 1.5f, 100 }, (float)time / 300);
-
-    // // bridge
-    // {
-    //     Vector3 p0 = { -1, 0,  2 };
-    //     Vector3 p1 = { -1, 0, 95 };
-    //     Vector3 p2 = {  1, 0, 95 };
-    //     Vector3 p3 = {  1, 0,  2 };
-    //     BitmapDrawPoligon(bitmap, p0, p1, p2, p3, COLOR_WHITE);
-    // }
-
-    // BitmapApplyLight(bitmap, lightPosition);
-    // BitmapApplyLight2(bitmap, lightPosition);
-
-    // float size = 5;
-
-    // Vector3 p0 = { +size, 0, +size };
-    // Vector3 p1 = { +size, 0, -size };
-    // Vector3 p2 = { -size, 0, -size };
-
-    // BitmapDrawTriangle(bitmap, p0, p1, p2, COLOR_WHITE);
     DrawPlane(bitmap, { 0, 0, 0 });
-    // DrawCube(bitmap, { 0, 0.5f, 0 }, (float)time / 3000);
-    DrawCube(bitmap, { 0, 0.5f, 0 }, 0);
+    DrawCube(bitmap, { 0, 0.5f, 0 });
 
-    // BitmapCreateSurfacePoints(bitmap);
+    float time = GetTime();
 
-    float x = MathSin(time / 1000) * 4;
-    float z = MathCos(time / 1000) * 4;
+    time /= 1000;
+
+    float x = MathSin(time) * 4;
+    float z = MathCos(time) * 4;
 
     Vector3 lightPosition = { x, 5, z };
 
     BitmapApplyLightAndShadows(bitmap, lightPosition);
 
     BitmapDrawCube(bitmap, lightPosition, {}, { 1, 1, 1 }, COLOR_WHITE);
-    // DrawCube(bitmap, { 0, 0.5f, 0 }, (float)time / 3000);
-
-    // for (size_t i = 0; i < points.size(); i++)
-    // {
-    //     if (i % 100 != 0) continue;
-
-    //     auto p = points[i] + Vector3Up() / 10;
-
-    //     // float size = 5;
-    //     // Vector3 p0 = { +size, 0, +size };
-    //     // Vector3 p1 = { +size, 0, -size };
-    //     // Vector3 p2 = { -size, 0, -size };
-    //     // Vector3 start = p;
-    //     // Vector3 end = lightPosition;
-    //     // Vector3 dirNorm;
-    //     // dirNorm = Vector3Sub(end, start);
-    //     // dirNorm = Vector3Normalize(dirNorm);
-    //     // auto isHit = RaycastTriangleV3(p0, p1, p2, p, dirNorm);
-
-    //     auto isHit = RaycastTriangleAll(p, lightPosition, triangles.data(), triangles.size());
-
-    //     BitmapDrawLineWire(bitmap, lightPosition, p, isHit ? COLOR_RED : COLOR_GREEN);
-    // }
 }
 
 int main()
 {
-    auto size = 256;
+    auto size = 512;
 
-    Bitmap bitmap = BitmapCreate(size, size);
+    auto bitmap = BitmapCreate(size, size);
     auto window = SysWindow_Create(700, 100, size, size);
 
     BitmapSetPerspective(&bitmap, size, size, 0.1f, 1000.0f);
