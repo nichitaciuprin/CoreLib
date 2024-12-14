@@ -1450,95 +1450,6 @@ static inline bool InsideSphere(Vector3 point, Sphere sphere)
     Vector3 diff = Vector3Sub(point, sphere.position);
     return Vector3LengthSquared(diff) <= sphere.radius * sphere.radius;
 }
-static inline bool RaycastFull1(Vector3 origin, Vector3 dirNorm, Sphere sphere)
-{
-    // TODO must be tested
-
-    Vector3 v1 = Vector3Sub(sphere.position, origin);
-    float v2Length = Vector3Dot(dirNorm, v1);
-    Vector3 v2 = Vector3Mul(dirNorm, v2Length);
-    Vector3 v3 = Vector3Sub(v2, v1);
-    float v3LengthSquared = Vector3LengthSquared(v3);
-    float radiusSquared = sphere.radius * sphere.radius;
-
-    // no intersection
-    if (v3LengthSquared > radiusSquared) return false;
-
-    float offset = MathSqrt(radiusSquared - v3LengthSquared);
-
-    float dist1 = v2Length - offset;
-    float dist2 = v2Length + offset;
-
-    Vector3 point1 = Vector3Add(origin, Vector3Mul(dirNorm, dist1));
-    Vector3 point2 = Vector3Add(origin, Vector3Mul(dirNorm, dist2));
-
-    Vector3 normal1 = Vector3Sub(point1, sphere.position);
-    Vector3 normal2 = Vector3Sub(point2, sphere.position);
-
-    normal1 = Vector3Normalize(normal1);
-    normal2 = Vector3Normalize(normal2);
-
-    return true;
-}
-static inline bool RaycastFull2(Vector3 origin, Vector3 dirNorm, Sphere sphere)
-{
-    // TODO must be tested
-
-    Vector3 diff = Vector3Sub(origin, sphere.position);
-    float b = Vector3Dot(dirNorm, diff) * 2;
-    float c = Vector3LengthSquared(diff) - (sphere.radius * sphere.radius);
-    float deltaSquared = b * b - 4 * c;
-
-    // no intersection
-    if (deltaSquared < 0) return false;
-
-    float delta = MathSqrt(deltaSquared);
-
-    float dist1 = (-b - delta) / 2;
-    float dist2 = (-b + delta) / 2;
-
-    Vector3 point1 = Vector3Add(origin, Vector3Mul(dirNorm, dist1));
-    Vector3 point2 = Vector3Add(origin, Vector3Mul(dirNorm, dist2));
-
-    Vector3 normal1 = Vector3Sub(point1, sphere.position);
-    Vector3 normal2 = Vector3Sub(point2, sphere.position);
-
-    normal1 = Vector3Normalize(normal1);
-    normal2 = Vector3Normalize(normal2);
-
-    return true;
-}
-static inline bool Raycast(Vector3 origin, Vector3 dirNorm, Sphere sphere, float* outDistance, Vector3* outPoint, Vector3* outNormal)
-{
-    // TODO must be tested
-    // Assuming the origin is outside the sphere
-
-    Vector3 v1 = Vector3Sub(sphere.position, origin);
-    float v2Length = Vector3Dot(dirNorm, v1);
-
-    // sphere is behind
-    if (v2Length < 0) return false;
-
-    Vector3 v2 = Vector3Mul(dirNorm, v2Length);
-    Vector3 v3 = Vector3Sub(v2, v1);
-    float v3LengthSquared = Vector3LengthSquared(v3);
-    float radiusSquared = sphere.radius * sphere.radius;
-
-    // no intersection
-    if (v3LengthSquared > radiusSquared) return false;
-
-    float offset = MathSqrt(radiusSquared - v3LengthSquared);
-    float dist = v2Length - offset;
-    Vector3 point = Vector3Add(origin, Vector3Mul(dirNorm, dist));
-    Vector3 normal = Vector3Sub(point, sphere.position);
-    normal = Vector3Normalize(normal);
-
-    *outDistance = dist;
-    *outPoint = point;
-    *outNormal = normal;
-
-    return true;
-}
 static inline bool LineSegmentIntersection(Vector3 start, Vector3 end, Sphere sphere)
 {
     // TODO must be tested
@@ -1571,6 +1482,37 @@ static inline bool LineSegmentIntersection(Vector3 start, Vector3 end, Sphere sp
     return true;
 }
 
+static inline bool RaycastSphere(Vector3 origin, Vector3 dirNorm, Sphere sphere)
+{
+    Vector3 v1 = Vector3Sub(sphere.position, origin);
+
+    float v2Length = Vector3Dot(dirNorm, v1);
+
+    Vector3 v2 = Vector3Mul(dirNorm, v2Length);
+    Vector3 v3 = Vector3Sub(v2, v1);
+
+    float v3LengthSquared = Vector3LengthSquared(v3);
+    float radiusSquared = sphere.radius * sphere.radius;
+
+    if (v3LengthSquared > radiusSquared)
+        return false;
+
+    // float offset = MathSqrt(radiusSquared - v3LengthSquared);
+
+    // float dist1 = v2Length - offset;
+    // float dist2 = v2Length + offset;
+
+    // Vector3 point1 = Vector3Add(origin, Vector3Mul(dirNorm, dist1));
+    // Vector3 point2 = Vector3Add(origin, Vector3Mul(dirNorm, dist2));
+
+    // Vector3 normal1 = Vector3Sub(point1, sphere.position);
+    // Vector3 normal2 = Vector3Sub(point2, sphere.position);
+
+    // normal1 = Vector3Normalize(normal1);
+    // normal2 = Vector3Normalize(normal2);
+
+    return true;
+}
 static inline bool RaycastTriangle(Vector3 origin, Vector3 dirNorm, Vector3 v0, Vector3 v1, Vector3 v2)
 {
     Vector3 ab = Vector3Sub(v1, v0);
