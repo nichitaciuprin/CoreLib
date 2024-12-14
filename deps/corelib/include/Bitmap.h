@@ -220,6 +220,27 @@ void BitmapFillSqare(Bitmap* instance, Color color)
     for (int i = yl; i < yr; i++) BitmapSetPixel(instance, xr, i, color);
 }
 
+void BitmapToScreenSpace(Bitmap* instance, Vector3* v)
+{
+    v->y = -v->y;
+    v->x += 1.0f;
+    v->y += 1.0f;
+    v->x /= 2.0f;
+    v->y /= 2.0f;
+    v->x = instance->maxX * v->x;
+    v->y = instance->maxY * v->y;
+}
+void BitmapFromScreenSpace(Bitmap* instance, Vector3* v)
+{
+    v->x /= instance->maxX;
+    v->y /= instance->maxY;
+    v->x *= 2.0f;
+    v->y *= 2.0f;
+    v->x -= 1.0f;
+    v->y -= 1.0f;
+    v->y = -v->y;
+}
+
 void BitmapApplyFade(Bitmap* instance)
 {
     int pixelCount = instance->pixelsSize;
@@ -242,26 +263,6 @@ void BitmapApplyFade(Bitmap* instance)
 
         instance->pixels[i] = color;
     }
-}
-void BitmapToScreenSpace(Bitmap* instance, Vector3* v)
-{
-    v->y = -v->y;
-    v->x += 1.0f;
-    v->y += 1.0f;
-    v->x /= 2.0f;
-    v->y /= 2.0f;
-    v->x = instance->maxX * v->x;
-    v->y = instance->maxY * v->y;
-}
-void BitmapFromScreenSpace(Bitmap* instance, Vector3* v)
-{
-    v->x /= instance->maxX;
-    v->y /= instance->maxY;
-    v->x *= 2.0f;
-    v->y *= 2.0f;
-    v->x -= 1.0f;
-    v->y -= 1.0f;
-    v->y = -v->y;
 }
 void BitmapApplyLight(Bitmap* instance, Vector3 lightPosition)
 {
