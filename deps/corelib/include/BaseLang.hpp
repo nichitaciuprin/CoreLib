@@ -1,5 +1,4 @@
-#ifndef BASEEXT_H
-#define BASEEXT_H
+#pragma once
 
 #include <stdio.h>
 #include <stdlib.h>
@@ -55,5 +54,3 @@ bool try_remove(vector<T>& v, T item)
     }
     return false;
 }
-
-#endif

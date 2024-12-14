@@ -1,5 +1,4 @@
-#ifndef SYSNET_H
-#define SYSNET_H
+#pragma once
 
 #include <stdint.h>
 
@@ -10,5 +9,3 @@ void SysNetUseAnyPort();
 void SysNetUsePort(int port);
 void SysNetSend(uint64_t* addr, char* buffer, int* messageSize);
 void SysNetRecv(uint64_t* addr, char* buffer, int* messageSize);
-
-#endif

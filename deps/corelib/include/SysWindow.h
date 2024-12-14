@@ -1,5 +1,4 @@
-#ifndef SYSWINDOW_H
-#define SYSWINDOW_H
+#pragma once
 
 #include <stdint.h>
 #include <stdbool.h>
@@ -25,5 +24,3 @@ bool SysWindow_KeyDown_DOWN(SysWindow* instance);
 bool SysWindow_KeyDown_RIGHT(SysWindow* instance);
 int SysWindow_GetWidth(SysWindow* instance);
 int SysWindow_GetHeight(SysWindow* instance);
-
-#endif

@@ -1,5 +1,4 @@
-#ifndef SYSHELPER_H
-#define SYSHELPER_H
+#pragma once
 
 #include <stdint.h>
 
@@ -10,5 +9,3 @@ void GetConsolePosition(int* x, int* y);
 void Halt(unsigned long milliseconds);
 void FixedTimeStart();
 void FixedTimeEnd();
-
-#endif

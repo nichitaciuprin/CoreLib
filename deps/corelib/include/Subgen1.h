@@ -1,5 +1,4 @@
-#ifndef SUBGEN1_H
-#define SUBGEN1_H
+#pragma once
 
 #include "Subgen.h"
 
@@ -33,5 +32,3 @@ inline float Subgen1Range(float min, float max)
     _Subgen1Init();
     return SubgenRange(&_Subgen1Instance, min , max);
 }
-
-#endif
