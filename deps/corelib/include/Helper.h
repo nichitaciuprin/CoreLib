@@ -1445,7 +1445,7 @@ static inline Vector3 RandomPointTopFace(Subgen* subgen, Bound* bound)
 
     return (Vector3){ randX, maxY, randZ };
 }
-static inline Vector3 WrapAround(Bound* bound, Vector3 point)
+static inline Vector3 BoundWrapAround(Bound* bound, Vector3 point)
 {
     Vector3 size = BoundSize(bound);
     if      (point.x < BoundMinX(bound)) point.x += size.x;

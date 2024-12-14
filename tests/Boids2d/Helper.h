@@ -188,7 +188,7 @@ Vector2 RandomPointInside(Subgen* subgen, Box* box)
     float y = SubgenRange(subgen, BoxMinY(box), BoxMaxY(box) );
     return (Vector2) { x, y };
 }
-Vector2 WrapAround(Box* box, Vector2 point)
+Vector2 BoundWrapAround(Box* box, Vector2 point)
 {
     Vector2 size = BoxSize(box);
     if      (point.x < BoxMinX(box)) point.x += size.x;

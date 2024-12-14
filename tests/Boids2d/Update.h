@@ -160,7 +160,7 @@ void UpdateBoids(Boid* boids, int boidsLength, Box* box, float deltaTime)
         Vector2 oldVelocity = boid->velocity;
         Vector2 newVelocity = MyVector2MoveTowards(boid->velocity, targetVelocity, acc * deltaTime);
         boid->position = MyVector2UpdatePositionAdvanced(boid->position, oldVelocity, newVelocity, deltaTime);
-        boid->position = WrapAround(box, boid->position);
+        boid->position = BoundWrapAround(box, boid->position);
         boid->velocity = newVelocity;
     }
 }
