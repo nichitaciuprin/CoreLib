@@ -2,7 +2,7 @@
 #include "SysHelper.h"
 #include "BaseMath.hpp"
 #include "Bitmap.hpp"
-#include "Window.h"
+#include "SysWindow.hpp"
 
 int main()
 {

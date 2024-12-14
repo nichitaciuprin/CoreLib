@@ -1,7 +1,7 @@
 #include "BaseLang.hpp"
 #include "BaseMath.hpp"
 #include "Bitmap.hpp"
-#include "Window.h"
+#include "SysWindow.hpp"
 
 void main2()
 {

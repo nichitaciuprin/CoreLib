@@ -1,7 +1,7 @@
 #include "BaseLang.hpp"
 #include "BaseMath.hpp"
 #include "Bitmap.hpp"
-#include "Window.h"
+#include "SysWindow.hpp"
 #include "Subgen1.h"
 #include "Print.h"
 

@@ -2,7 +2,7 @@
 #include "BaseLang.hpp"
 #include "BaseMath.hpp"
 #include "Bitmap.hpp"
-#include "Window.h"
+#include "SysWindow.hpp"
 
 float scale = 10;
 float t;
