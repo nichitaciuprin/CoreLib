@@ -312,8 +312,9 @@ void DrawCube(Vector3 position, Vector3 size, Ray_Color color)
 }
 void DrawBound(const Bound& bound, Ray_Color color)
 {
-    auto center = BoundCenter(&bound);
-    auto size = BoundSize(&bound);
+    Bound bound2 = bound;
+    auto center = BoundCenter(&bound2);
+    auto size = BoundSize(&bound2);
     DrawCube(center, size, RAY_WHITE);
 }
 void DrawSphere(Vector3 position, float radius, Ray_Color color)
