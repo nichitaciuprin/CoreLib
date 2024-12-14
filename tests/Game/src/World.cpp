@@ -42,7 +42,7 @@ void World::Update(float deltaTime)
 {
     if (particlesGroup != nullptr)
     {
-        auto direction = GetAxisZ(&camera);
+        auto direction = CameraGetAxisZ(&camera);
         Vector3 rotation = { camera.pitch, -camera.yaw, 0 };
         Vector3 target = camera.position + direction * 2;
         particlesGroup->Update(deltaTime, target, rotation);
@@ -92,7 +92,7 @@ void World::ToogleGathering()
 
     if (gather)
     {
-        auto direction = GetAxisZ(&camera);
+        auto direction = CameraGetAxisZ(&camera);
         Vector3 target = camera.position + direction * 2;
         particlesGroup = new ParticlesGroup(target, &subgen);
     }
@@ -125,7 +125,7 @@ void World::SetPlayerRotation(Vector2 playerRotation)
 }
 void World::SpawnProjectile()
 {
-    auto direction = GetAxisZ(&camera);
+    auto direction = CameraGetAxisZ(&camera);
     auto position = camera.position + direction / 2;
     auto projectile = make_unique<Projectile>(*worldPhysics, position);
     projectile->SetVelocity(direction * 10);
@@ -146,7 +146,7 @@ void World::PushEnemies()
 }
 void World::CreateMagnet()
 {
-    auto direction = GetAxisZ(&camera);
+    auto direction = CameraGetAxisZ(&camera);
     auto position = camera.position + direction * 2;
     auto magnet = make_shared<Magnet>(position, &subgen);
     magnets.push_back(magnet);
@@ -176,7 +176,7 @@ void World::HandleOneProjectile()
     }
     else
     {
-        auto direction = GetAxisZ(&camera);
+        auto direction = CameraGetAxisZ(&camera);
         if (auto projectileLock = magnetSingle->projectile.lock())
             projectileLock->SetVelocity(direction * 20);
 
@@ -186,7 +186,7 @@ void World::HandleOneProjectile()
 
 void World::UpdatePlayer(float deltaTime)
 {
-    UpdateCameraFps(&camera, playerDirection * deltaTime * 5, playerRotation);
+    CameraUpdateFps(&camera, playerDirection * deltaTime * 5, playerRotation);
 
     camera.position.x = MathClampFloat(camera.position.x, -3.0f,  3.0f);
     camera.position.z = MathClampFloat(camera.position.z, -3.0f, 30.0f);

@@ -1228,21 +1228,21 @@ static inline bool Vector3TriangleIsClockwise(Vector3 p1, Vector3 p2, Vector3 p3
     return crossZ < 0;
 }
 
-static inline Vector3 GetAxisX(Camera* camera)
+static inline Vector3 CameraGetAxisX(Camera* camera)
 {
     Vector3 result = { 1, 0, 0 };
     result = Vector3RotateX(result, camera->pitch);
     result = Vector3RotateY(result, -camera->yaw);
     return result;
 }
-static inline Vector3 GetAxisY(Camera* camera)
+static inline Vector3 CameraGetAxisY(Camera* camera)
 {
     Vector3 result = { 0, 1, 0 };
     result = Vector3RotateX(result, camera->pitch);
     result = Vector3RotateY(result, -camera->yaw);
     return result;
 }
-static inline Vector3 GetAxisZ(Camera* camera)
+static inline Vector3 CameraGetAxisZ(Camera* camera)
 {
     Vector3 result = { 0, 0, 1 };
     result = Vector3RotateX(result, camera->pitch);
@@ -1281,7 +1281,7 @@ static inline bool InFrustum(Vector4 p)
     (-p.w <= p.z && p.z <= p.w);
 }
 
-static inline void UpdateCameraRotation(Camera* camera, float deltaTime, bool left, bool up, bool down, bool right)
+static inline void CameraUpdateRotation(Camera* camera, float deltaTime, bool left, bool up, bool down, bool right)
 {
     float speed = (float)MY_PI;
     float speedDelta = speed * deltaTime;
@@ -1302,7 +1302,7 @@ static inline void UpdateCameraRotation(Camera* camera, float deltaTime, bool le
     if (camera->pitch >  degree) camera->pitch =  degree;
     if (camera->pitch < -degree) camera->pitch = -degree;
 }
-static inline void UpdateCameraRotation2(Camera* camera, float rotX, float rotY)
+static inline void CameraUpdateRotation2(Camera* camera, float rotX, float rotY)
 {
     // inverses horizontal rotation when upsidedown
     // makes movement easy
@@ -1313,11 +1313,11 @@ static inline void UpdateCameraRotation2(Camera* camera, float rotX, float rotY)
     camera->yaw += rotX;
     camera->pitch += rotY;
 }
-static inline void UpdateCameraPosition(Camera* camera, float deltaTime, bool w, bool a, bool s, bool d, bool e, bool q)
+static inline void CameraUpdatePosition(Camera* camera, float deltaTime, bool w, bool a, bool s, bool d, bool e, bool q)
 {
-    Vector3 x = GetAxisX(camera);
-    Vector3 y = GetAxisY(camera);
-    Vector3 z = GetAxisZ(camera);
+    Vector3 x = CameraGetAxisX(camera);
+    Vector3 y = CameraGetAxisY(camera);
+    Vector3 z = CameraGetAxisZ(camera);
 
     float speed = 50.0f;
     float speedDelta = speed * deltaTime;
@@ -1333,13 +1333,13 @@ static inline void UpdateCameraPosition(Camera* camera, float deltaTime, bool w,
     if (w) camera->position = Vector3Add      (camera->position, z);
     if (s) camera->position = Vector3Sub (camera->position, z);
 }
-static inline void UpdateCameraPosition2(Camera* camera, Vector3 move)
+static inline void CameraUpdatePosition2(Camera* camera, Vector3 move)
 {
     // TODO double check it works
 
-    Vector3 x = GetAxisX(camera);
-    Vector3 y = GetAxisY(camera);
-    Vector3 z = GetAxisZ(camera);
+    Vector3 x = CameraGetAxisX(camera);
+    Vector3 y = CameraGetAxisY(camera);
+    Vector3 z = CameraGetAxisZ(camera);
 
     x.x *= move.x; x.y *= move.x; x.z *= move.x;
     y.x *= move.y; y.y *= move.y; y.z *= move.y;
@@ -1350,7 +1350,7 @@ static inline void UpdateCameraPosition2(Camera* camera, Vector3 move)
     camera->position = Vector3Add(camera->position, x);
 }
 
-static inline void UpdateCameraFpsRotation(Camera* camera, Vector2 rot)
+static inline void CameraUpdateFpsRotation(Camera* camera, Vector2 rot)
 {
     camera->yaw += rot.x;
     camera->pitch += rot.y;
@@ -1360,7 +1360,7 @@ static inline void UpdateCameraFpsRotation(Camera* camera, Vector2 rot)
 
     camera->pitch = MathClampFloat(camera->pitch, MathToRadians(-90.0f), MathToRadians(90.0f));
 }
-static inline void UpdateCameraFpsMovement(Camera* camera, Vector2 move)
+static inline void CameraUpdateFpsMovement(Camera* camera, Vector2 move)
 {
     Vector3 up = { 0, 1, 0 };
     Vector3 forward = { 0, 0, 1 };
@@ -1377,10 +1377,10 @@ static inline void UpdateCameraFpsMovement(Camera* camera, Vector2 move)
     camera->position = Vector3Add(camera->position, forward);
     camera->position = Vector3Add(camera->position, right);
 }
-static inline void UpdateCameraFps(Camera* camera, Vector2 move, Vector2 rot)
+static inline void CameraUpdateFps(Camera* camera, Vector2 move, Vector2 rot)
 {
-    UpdateCameraFpsRotation(camera, rot);
-    UpdateCameraFpsMovement(camera, move);
+    CameraUpdateFpsRotation(camera, rot);
+    CameraUpdateFpsMovement(camera, move);
 }
 
 static inline float BoundMinX(Bound* bound)

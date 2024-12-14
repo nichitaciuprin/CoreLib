@@ -565,7 +565,7 @@ inline Matrix MatrixPerspective(float width, float height, float zNear, float zF
         0, 0, b, 0
     };
 }
-void UpdateCameraRotation(Camera* camera, float deltaTime, bool left, bool up, bool down, bool right)
+void CameraUpdateRotation(Camera* camera, float deltaTime, bool left, bool up, bool down, bool right)
 {
     float speed = (float)M_PI;
     float speedDelta = speed * deltaTime;
@@ -585,7 +585,7 @@ void UpdateCameraRotation(Camera* camera, float deltaTime, bool left, bool up, b
     if (camera->pitch >  degree) camera->pitch =  degree;
     if (camera->pitch < -degree) camera->pitch = -degree;
 }
-void UpdateCameraPosition(Camera* camera, float deltaTime, bool w, bool a, bool s, bool d, bool e, bool q)
+void CameraUpdatePosition(Camera* camera, float deltaTime, bool w, bool a, bool s, bool d, bool e, bool q)
 {
     Matrix matrix = MatrixView(camera);
 

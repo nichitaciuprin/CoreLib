@@ -149,8 +149,8 @@ int main()
         auto e = SysWindow_KeyDown_E(window);
         auto q = SysWindow_KeyDown_Q(window);
 
-        UpdateCameraRotation(&camera, 0.0230f, left, up, down, right);
-        UpdateCameraPosition(&camera, 0.0080f, w, a, s, d, e, q);
+        CameraUpdateRotation(&camera, 0.0230f, left, up, down, right);
+        CameraUpdatePosition(&camera, 0.0080f, w, a, s, d, e, q);
 
         Draw(&bitmap, camera);
 
