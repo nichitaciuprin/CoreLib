@@ -27,6 +27,8 @@ typedef struct Bitmap
     Matrix view;
     Matrix proj;
     float near;
+    Vector3 verteces[300];
+    int vertecesCount = 0;
 }
 Bitmap;
 
@@ -86,8 +88,28 @@ void BitmapResize(Bitmap* instance, int width, int height)
     instance->zbufferSize = size;
 }
 
+void BitmapTrianglesAdd(Bitmap* instance, Vector3 p0, Vector3 p1, Vector3 p2)
+{
+    int vertecesCount = instance->vertecesCount;
+    int traingleCount = vertecesCount / 3;
+
+    if (traingleCount == 300) return;
+
+    Vector3* verteces = instance->verteces;
+
+    verteces[vertecesCount] = p0; vertecesCount++;
+    verteces[vertecesCount] = p1; vertecesCount++;
+    verteces[vertecesCount] = p2; vertecesCount++;
+}
+void BitmapTrianglesClear(Bitmap* instance)
+{
+    instance->vertecesCount = 0;
+}
+
 void BitmapReset(Bitmap* instance)
 {
+    BitmapTrianglesClear(instance);
+
     int pixelCount = instance->pixelsSize;
 
     memset((void*)instance->pixels, 0, pixelCount * sizeof(uint32_t));
@@ -744,6 +766,8 @@ void BitmapDrawSphereWire(Bitmap* instance, Vector3 position, Vector3 rotation, 
 
 void BitmapDrawTriangle(Bitmap* instance, Vector3 p0, Vector3 p1, Vector3 p2, Color color)
 {
+    BitmapTrianglesAdd(instance, p0, p1, p2);
+
     Matrix view = instance->view;
     Matrix proj = instance->proj;
 
