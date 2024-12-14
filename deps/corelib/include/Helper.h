@@ -1571,7 +1571,7 @@ static inline bool LineSegmentIntersection(Vector3 start, Vector3 end, Sphere sp
     return true;
 }
 
-static inline bool RaycastTriangle(Vector3 v0, Vector3 v1, Vector3 v2, Vector3 origin, Vector3 dirNorm)
+static inline bool RaycastTriangle(Vector3 origin, Vector3 dirNorm, Vector3 v0, Vector3 v1, Vector3 v2)
 {
     Vector3 ab = Vector3Sub(v1, v0);
     Vector3 ac = Vector3Sub(v2, v0);
@@ -1685,7 +1685,7 @@ static inline float CalcLightAndShadow(Vector3 position, Vector3 lightPosition, 
         Vector3 v1 = verteces[offset+1];
         Vector3 v2 = verteces[offset+2];
 
-        bool hit = RaycastTriangle(v0, v1, v2, position, dirNorm);
+        bool hit = RaycastTriangle(position, dirNorm, v0, v1, v2);
         if (hit)
             return 0.0f;
     }
