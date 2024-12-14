@@ -1084,7 +1084,7 @@ static inline Matrix MatrixView2(Vector3 eye, Vector3 target, Vector3 up)
 
     return result;
 }
-static inline Matrix MatrixView3(const Camera* camera)
+static inline Matrix MatrixView3(Camera* camera)
 {
     return MatrixView(camera->position, camera->yaw, camera->pitch);
 }
