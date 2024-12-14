@@ -8,7 +8,7 @@
 
 #include "SysHelper.h"
 #include "SysWindow.h"
-#include "Helper.h"
+#include "BaseMath.h"
 #include "Bitmap.h"
 #include "BitmapResize.h"
 

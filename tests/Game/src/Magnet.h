@@ -1,7 +1,7 @@
 #ifndef MAGNET_H
 #define MAGNET_H
 
-#include "Helper.h"
+#include "BaseMath.h"
 
 #include <stdio.h>
 #include <stdlib.h>

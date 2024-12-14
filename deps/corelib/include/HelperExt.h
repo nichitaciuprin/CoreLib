@@ -1,6 +1,6 @@
 #pragma once
 
-#include "Helper.h"
+#include "BaseMath.h"
 
 inline bool operator == (Vector2 l, Vector2 r) { return Vector2Equal(l, r); }
 inline bool operator == (Vector3 l, Vector3 r) { return Vector3Equal(l, r); }

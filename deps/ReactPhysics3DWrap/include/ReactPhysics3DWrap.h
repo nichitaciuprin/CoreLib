@@ -1,7 +1,7 @@
 #ifndef REACTPHYSICS3DWRAP_H
 #define REACTPHYSICS3DWRAP_H
 
-#include <Helper.h>
+#include "BaseMath.h"
 #include <reactphysics3d/reactphysics3d.h>
 
 namespace rp3d = reactphysics3d;

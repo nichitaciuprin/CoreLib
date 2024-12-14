@@ -1,7 +1,7 @@
 #ifndef ENEMY_H
 #define ENEMY_H
 
-#include "Helper.h"
+#include "BaseMath.h"
 
 class WorldPhysics;
 

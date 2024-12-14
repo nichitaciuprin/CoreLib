@@ -1,6 +1,6 @@
 #pragma once
 
-#include "Helper.h"
+#include "BaseMath.h"
 
 // about clipping in clip space
 // clipping result has float errors
