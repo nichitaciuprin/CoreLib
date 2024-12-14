@@ -2,7 +2,6 @@
 
 #include <stdbool.h>
 #include <math.h>
-#include "Subgen.h"
 
 #define MY_PI        (float)3.14159265358979323846
 #define MY_PI_MUL_2  (float)6.28318530717958647692
