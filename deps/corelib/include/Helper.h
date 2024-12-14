@@ -1340,7 +1340,6 @@ static inline void CameraUpdatePosition2(Camera* camera, Vector3 move)
     camera->position = Vector3Add(camera->position, y);
     camera->position = Vector3Add(camera->position, x);
 }
-
 static inline void CameraUpdateFpsRotation(Camera* camera, Vector2 rot)
 {
     camera->yaw += rot.x;
