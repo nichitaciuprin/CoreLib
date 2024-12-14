@@ -1228,28 +1228,6 @@ static inline bool Vector3TriangleIsClockwise(Vector3 v0, Vector3 v1, Vector3 v2
     return crossZ < 0;
 }
 
-static inline Vector3 CameraGetAxisX(Camera* camera)
-{
-    Vector3 result = { 1, 0, 0 };
-    result = Vector3RotateX(result, camera->pitch);
-    result = Vector3RotateY(result, -camera->yaw);
-    return result;
-}
-static inline Vector3 CameraGetAxisY(Camera* camera)
-{
-    Vector3 result = { 0, 1, 0 };
-    result = Vector3RotateX(result, camera->pitch);
-    result = Vector3RotateY(result, -camera->yaw);
-    return result;
-}
-static inline Vector3 CameraGetAxisZ(Camera* camera)
-{
-    Vector3 result = { 0, 0, 1 };
-    result = Vector3RotateX(result, camera->pitch);
-    result = Vector3RotateY(result, -camera->yaw);
-    return result;
-}
-
 static inline Vector3 WorldToNdc(Vector3 p, Matrix view, Matrix proj)
 {
     p = MatrixMultiply3L(p, view);
@@ -1281,6 +1259,27 @@ static inline bool InFrustum(Vector4 p)
     (-p.w <= p.z && p.z <= p.w);
 }
 
+static inline Vector3 CameraGetAxisX(Camera* camera)
+{
+    Vector3 result = { 1, 0, 0 };
+    result = Vector3RotateX(result, camera->pitch);
+    result = Vector3RotateY(result, -camera->yaw);
+    return result;
+}
+static inline Vector3 CameraGetAxisY(Camera* camera)
+{
+    Vector3 result = { 0, 1, 0 };
+    result = Vector3RotateX(result, camera->pitch);
+    result = Vector3RotateY(result, -camera->yaw);
+    return result;
+}
+static inline Vector3 CameraGetAxisZ(Camera* camera)
+{
+    Vector3 result = { 0, 0, 1 };
+    result = Vector3RotateX(result, camera->pitch);
+    result = Vector3RotateY(result, -camera->yaw);
+    return result;
+}
 static inline void CameraUpdateRotation(Camera* camera, float deltaTime, bool left, bool up, bool down, bool right)
 {
     float speed = (float)MY_PI;
