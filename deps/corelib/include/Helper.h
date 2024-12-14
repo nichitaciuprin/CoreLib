@@ -1448,7 +1448,9 @@ static inline Vector3 BoundShortPathIn(Bound* bound, Vector3 point)
 static inline bool InsideSphere(Vector3 point, Sphere sphere)
 {
     Vector3 diff = Vector3Sub(point, sphere.position);
-    return Vector3LengthSquared(diff) <= sphere.radius * sphere.radius;
+    float radiusSquared = sphere.radius * sphere.radius;
+    float diffLengthSquared = Vector3LengthSquared(diff);
+    return diffLengthSquared <= radiusSquared;
 }
 static inline bool LineSegmentIntersection(Vector3 start, Vector3 end, Sphere sphere)
 {
