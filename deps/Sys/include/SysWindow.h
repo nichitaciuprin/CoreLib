@@ -3,6 +3,10 @@
 #include <stdint.h>
 #include <stdbool.h>
 
+#ifdef __cplusplus
+extern "C" {
+#endif
+
 typedef struct SysWindow SysWindow;
 SysWindow* SysWindowCreate(int x, int y, int clientWidth, int clientHeight);
 bool SysWindowExists(SysWindow* instance);
@@ -24,3 +28,7 @@ bool SysWindowKeyDownDOWN(SysWindow* instance);
 bool SysWindowKeyDownRIGHT(SysWindow* instance);
 int SysWindowGetWidth(SysWindow* instance);
 int SysWindowGetHeight(SysWindow* instance);
+
+#ifdef __cplusplus
+}
+#endif
