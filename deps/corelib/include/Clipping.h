@@ -672,7 +672,7 @@ static inline void ClipPoligonUp(Vector3* input, Vector3* output, int* vertexCou
     *vertexCount = finalCount;
 }
 
-static inline bool InFrustum(Vector4 p)
+static inline bool ClipInFrustum(Vector4 p)
 {
     return
     (-p.w <= p.x && p.x <= p.w) &&
