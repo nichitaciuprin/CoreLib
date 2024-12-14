@@ -1548,7 +1548,7 @@ static inline float Barycentric(Vector3 v0, Vector3 v1, Vector3 v2, float x, flo
     return l1 * v0.z + l2 * v1.z + l3 * v2.z;
 }
 
-static inline Pose GetLocalPose(Pose parentWorld, Pose childWorld)
+static inline Pose PoseGetLocal(Pose parentWorld, Pose childWorld)
 {
     childWorld.rotation = Vector3Sub(childWorld.rotation, parentWorld.rotation);
     childWorld.position = Vector3Sub(childWorld.position, parentWorld.position);
@@ -1557,7 +1557,7 @@ static inline Pose GetLocalPose(Pose parentWorld, Pose childWorld)
     childWorld.position = Vector3RotateX(childWorld.position, -parentWorld.rotation.x);
     return childWorld;
 }
-static inline Pose GetWorldPose(Pose parentWorld, Pose childLocal)
+static inline Pose PoseGetWorld(Pose parentWorld, Pose childLocal)
 {
     childLocal.position = Vector3RotateX(childLocal.position, parentWorld.rotation.x);
     childLocal.position = Vector3RotateY(childLocal.position, parentWorld.rotation.y);

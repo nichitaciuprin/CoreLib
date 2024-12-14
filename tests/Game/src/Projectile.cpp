@@ -43,7 +43,7 @@ void Projectile::Update(float deltaTime)
 
     auto pose1 = parent->GetPose();
     auto pose2 = localPosition;
-    auto pose3 = GetWorldPose(pose1, pose2);
+    auto pose3 = PoseGetWorld(pose1, pose2);
     this->rigidBody->SetPose(pose3);
 }
 void Projectile::SetParent(Enemy* parent)
@@ -56,7 +56,7 @@ void Projectile::SetParent(Enemy* parent)
     auto pose2 = child->rigidBody->GetPose();
 
     this->parent = parent;
-    this->localPosition = GetLocalPose(pose1, pose2);
+    this->localPosition = PoseGetLocal(pose1, pose2);
 }
 Enemy* Projectile::GetParent() const
 {
