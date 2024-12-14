@@ -31,27 +31,8 @@ void Draw(Bitmap* bitmap, Camera camera)
     BitmapReset(bitmap);
     BitmapSetView(bitmap, &camera);
 
-    // Vector3 lightPosition = { 0, 10, 0 };
-    // Vector3 lightPosition = { 0, 10, MathPingPong(GetTime()/50, 120) - 10 };
-    Vector3 lightPosition = camera.position;
-
     DrawPlane(bitmap, { 0, 0, 0 });
     DrawCube(bitmap, { 0, 0.5f, 0 }, (float)time / 3000);
-
-    DrawPlane(bitmap, { 0, 0, 100 });
-    DrawCube(bitmap, { 0, 0.5f, 100 }, (float)time / 600);
-    DrawCube(bitmap, { 0, 1.5f, 100 }, (float)time / 300);
-
-    // bridge
-    {
-        Vector3 p0 = { -1, 0,  2 };
-        Vector3 p1 = { -1, 0, 95 };
-        Vector3 p2 = {  1, 0, 95 };
-        Vector3 p3 = {  1, 0,  2 };
-        BitmapDrawPoligon(bitmap, p0, p1, p2, p3, COLOR_WHITE);
-    }
-
-    BitmapApplyLight(bitmap, lightPosition);
 }
 
 int main()
