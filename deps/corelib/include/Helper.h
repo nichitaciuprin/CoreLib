@@ -1423,21 +1423,6 @@ static inline Vector3 BoundCenter(const Bound* bound)
     return result;
 }
 
-static inline Vector3 RandomPointTopFace(Subgen* subgen, Bound* bound)
-{
-    float maxY = BoundMaxY(bound);
-
-    float minX = BoundMinX(bound);
-    float maxX = BoundMaxX(bound);
-
-    float minZ = BoundMinZ(bound);
-    float maxZ = BoundMaxZ(bound);
-
-    float randX = SubgenRange(subgen, minX, maxX);
-    float randZ = SubgenRange(subgen, minZ, maxZ);
-
-    return (Vector3){ randX, maxY, randZ };
-}
 static inline Vector3 BoundWrapAround(Bound* bound, Vector3 point)
 {
     Vector3 size = BoundSize(bound);
