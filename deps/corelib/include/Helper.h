@@ -1220,11 +1220,11 @@ static inline Vector4 ToQuaternion(Vector3 e)
     return result;
 }
 
-static inline bool Vector3TriangleIsClockwise(Vector3 p1, Vector3 p2, Vector3 p3)
+static inline bool Vector3TriangleIsClockwise(Vector3 v0, Vector3 v1, Vector3 v2)
 {
-    Vector3 v1 = Vector3Sub(p2, p1);
-    Vector3 v2 = Vector3Sub(p3, p1);
-    float crossZ = v1.x*v2.y - v1.y*v2.x;
+    Vector3 d0 = Vector3Sub(v1, v0);
+    Vector3 d1 = Vector3Sub(v2, v0);
+    float crossZ = d0.x*d1.y - d0.y*d1.x;
     return crossZ < 0;
 }
 
@@ -1613,28 +1613,28 @@ static inline bool RaycastTriangle(Vector3 v0, Vector3 v1, Vector3 v2, Vector3 o
     return true;
 }
 
-static inline float GetArea(Vector3 v1, Vector3 v2, Vector3 v3)
+static inline float GetArea(Vector3 v0, Vector3 v1, Vector3 v2)
 {
-    int r1 = (int)v1.x * ((int)v2.y - (int)v3.y);
-    int r2 = (int)v2.x * ((int)v3.y - (int)v1.y);
-    int r3 = (int)v3.x * ((int)v1.y - (int)v2.y);
+    int r1 = (int)v0.x * ((int)v1.y - (int)v2.y);
+    int r2 = (int)v1.x * ((int)v2.y - (int)v0.y);
+    int r3 = (int)v2.x * ((int)v0.y - (int)v1.y);
     return abs((r1 + r2 + r3) / 2.0f);
 }
-static inline bool IsInside(Vector3 v1, Vector3 v2, Vector3 v3, Vector3 p)
+static inline bool IsInside(Vector3 v0, Vector3 v1, Vector3 v2, Vector3 p)
 {
-    float A0 = GetArea(v1, v2, v3);
-    float A1 = GetArea( p, v2, v3);
-    float A2 = GetArea(v1,  p, v3);
-    float A3 = GetArea(v1, v2,  p);
+    float A0 = GetArea(v0, v1, v2);
+    float A1 = GetArea( p, v1, v2);
+    float A2 = GetArea(v0,  p, v2);
+    float A3 = GetArea(v0, v1,  p);
     return A0 == (A1 + A2 + A3);
 }
-static inline float Barycentric(Vector3 p1, Vector3 p2, Vector3 p3, float x, float y)
+static inline float Barycentric(Vector3 v0, Vector3 v1, Vector3 v2, float x, float y)
 {
-    float det = (p2.y - p3.y) * (p1.x - p3.x) + (p3.x - p2.x) * (p1.y - p3.y);
-    float l1 = ((p2.y - p3.y) * (x - p3.x) + (p3.x - p2.x) * (y - p3.y)) / det;
-    float l2 = ((p3.y - p1.y) * (x - p3.x) + (p1.x - p3.x) * (y - p3.y)) / det;
+    float det = (v1.y - v2.y) * (v0.x - v2.x) + (v2.x - v1.x) * (v0.y - v2.y);
+    float l1 = ((v1.y - v2.y) * (x - v2.x) + (v2.x - v1.x) * (y - v2.y)) / det;
+    float l2 = ((v2.y - v0.y) * (x - v2.x) + (v0.x - v2.x) * (y - v2.y)) / det;
     float l3 = 1.0f - l1 - l2;
-    return l1 * p1.z + l2 * p2.z + l3 * p3.z;
+    return l1 * v0.z + l2 * v1.z + l3 * v2.z;
 }
 
 static inline Pose GetLocalPose(Pose parentWorld, Pose childWorld)
@@ -1682,11 +1682,11 @@ static inline float CalcLightAndShadow(Vector3 position, Vector3 lightPosition, 
     {
         int offset = i * 3;
 
-        Vector3 p0 = verteces[offset+0];
-        Vector3 p1 = verteces[offset+1];
-        Vector3 p2 = verteces[offset+2];
+        Vector3 v0 = verteces[offset+0];
+        Vector3 v1 = verteces[offset+1];
+        Vector3 v2 = verteces[offset+2];
 
-        bool hit = RaycastTriangle(p0, p1, p2, position, dirNorm);
+        bool hit = RaycastTriangle(v0, v1, v2, position, dirNorm);
         if (hit)
             return 0.0f;
     }
