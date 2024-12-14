@@ -293,6 +293,36 @@ void BitmapApplyLight(Bitmap* instance, Vector3 lightPosition)
         instance->pixels[i] = ColorSetLightValueF(instance->pixels[i], t);
     }
 }
+void BitmapApplyLightAndShadows(Bitmap* instance, Vector3 lightPosition)
+{
+    int width = instance->width;
+    int height = instance->height;
+
+    Matrix view = instance->view;
+    Matrix proj = instance->proj;
+
+    Matrix viewi = MatrixInvert(view);
+    Matrix proji = MatrixInvert(proj);
+
+    for (int y = 0; y < height; y++)
+    for (int x = 0; x < width; x++)
+    {
+        int i = x + y * width;
+        float z = instance->zbuffer[i];
+
+        if (z == FLT_MAX) continue;
+
+        z -= 1.0f;
+        Vector3 p = { (float)x, (float)y, z };
+        BitmapFromScreenSpace(instance, &p);
+
+        p = NdcToWorld(p, viewi, proji);
+
+        float t = CalcLightAndShadow(p, lightPosition, instance->verteces, instance->vertecesCount);
+
+        instance->pixels[i] = ColorSetLightValueF(instance->pixels[i], t);
+    }
+}
 
 void BitmapDrawLineScreenSpaceV1(Bitmap* instance, Vector3 v0, Vector3 v1, Color color)
 {
