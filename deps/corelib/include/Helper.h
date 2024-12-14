@@ -1697,3 +1697,45 @@ static inline Pose GetWorldPose(Pose parentWorld, Pose childLocal)
     childLocal.rotation = Vector3Add(childLocal.rotation, parentWorld.rotation);
     return childLocal;
 }
+
+static inline float CalcLight(Vector3 position, Vector3 lightPosition)
+{
+    Vector3 dirNorm;
+
+    dirNorm = Vector3Sub(lightPosition, position);
+    dirNorm = Vector3Normalize(dirNorm);
+
+    float dist = Vector3Distance(position, lightPosition);
+    float maxDist = 10;
+    float t = 1 - MathClampFloat(dist / maxDist, 0, 1);
+
+    return t;
+}
+static inline float CalcLightAndShadow(Vector3 position, Vector3 lightPosition, Vector3* verteces, int vertexCount)
+{
+    Vector3 dirNorm;
+
+    dirNorm = Vector3Sub(lightPosition, position);
+    dirNorm = Vector3Normalize(dirNorm);
+
+    int triangleCount = vertexCount / 3;
+
+    for (int i = 0; i < triangleCount; i++)
+    {
+        int offset = i * 3;
+
+        Vector3 p0 = verteces[offset+0];
+        Vector3 p1 = verteces[offset+1];
+        Vector3 p2 = verteces[offset+2];
+
+        bool hit = RaycastTriangle(p0, p1, p2, position, dirNorm);
+        if (hit)
+            return 0.0f;
+    }
+
+    float dist = Vector3Distance(position, lightPosition);
+    float maxDist = 10;
+    float t = 1 - MathClampFloat(dist / maxDist, 0, 1);
+
+    return t;
+}
