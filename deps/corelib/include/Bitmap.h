@@ -600,7 +600,7 @@ void BitmapDrawTriangleScreenspaceV1(Bitmap* instance, Vector3 v0, Vector3 v1, V
     for (int y = minY; y <= maxY; y++)
     {
         Vector3 v = { (float)x, (float)y, 0 };
-        if (!IsInside(v0, v1, v2, v)) continue;
+        if (!TriangleIsInside(v0, v1, v2, v)) continue;
         float z = Barycentric(v0, v1, v2, x, y);
         BitmapSetPixelZ(instance, x, y, z, color);
     }

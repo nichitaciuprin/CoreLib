@@ -1531,7 +1531,7 @@ static inline float GetArea(Vector3 v0, Vector3 v1, Vector3 v2)
     int r3 = (int)v2.x * ((int)v0.y - (int)v1.y);
     return abs((r1 + r2 + r3) / 2.0f);
 }
-static inline bool IsInside(Vector3 v0, Vector3 v1, Vector3 v2, Vector3 p)
+static inline bool TriangleIsInside(Vector3 v0, Vector3 v1, Vector3 v2, Vector3 p)
 {
     float A0 = GetArea(v0, v1, v2);
     float A1 = GetArea( p, v1, v2);
