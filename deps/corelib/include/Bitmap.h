@@ -96,6 +96,8 @@ void BitmapTrianglesAdd(Bitmap* instance, Vector3 p0, Vector3 p1, Vector3 p2)
     verteces[vertecesCount] = p0; vertecesCount++;
     verteces[vertecesCount] = p1; vertecesCount++;
     verteces[vertecesCount] = p2; vertecesCount++;
+
+    instance->vertecesCount = vertecesCount;
 }
 void BitmapTrianglesClear(Bitmap* instance)
 {
