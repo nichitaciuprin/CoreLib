@@ -274,8 +274,8 @@ void BitmapApplyLight(Bitmap* instance, Vector3 lightPosition)
     Matrix viewi = MatrixInvert(view);
     Matrix proji = MatrixInvert(proj);
 
-    for (int x = 0; x < width; x++)
     for (int y = 0; y < height; y++)
+    for (int x = 0; x < width; x++)
     {
         int i = x + y * width;
         float z = instance->zbuffer[i];
@@ -286,11 +286,9 @@ void BitmapApplyLight(Bitmap* instance, Vector3 lightPosition)
         Vector3 p = { (float)x, (float)y, z };
         BitmapFromScreenSpace(instance, &p);
 
-        p = NdcToWorld(p, proji);
-        p = MatrixMultiply3L(p, viewi);
+        p = NdcToWorld(p, viewi, proji);
 
-        float dist = Vector3Distance(lightPosition, p) / 13;
-        float t = 1 - MathClampFloat(dist, 0, 1);
+        float t = CalcLight(p, lightPosition);
 
         instance->pixels[i] = ColorSetLightValueF(instance->pixels[i], t);
     }
