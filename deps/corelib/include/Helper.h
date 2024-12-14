@@ -1444,7 +1444,7 @@ static inline Vector3 BoundShortPathIn(Bound* bound, Vector3 point)
     return result;
 }
 
-static inline bool InsideSphere(Vector3 point, Sphere sphere)
+static inline bool SpherePointInside(Sphere sphere, Vector3 point)
 {
     Vector3 diff = Vector3Sub(point, sphere.position);
     float radiusSquared = sphere.radius * sphere.radius;
