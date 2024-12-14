@@ -2,10 +2,6 @@
 
 #include "Helper.h"
 
-// https://fabiensanglard.net/polygon_codec/
-// https://fabiensanglard.net/polygon_codec/clippingdocument/p245-blinn.pdf
-// https://fabiensanglard.net/polygon_codec/clippingdocument/Clipping.pdf
-
 // about clipping in clip space
 // clipping result has float errors
 // after division by w, clamp verteces to ndc

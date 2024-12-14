@@ -1,31 +1,3 @@
-// https://www.youtube.com/watch?v=pThw0S8MR7w&t=3s
-// https://www.youtube.com/watch?v=t7Ztio8cwqM
-// https://www.youtube.com/watch?v=4p-E_31XOPM
-// https://www.youtube.com/watch?v=PahbNFypubE&ab_channel=Bisqwit
-// https://www.youtube.com/watch?v=hxOw_p0kLfI&t=346s&ab_channel=Bisqwit
-// https://www.youtube.com/watch?v=NYW1TKZG-58&ab_channel=CedricMartens
-// https://www.youtube.com/watch?v=f4s1h2YETNY&ab_channel=kishimisu
-// https://www.scratchapixel.com/lessons/3d-basic-rendering/perspective-and-orthographic-projection-matrix/projection-matrix-GPU-rendering-pipeline-clipping.html
-// https://www.mdpi.com/1999-4893/16/4/201
-// https://www.braynzarsoft.net/viewtutorial/q16390-transformations-and-world-view-projection-space-matrices
-// https://www.ijirt.org/master/publishedpaper/IJIRT100119_PAPER.pdf
-// https://carmencincotti.com/2022-11-28/from-clip-space-to-ndc-space/
-// https://groups.csail.mit.edu/graphics/classes/6.837/F04/lectures/07_Pipeline_II.pdf
-// https://gabrielgambetta.com/computer-graphics-from-scratch/11-clipping.html
-// https://www.youtube.com/watch?v=HXSuNxpCzdM&ab_channel=javidx9
-// http://www.sunshine2k.de/coding/java/TriangleRasterization/TriangleRasterization.html
-// https://developer.nvidia.com/gpugems/gpugems2/part-v-image-oriented-computing/chapter-42-conservative-rasterization
-// https://jpcharalambosh.co/posts/blur/
-// https://jpcharalambosh.co/posts/ndc/#update
-// http://www.songho.ca/opengl/gl_projectionmatrix.html#infinite
-// https://rao.im/computer%20graphics/2022/03/03/prospective-projection/
-// https://www.inf.ed.ac.uk/teaching/courses/cg/lectures/cg6_2013.pdf
-// https://www.shadertoy.com/view/lsBSDm
-// https://en.wikipedia.org/wiki/Bilinear_interpolation    inverse bilinear interpolation
-// https://iquilezles.org/articles/ibilinear/
-// https://www.youtube.com/watch?v=VMD7fsCYO9o
-// http://www.cs.ucr.edu/~shinar/courses/cs130-winter-2019/content/clipping.pdf
-
 #pragma once
 
 #include <stdbool.h>

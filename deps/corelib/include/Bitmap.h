@@ -1,9 +1,5 @@
 #pragma once
 
-// https://www.youtube.com/results?search_query=shadow+volume
-// https://www.youtube.com/watch?v=QCIKgyL3ePo
-// https://www.youtube.com/watch?v=oO0LJWy5COg
-
 #include "stdlib.h"
 #include "stdint.h"
 #include "float.h"
