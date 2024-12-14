@@ -24,7 +24,7 @@ typedef struct Bitmap
     Matrix proj;
     float near;
     Vector3 verteces[300];
-    int vertecesCount = 0;
+    int vertecesCount;
 }
 Bitmap;
 
@@ -53,6 +53,8 @@ Bitmap BitmapCreate(int width, int height)
     instance.proj = MatrixIdentity();
 
     instance.near = 0;
+
+    instance.vertecesCount = 0;
 
     return instance;
 }

@@ -1227,7 +1227,7 @@ static inline Vector3 WorldToNdc(Vector3 p, Matrix view, Matrix proj)
     _p.x /= _p.w;
     _p.y /= _p.w;
     _p.z /= _p.w;
-    p = { _p.x, _p.y, _p.z };
+    p = (Vector3){ _p.x, _p.y, _p.z };
     return p;
 }
 static inline Vector3 NdcToWorld(Vector3 p, Matrix viewInv, Matrix projInv)
@@ -1237,7 +1237,7 @@ static inline Vector3 NdcToWorld(Vector3 p, Matrix viewInv, Matrix projInv)
     _p.x /= _p.w;
     _p.y /= _p.w;
     _p.z /= _p.w;
-    p = { _p.x, _p.y, _p.z };
+    p = (Vector3){ _p.x, _p.y, _p.z };
     p = MatrixMultiply3L(p, viewInv);
     return p;
 }

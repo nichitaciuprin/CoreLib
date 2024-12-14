@@ -90,8 +90,8 @@ int main()
         bool e = SysWindowKeyDownE(window);
         bool q = SysWindowKeyDownQ(window);
 
-        UpdateCameraRotation(&camera, 0.0230f, left, up, down, right);
-        UpdateCameraPosition(&camera, 0.0020f, w, a, s, d, e, q);
+        CameraUpdateRotation(&camera, 0.0230f, left, up, down, right);
+        CameraUpdatePosition(&camera, 0.0020f, w, a, s, d, e, q);
 
         Draw(&bitmap, camera);
 
