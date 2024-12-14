@@ -66,37 +66,37 @@ int main()
     int size = 512;
 
     Bitmap bitmap = BitmapCreate(size, size);
-    SysWindow* window = SysWindow_Create(700, 100, size, size);
+    SysWindow* window = SysWindowCreate(700, 100, size, size);
 
     BitmapSetPerspective(&bitmap, size, size, 0.1f, 1000.0f);
 
     Camera camera = { 0, 1.70f, -10 };
 
-    while (SysWindow_Exists(window))
+    while (SysWindowExists(window))
     {
         FixedTimeStart();
 
         AdaptBitmapToWindow(&bitmap, window);
 
-        bool left = SysWindow_KeyDown_LEFT(window);
-        bool up = SysWindow_KeyDown_UP(window);
-        bool down = SysWindow_KeyDown_DOWN(window);
-        bool right = SysWindow_KeyDown_RIGHT(window);
+        bool left = SysWindowKeyDownLEFT(window);
+        bool up = SysWindowKeyDownUP(window);
+        bool down = SysWindowKeyDownDOWN(window);
+        bool right = SysWindowKeyDownRIGHT(window);
 
-        bool w = SysWindow_KeyDown_W(window);
-        bool a = SysWindow_KeyDown_A(window);
-        bool s = SysWindow_KeyDown_S(window);
-        bool d = SysWindow_KeyDown_D(window);
-        bool e = SysWindow_KeyDown_E(window);
-        bool q = SysWindow_KeyDown_Q(window);
+        bool w = SysWindowKeyDownW(window);
+        bool a = SysWindowKeyDownA(window);
+        bool s = SysWindowKeyDownS(window);
+        bool d = SysWindowKeyDownD(window);
+        bool e = SysWindowKeyDownE(window);
+        bool q = SysWindowKeyDownQ(window);
 
         UpdateCameraRotation(&camera, 0.0230f, left, up, down, right);
         UpdateCameraPosition(&camera, 0.0020f, w, a, s, d, e, q);
 
         Draw(&bitmap, camera);
 
-        SysWindow_SetPixels(window, bitmap.pixels, bitmap.width, bitmap.height);
-        SysWindow_Update(window);
+        SysWindowSetPixels(window, bitmap.pixels, bitmap.width, bitmap.height);
+        SysWindowUpdate(window);
 
         FixedTimeEnd();
     }

@@ -10,11 +10,11 @@ int main()
 
     auto _bitmap = BitmapCreate(size, size);
     auto bitmap = &_bitmap;
-    auto window = SysWindow_Create(700, 100, size, size);
+    auto window = SysWindowCreate(700, 100, size, size);
 
     BitmapSetPerspective(bitmap, size, size, 0.1f, 1000.0f);
 
-    while (SysWindow_Exists(window))
+    while (SysWindowExists(window))
     {
         FixedTimeStart();
 
@@ -39,8 +39,8 @@ int main()
             BitmapDrawCubeColored(bitmap, position, rotation, scale);
         }
 
-        SysWindow_SetPixels(window, bitmap->pixels, bitmap->width, bitmap->height);
-        SysWindow_Update(window);
+        SysWindowSetPixels(window, bitmap->pixels, bitmap->width, bitmap->height);
+        SysWindowUpdate(window);
 
         FixedTimeEnd();
     }

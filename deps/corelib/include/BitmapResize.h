@@ -13,13 +13,13 @@ void AdaptBitmapToWindow(Bitmap* bitmap, SysWindow* window)
     if (AdaptBitmapToWindowInit)
     {
         AdaptBitmapToWindowInit = false;
-        AdaptBitmapToWindowWidth = SysWindow_GetWidth(window);
-        AdaptBitmapToWindowHeight = SysWindow_GetHeight(window);
+        AdaptBitmapToWindowWidth = SysWindowGetWidth(window);
+        AdaptBitmapToWindowHeight = SysWindowGetHeight(window);
         return;
     }
 
-    int width = SysWindow_GetWidth(window);
-    int height = SysWindow_GetHeight(window);
+    int width = SysWindowGetWidth(window);
+    int height = SysWindowGetHeight(window);
 
     bool sizeChanged =
         AdaptBitmapToWindowWidth != width ||

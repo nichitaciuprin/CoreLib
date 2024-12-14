@@ -36,12 +36,12 @@ typedef struct SysWindow
 }
 SysWindow;
 
-bool _SysWindow_Registered = 0;
-void _SysWindow_InitBitmap(SysWindow* instance)
+bool _SysWindowRegistered = 0;
+void _SysWindowInitBitmap(SysWindow* instance)
 {
     instance->_hdc = CreateCompatibleDC(0);
 }
-void _SysWindow_ResetBitmap(SysWindow* instance, int clientWidth, int clientHeight)
+void _SysWindowResetBitmap(SysWindow* instance, int clientWidth, int clientHeight)
 {
     BITMAPINFO bitmapinfo = {};
     bitmapinfo.bmiHeader.biSize = sizeof(bitmapinfo.bmiHeader);
@@ -61,7 +61,7 @@ void _SysWindow_ResetBitmap(SysWindow* instance, int clientWidth, int clientHeig
     instance->_width  = clientWidth;
     instance->_height = clientHeight;
 }
-void _SysWindow_PaintBitmap(SysWindow* instance)
+void _SysWindowPaintBitmap(SysWindow* instance)
 {
     PAINTSTRUCT paint;
 
@@ -77,7 +77,7 @@ void _SysWindow_PaintBitmap(SysWindow* instance)
 
     EndPaint(instance->_hwnd, &paint);
 }
-LRESULT __stdcall _SysWindow_MessageHandler(HWND hwnd, UINT message, WPARAM wParam, LPARAM lParam)
+LRESULT __stdcall _SysWindowMessageHandler(HWND hwnd, UINT message, WPARAM wParam, LPARAM lParam)
 {
     SysWindow* instance = (SysWindow*)(GetWindowLongPtrA(hwnd, GWLP_USERDATA));
 
@@ -94,7 +94,7 @@ LRESULT __stdcall _SysWindow_MessageHandler(HWND hwnd, UINT message, WPARAM wPar
         }
         case WM_PAINT:
         {
-            _SysWindow_PaintBitmap(instance);
+            _SysWindowPaintBitmap(instance);
             break;
         }
         case WM_SYSKEYDOWN:
@@ -135,7 +135,7 @@ LRESULT __stdcall _SysWindow_MessageHandler(HWND hwnd, UINT message, WPARAM wPar
                 instance->_height != clientHeight;
 
             if (sizeChanged)
-                _SysWindow_ResetBitmap(instance, clientWidth, clientHeight);
+                _SysWindowResetBitmap(instance, clientWidth, clientHeight);
 
             break;
         }
@@ -174,7 +174,7 @@ LRESULT __stdcall _SysWindow_MessageHandler(HWND hwnd, UINT message, WPARAM wPar
 
     return 0;
 }
-SysWindow* SysWindow_Create(int x, int y, int clientWidth, int clientHeight)
+SysWindow* SysWindowCreate(int x, int y, int clientWidth, int clientHeight)
 {
     SysWindow* instance = (SysWindow*)malloc(sizeof(SysWindow));
 
@@ -203,11 +203,11 @@ SysWindow* SysWindow_Create(int x, int y, int clientWidth, int clientHeight)
 
     const char* className = "SysWindowClass";
 
-    if (!_SysWindow_Registered)
+    if (!_SysWindowRegistered)
     {
-        _SysWindow_Registered = 1;
+        _SysWindowRegistered = 1;
         WNDCLASSA window_class = {};
-        window_class.lpfnWndProc = _SysWindow_MessageHandler;
+        window_class.lpfnWndProc = _SysWindowMessageHandler;
         window_class.hInstance = hInstance;
         window_class.lpszClassName = className;
         window_class.hCursor = LoadCursorA(0, IDC_ARROW);
@@ -224,8 +224,8 @@ SysWindow* SysWindow_Create(int x, int y, int clientWidth, int clientHeight)
     int windowWidth = rect.right - rect.left;
     int windowHeight = rect.bottom - rect.top;
 
-    _SysWindow_InitBitmap(instance);
-    _SysWindow_ResetBitmap(instance, clientWidth, clientHeight);
+    _SysWindowInitBitmap(instance);
+    _SysWindowResetBitmap(instance, clientWidth, clientHeight);
 
     instance->_hwnd = CreateWindowExA
     (
@@ -255,19 +255,19 @@ SysWindow* SysWindow_Create(int x, int y, int clientWidth, int clientHeight)
 
     return instance;
 }
-bool SysWindow_Exists(SysWindow* instance)
+bool SysWindowExists(SysWindow* instance)
 {
     return instance->_hwnd != 0;
 }
-void SysWindow_Destroy(SysWindow* instance)
+void SysWindowDestroy(SysWindow* instance)
 {
-    if (!SysWindow_Exists(instance)) return;
+    if (!SysWindowExists(instance)) return;
     DestroyWindow(instance->_hwnd);
     instance->_hwnd = 0;
 }
-void SysWindow_Update(SysWindow* instance)
+void SysWindowUpdate(SysWindow* instance)
 {
-    if (!SysWindow_Exists(instance)) return;
+    if (!SysWindowExists(instance)) return;
 
     MSG message = {};
 
@@ -277,18 +277,18 @@ void SysWindow_Update(SysWindow* instance)
     InvalidateRect(instance->_hwnd, NULL, false);
     UpdateWindow(instance->_hwnd);
 }
-void SysWindow_SetPixel(SysWindow* instance, int x, int y, uint32_t pixel)
+void SysWindowSetPixel(SysWindow* instance, int x, int y, uint32_t pixel)
 {
-    if (!SysWindow_Exists(instance)) return;
+    if (!SysWindowExists(instance)) return;
 
     // window bitmap is bottom-up
     y = instance->_height - 1 - y;
 
     instance->_pixels[x + y * instance->_width] = pixel;
 }
-void SysWindow_SetPixels(SysWindow* instance, uint32_t* pixels, int width, int height)
+void SysWindowSetPixels(SysWindow* instance, uint32_t* pixels, int width, int height)
 {
-    if (!SysWindow_Exists(instance)) return;
+    if (!SysWindowExists(instance)) return;
 
     // copy from Top-Down bitmap to Bottom-Up bitmap
 
@@ -300,9 +300,9 @@ void SysWindow_SetPixels(SysWindow* instance, uint32_t* pixels, int width, int h
         instance->_pixels[x + y2 * width] = pixel;
     }
 }
-void SysWindow_SetPixelsScaled(SysWindow* instance, uint32_t* pixels, int width, int height, int scale)
+void SysWindowSetPixelsScaled(SysWindow* instance, uint32_t* pixels, int width, int height, int scale)
 {
-    if (!SysWindow_Exists(instance)) return;
+    if (!SysWindowExists(instance)) return;
 
     for (int y = 0; y < height; y++)
     for (int x = 0; x < width; x++)
@@ -312,12 +312,12 @@ void SysWindow_SetPixelsScaled(SysWindow* instance, uint32_t* pixels, int width,
         int y2 = y * scale;
         for (int i = 0; i < scale; i++)
         for (int j = 0; j < scale; j++)
-            SysWindow_SetPixel(instance, x2+i, y2+j, pixel);
+            SysWindowSetPixel(instance, x2+i, y2+j, pixel);
     }
 }
-void SysWindow_SetPixelsScaled2(SysWindow* instance, uint8_t* pixels, int width, int height, int scale)
+void SysWindowSetPixelsScaled2(SysWindow* instance, uint8_t* pixels, int width, int height, int scale)
 {
-    if (!SysWindow_Exists(instance)) return;
+    if (!SysWindowExists(instance)) return;
 
     for (int y = 0; y < height; y++)
     for (int x = 0; x < width; x++)
@@ -331,18 +331,18 @@ void SysWindow_SetPixelsScaled2(SysWindow* instance, uint8_t* pixels, int width,
         int y2 = y * scale;
         for (int i = 0; i < scale; i++)
         for (int j = 0; j < scale; j++)
-            SysWindow_SetPixel(instance, x2+i, y2+j, pixel);
+            SysWindowSetPixel(instance, x2+i, y2+j, pixel);
     }
 }
-bool SysWindow_KeyDown_W(SysWindow* instance) { return instance->keydown_W; }
-bool SysWindow_KeyDown_A(SysWindow* instance) { return instance->keydown_A; }
-bool SysWindow_KeyDown_S(SysWindow* instance) { return instance->keydown_S; }
-bool SysWindow_KeyDown_D(SysWindow* instance) { return instance->keydown_D; }
-bool SysWindow_KeyDown_E(SysWindow* instance) { return instance->keydown_E; }
-bool SysWindow_KeyDown_Q(SysWindow* instance) { return instance->keydown_Q; }
-bool SysWindow_KeyDown_UP(SysWindow* instance) { return instance->keydown_UP; }
-bool SysWindow_KeyDown_LEFT(SysWindow* instance) { return instance->keydown_LEFT; }
-bool SysWindow_KeyDown_DOWN(SysWindow* instance) { return instance->keydown_DOWN; }
-bool SysWindow_KeyDown_RIGHT(SysWindow* instance) { return instance->keydown_RIGHT; }
-int SysWindow_GetWidth(SysWindow* instance) { return instance->_width; }
-int SysWindow_GetHeight(SysWindow* instance) { return instance->_height; }
+bool SysWindowKeyDownW(SysWindow* instance) { return instance->keydown_W; }
+bool SysWindowKeyDownA(SysWindow* instance) { return instance->keydown_A; }
+bool SysWindowKeyDownS(SysWindow* instance) { return instance->keydown_S; }
+bool SysWindowKeyDownD(SysWindow* instance) { return instance->keydown_D; }
+bool SysWindowKeyDownE(SysWindow* instance) { return instance->keydown_E; }
+bool SysWindowKeyDownQ(SysWindow* instance) { return instance->keydown_Q; }
+bool SysWindowKeyDownUP(SysWindow* instance) { return instance->keydown_UP; }
+bool SysWindowKeyDownLEFT(SysWindow* instance) { return instance->keydown_LEFT; }
+bool SysWindowKeyDownDOWN(SysWindow* instance) { return instance->keydown_DOWN; }
+bool SysWindowKeyDownRIGHT(SysWindow* instance) { return instance->keydown_RIGHT; }
+int SysWindowGetWidth(SysWindow* instance) { return instance->_width; }
+int SysWindowGetHeight(SysWindow* instance) { return instance->_height; }

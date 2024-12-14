@@ -33,7 +33,7 @@ typedef struct SysWindow
 }
 SysWindow;
 
-SysWindow* SysWindow_Create(int x, int y, int clientWidth, int clientHeight)
+SysWindow* SysWindowCreate(int x, int y, int clientWidth, int clientHeight)
 {
     SysWindow* instance = (SysWindow*)malloc(sizeof(SysWindow));
 
@@ -77,20 +77,20 @@ SysWindow* SysWindow_Create(int x, int y, int clientWidth, int clientHeight)
 
     return instance;
 }
-bool SysWindow_Exists(SysWindow* instance)
+bool SysWindowExists(SysWindow* instance)
 {
     return !instance->windowClosed;
 }
-void SysWindow_Destroy(SysWindow* instance)
+void SysWindowDestroy(SysWindow* instance)
 {
-    if (!SysWindow_Exists(instance)) return;
+    if (!SysWindowExists(instance)) return;
 
     instance->windowClosed = true;
     XDestroyWindow(instance->display, instance->window);
 }
-void SysWindow_Update(SysWindow* instance)
+void SysWindowUpdate(SysWindow* instance)
 {
-    if (!SysWindow_Exists(instance)) return;
+    if (!SysWindowExists(instance)) return;
 
     XEvent event;
 
@@ -176,15 +176,15 @@ void SysWindow_Update(SysWindow* instance)
         }
     }
 }
-void SysWindow_SetPixel(SysWindow* instance, int x, int y, uint32_t pixel)
+void SysWindowSetPixel(SysWindow* instance, int x, int y, uint32_t pixel)
 {
-    if (!SysWindow_Exists(instance)) return;
+    if (!SysWindowExists(instance)) return;
 
     instance->pixels[x + y * instance->width] = pixel;
 }
-void SysWindow_SetPixels(SysWindow* instance, uint32_t* pixels, int width, int height)
+void SysWindowSetPixels(SysWindow* instance, uint32_t* pixels, int width, int height)
 {
-    if (!SysWindow_Exists(instance)) return;
+    if (!SysWindowExists(instance)) return;
 
     memcpy(instance->pixels, pixels, 4 * width * height);
 
@@ -196,9 +196,9 @@ void SysWindow_SetPixels(SysWindow* instance, uint32_t* pixels, int width, int h
     //     instance->_pixels[x + y2 * width] = pixel;
     // }
 }
-void SysWindow_SetPixelsScaled(SysWindow* instance, uint32_t* pixels, int width, int height, int scale)
+void SysWindowSetPixelsScaled(SysWindow* instance, uint32_t* pixels, int width, int height, int scale)
 {
-    if (!SysWindow_Exists(instance)) return;
+    if (!SysWindowExists(instance)) return;
 
     for (int y = 0; y < height; y++)
     for (int x = 0; x < width; x++)
@@ -208,12 +208,12 @@ void SysWindow_SetPixelsScaled(SysWindow* instance, uint32_t* pixels, int width,
         int y2 = y * scale;
         for (int i = 0; i < scale; i++)
         for (int j = 0; j < scale; j++)
-            SysWindow_SetPixel(instance, x2+i, y2+j, pixel);
+            SysWindowSetPixel(instance, x2+i, y2+j, pixel);
     }
 }
-void SysWindow_SetPixelsScaled2(SysWindow* instance, uint8_t* pixels, int width, int height, int scale)
+void SysWindowSetPixelsScaled2(SysWindow* instance, uint8_t* pixels, int width, int height, int scale)
 {
-    if (!SysWindow_Exists(instance)) return;
+    if (!SysWindowExists(instance)) return;
 
     for (int y = 0; y < height; y++)
     for (int x = 0; x < width; x++)
@@ -227,16 +227,16 @@ void SysWindow_SetPixelsScaled2(SysWindow* instance, uint8_t* pixels, int width,
         int y2 = y * scale;
         for (int i = 0; i < scale; i++)
         for (int j = 0; j < scale; j++)
-            SysWindow_SetPixel(instance, x2+i, y2+j, pixel);
+            SysWindowSetPixel(instance, x2+i, y2+j, pixel);
     }
 }
-bool SysWindow_KeyDown_W(SysWindow* instance) { return instance->keydown_W; }
-bool SysWindow_KeyDown_A(SysWindow* instance) { return instance->keydown_A; }
-bool SysWindow_KeyDown_S(SysWindow* instance) { return instance->keydown_S; }
-bool SysWindow_KeyDown_D(SysWindow* instance) { return instance->keydown_D; }
-bool SysWindow_KeyDown_E(SysWindow* instance) { return instance->keydown_E; }
-bool SysWindow_KeyDown_Q(SysWindow* instance) { return instance->keydown_Q; }
-bool SysWindow_KeyDown_UP(SysWindow* instance) { return instance->keydown_UP; }
-bool SysWindow_KeyDown_LEFT(SysWindow* instance) { return instance->keydown_LEFT; }
-bool SysWindow_KeyDown_DOWN(SysWindow* instance) { return instance->keydown_DOWN; }
-bool SysWindow_KeyDown_RIGHT(SysWindow* instance) { return instance->keydown_RIGHT; }
+bool SysWindowKeyDownW(SysWindow* instance) { return instance->keydown_W; }
+bool SysWindowKeyDownA(SysWindow* instance) { return instance->keydown_A; }
+bool SysWindowKeyDownS(SysWindow* instance) { return instance->keydown_S; }
+bool SysWindowKeyDownD(SysWindow* instance) { return instance->keydown_D; }
+bool SysWindowKeyDownE(SysWindow* instance) { return instance->keydown_E; }
+bool SysWindowKeyDownQ(SysWindow* instance) { return instance->keydown_Q; }
+bool SysWindowKeyDownUP(SysWindow* instance) { return instance->keydown_UP; }
+bool SysWindowKeyDownLEFT(SysWindow* instance) { return instance->keydown_LEFT; }
+bool SysWindowKeyDownDOWN(SysWindow* instance) { return instance->keydown_DOWN; }
+bool SysWindowKeyDownRIGHT(SysWindow* instance) { return instance->keydown_RIGHT; }
