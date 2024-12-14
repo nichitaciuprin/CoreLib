@@ -1434,15 +1434,15 @@ static inline Vector3 BoundWrapAround(Bound* bound, Vector3 point)
     else if (point.z > BoundMaxZ(bound)) point.z -= size.z;
     return point;
 }
-static inline Vector3 BoundShortPathIn(Bound* aabb, Vector3 point)
+static inline Vector3 BoundShortPathIn(Bound* bound, Vector3 point)
 {
     Vector3 result = Vector3Zero();
-    if      (point.x < BoundMinX(aabb)) result.x = BoundMinX(aabb) - point.x;
-    else if (point.x > BoundMaxX(aabb)) result.x = BoundMaxX(aabb) - point.x;
-    if      (point.y < BoundMinY(aabb)) result.y = BoundMinY(aabb) - point.y;
-    else if (point.y > BoundMaxY(aabb)) result.y = BoundMaxY(aabb) - point.y;
-    if      (point.z < BoundMinZ(aabb)) result.z = BoundMinZ(aabb) - point.z;
-    else if (point.z > BoundMaxZ(aabb)) result.z = BoundMaxZ(aabb) - point.z;
+    if      (point.x < BoundMinX(bound)) result.x = BoundMinX(bound) - point.x;
+    else if (point.x > BoundMaxX(bound)) result.x = BoundMaxX(bound) - point.x;
+    if      (point.y < BoundMinY(bound)) result.y = BoundMinY(bound) - point.y;
+    else if (point.y > BoundMaxY(bound)) result.y = BoundMaxY(bound) - point.y;
+    if      (point.z < BoundMinZ(bound)) result.z = BoundMinZ(bound) - point.z;
+    else if (point.z > BoundMaxZ(bound)) result.z = BoundMaxZ(bound) - point.z;
     return result;
 }
 
