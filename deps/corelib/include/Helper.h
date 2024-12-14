@@ -1373,30 +1373,6 @@ static inline void CameraUpdateFps(Camera* camera, Vector2 move, Vector2 rot)
     CameraUpdateFpsMovement(camera, move);
 }
 
-static inline float BoundMinX(Bound* bound)
-{
-    return fminf(bound->p0.x, bound->p1.x);
-}
-static inline float BoundMaxX(Bound* bound)
-{
-    return fmaxf(bound->p0.x, bound->p1.x);
-}
-static inline float BoundMinY(Bound* bound)
-{
-    return fminf(bound->p0.y, bound->p1.y);
-}
-static inline float BoundMaxY(Bound* bound)
-{
-    return fmaxf(bound->p0.y, bound->p1.y);
-}
-static inline float BoundMinZ(Bound* bound)
-{
-    return fminf(bound->p0.z, bound->p1.z);
-}
-static inline float BoundMaxZ(Bound* bound)
-{
-    return fmaxf(bound->p0.z, bound->p1.z);
-}
 static inline Vector3 BoundSize(Bound* bound)
 {
     Vector3 result = Vector3Sub(bound->p0, bound->p1);
@@ -1415,23 +1391,23 @@ static inline Vector3 BoundCenter(Bound* bound)
 static inline Vector3 BoundWrapAround(Bound* bound, Vector3 point)
 {
     Vector3 size = BoundSize(bound);
-    if      (point.x < BoundMinX(bound)) point.x += size.x;
-    else if (point.x > BoundMaxX(bound)) point.x -= size.x;
-    if      (point.y < BoundMinY(bound)) point.y += size.y;
-    else if (point.y > BoundMaxY(bound)) point.y -= size.y;
-    if      (point.z < BoundMinZ(bound)) point.z += size.z;
-    else if (point.z > BoundMaxZ(bound)) point.z -= size.z;
+    if      (point.x < MathMinFloat(bound->p0.x, bound->p1.x)) point.x += size.x;
+    else if (point.x > MathMaxFloat(bound->p0.x, bound->p1.x)) point.x -= size.x;
+    if      (point.y < MathMinFloat(bound->p0.y, bound->p1.y)) point.y += size.y;
+    else if (point.y > MathMaxFloat(bound->p0.y, bound->p1.y)) point.y -= size.y;
+    if      (point.z < MathMinFloat(bound->p0.z, bound->p1.z)) point.z += size.z;
+    else if (point.z > MathMaxFloat(bound->p0.z, bound->p1.z)) point.z -= size.z;
     return point;
 }
 static inline Vector3 BoundShortPathIn(Bound* bound, Vector3 point)
 {
-    Vector3 result = Vector3Zero();
-    if      (point.x < BoundMinX(bound)) result.x = BoundMinX(bound) - point.x;
-    else if (point.x > BoundMaxX(bound)) result.x = BoundMaxX(bound) - point.x;
-    if      (point.y < BoundMinY(bound)) result.y = BoundMinY(bound) - point.y;
-    else if (point.y > BoundMaxY(bound)) result.y = BoundMaxY(bound) - point.y;
-    if      (point.z < BoundMinZ(bound)) result.z = BoundMinZ(bound) - point.z;
-    else if (point.z > BoundMaxZ(bound)) result.z = BoundMaxZ(bound) - point.z;
+    Vector3 result = Vector3Zero(); float value;
+    if      (point.x < (value = MathMinFloat(bound->p0.x, bound->p1.x))) result.x = value - point.x;
+    else if (point.x > (value = MathMaxFloat(bound->p0.x, bound->p1.x))) result.x = value - point.x;
+    if      (point.y < (value = MathMinFloat(bound->p0.y, bound->p1.y))) result.y = value - point.y;
+    else if (point.y > (value = MathMaxFloat(bound->p0.y, bound->p1.y))) result.y = value - point.y;
+    if      (point.z < (value = MathMinFloat(bound->p0.z, bound->p1.z))) result.z = value - point.z;
+    else if (point.z > (value = MathMaxFloat(bound->p0.z, bound->p1.z))) result.z = value - point.z;
     return result;
 }
 
