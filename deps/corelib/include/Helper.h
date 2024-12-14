@@ -1220,14 +1220,6 @@ static inline Vector4 ToQuaternion(Vector3 e)
     return result;
 }
 
-static inline bool TriangleIsClockwise(Vector3 v0, Vector3 v1, Vector3 v2)
-{
-    Vector3 d0 = Vector3Sub(v1, v0);
-    Vector3 d1 = Vector3Sub(v2, v0);
-    float crossZ = d0.x*d1.y - d0.y*d1.x;
-    return crossZ < 0;
-}
-
 static inline Vector3 WorldToNdc(Vector3 p, Matrix view, Matrix proj)
 {
     p = MatrixMultiply3L(p, view);
@@ -1539,6 +1531,14 @@ static inline bool TriangleIsInside(Vector3 v0, Vector3 v1, Vector3 v2, Vector3 
     float A3 = TriangleGetArea(v0, v1,  p);
     return A0 == (A1 + A2 + A3);
 }
+static inline bool TriangleIsClockwise(Vector3 v0, Vector3 v1, Vector3 v2)
+{
+    Vector3 d0 = Vector3Sub(v1, v0);
+    Vector3 d1 = Vector3Sub(v2, v0);
+    float crossZ = d0.x*d1.y - d0.y*d1.x;
+    return crossZ < 0;
+}
+
 static inline float Barycentric(Vector3 v0, Vector3 v1, Vector3 v2, float x, float y)
 {
     float det = (v1.y - v2.y) * (v0.x - v2.x) + (v2.x - v1.x) * (v0.y - v2.y);
