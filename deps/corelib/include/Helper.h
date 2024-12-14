@@ -1406,7 +1406,7 @@ static inline float BoundMaxZ(Bound* bound)
 {
     return fmaxf(bound->p0.z, bound->p1.z);
 }
-static inline Vector3 BoundSize(const Bound* bound)
+static inline Vector3 BoundSize(Bound* bound)
 {
     Vector3 result = Vector3Sub(bound->p0, bound->p1);
     result.x = MathAbs(result.x);
@@ -1414,14 +1414,13 @@ static inline Vector3 BoundSize(const Bound* bound)
     result.z = MathAbs(result.z);
     return result;
 }
-static inline Vector3 BoundCenter(const Bound* bound)
+static inline Vector3 BoundCenter(Bound* bound)
 {
     Vector3 result;
     result = Vector3Add(bound->p0, bound->p1);
     result = Vector3Div(result, 2);
     return result;
 }
-
 static inline Vector3 BoundWrapAround(Bound* bound, Vector3 point)
 {
     Vector3 size = BoundSize(bound);
