@@ -28,12 +28,12 @@ static int cpuTimer = 0;
 static long timeStep = 10;
 static int endTime = 0;
 
-uint64_t GetPid()
+uint64_t SysHelperGetPid()
 {
     // printf("Process PID:%ld\n", (long)getpid());
     return (uint64_t)getpid();
 }
-int GetCpuUsage()
+int SysHelperGetCpuUsage()
 {
     // TODO
     if (cpuTimer != 100)
@@ -60,13 +60,13 @@ int GetCpuUsage()
 
     return cpu;
 }
-long GetTime()
+long SysHelperGetTime()
 {
     // TODO maybe change to QueryPerformanceCounter
     // return clock()/(CLOCKS_PER_SEC/1000);
     return clock();
 }
-void GetConsolePosition(int* x, int* y)
+void SysHelperGetConsolePosition(int* x, int* y)
 {
     RECT rect = {};
 
@@ -81,19 +81,19 @@ void GetConsolePosition(int* x, int* y)
     // TODO fix this
     *x += 7;
 }
-void Halt(unsigned long milliseconds)
+void SysHelperHalt(unsigned long milliseconds)
 {
     Sleep(milliseconds);
 }
-void FixedTimeStart()
+void SysHelperFixedTimeStart()
 {
-    endTime = GetTime() + timeStep;
+    endTime = SysHelperGetTime() + timeStep;
 }
-void FixedTimeEnd()
+void SysHelperFixedTimeEnd()
 {
-    long haltTime = endTime - GetTime();
+    long haltTime = endTime - SysHelperGetTime();
     if (haltTime > 0)
-        Halt(haltTime);
+        SysHelperHalt(haltTime);
     // else
     //     printf("SLOW!\n");
 }

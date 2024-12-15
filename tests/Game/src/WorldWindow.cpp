@@ -15,7 +15,7 @@ bool WorldWindow::ShouldQuit()
 
 void WorldWindow::Render()
 {
-    auto cpuUsage = GetCpuUsage();
+    auto cpuUsage = SysHelperGetCpuUsage();
 
     BeginDrawing(cpuUsage);
     {

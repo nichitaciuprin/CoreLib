@@ -16,17 +16,17 @@ static int endTime = 0;
 //     return clock()/(CLOCKS_PER_SEC/1000);
 // }
 
-uint64_t GetPid()
+uint64_t SysHelperGetPid()
 {
-    // #error GetPid not implemented
+    // #error SysHelperGetPid not implemented
     return 0;
 }
-int GetCpuUsage()
+int SysHelperGetCpuUsage()
 {
     // #error GetCpuUsage not implemented
     return 100;
 }
-long GetTime()
+long SysHelperGetTime()
 {
     if (setInitSpec)
     {
@@ -46,13 +46,13 @@ long GetTime()
 
     return ms;
 }
-void GetConsolePosition(int* x, int* y)
+void SysHelperGetConsolePosition(int* x, int* y)
 {
-    // #error GetConsolePosition not implemented
+    // #error SysHelperGetConsolePosition not implemented
     *x = 0;
     *y = 0;
 }
-void Halt(unsigned long milliseconds)
+void SysHelperHalt(unsigned long milliseconds)
 {
     // TODO review
 
@@ -73,15 +73,15 @@ void Halt(unsigned long milliseconds)
 
     // usleep(milliseconds * 1000);
 }
-void FixedTimeStart()
+void SysHelperFixedTimeStart()
 {
-    endTime = GetTime() + timeStep;
+    endTime = SysHelperGetTime() + timeStep;
 }
-void FixedTimeEnd()
+void SysHelperFixedTimeEnd()
 {
-    long haltTime = endTime - GetTime();
+    long haltTime = endTime - SysHelperGetTime();
     if (haltTime > 0)
-        Halt(haltTime);
+        SysHelperHalt(haltTime);
     // else
     //     printf("SLOW!\n");
 }

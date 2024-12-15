@@ -18,13 +18,13 @@ int main()
 
         SysNetSend(&serverAddr, bytes, &messageSize);
 
-        Halt(1000);
+        SysHelperHalt(1000);
 
         SysNetRecv(&serverAddr, bytes, &messageSize);
 
         if (messageSize < 0)
         {
-            Halt(1000);
+            SysHelperHalt(1000);
             continue;
         }
 
@@ -32,7 +32,7 @@ int main()
             printf("%c", bytes[i]);
         printf("\n");
 
-        Halt(1000);
+        SysHelperHalt(1000);
     }
 
     return 0;

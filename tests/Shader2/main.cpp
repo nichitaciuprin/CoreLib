@@ -133,9 +133,9 @@ int main()
 
     while (SysWindowExists(window))
     {
-        FixedTimeStart();
+        SysHelperFixedTimeStart();
 
-        iTime = ((float)GetTime() / 1000);
+        iTime = ((float)SysHelperGetTime() / 1000);
 
         auto left = SysWindowKeyDownLEFT(window);
         auto up = SysWindowKeyDownUP(window);
@@ -157,7 +157,7 @@ int main()
         SysWindowSetPixelsScaled(window, bitmap.pixels, bitmap.width, bitmap.height, scale);
         SysWindowUpdate(window);
 
-        FixedTimeEnd();
+        SysHelperFixedTimeEnd();
     }
 
     return 0;

@@ -14,12 +14,12 @@ int main()
     int drawCount = 100;
 
     {
-        long time1 = GetTime();
+        long time1 = SysHelperGetTime();
 
         for (int i = 0; i < drawCount; i++)
             BitmapDrawTriangleScreenspaceV2(&bitmap, p0, p1, p2, COLOR_GREEN);
 
-        long time2 = GetTime();
+        long time2 = SysHelperGetTime();
 
         cout << "==== " << (time2 - time1) << " ====" << endl;
     }

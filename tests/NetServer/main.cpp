@@ -16,7 +16,7 @@ int main()
 
         if (messageSize < 0)
         {
-            Halt(1000);
+            SysHelperHalt(1000);
             continue;
         }
 
@@ -24,7 +24,7 @@ int main()
             printf("%c", bytes[i]);
         printf("\n");
 
-        Halt(1000);
+        SysHelperHalt(1000);
 
         const char* message = "fromserver";
         int messageSize = strlen(message);
@@ -32,7 +32,7 @@ int main()
 
         SysNetSend(&serverAddr, bytes, &messageSize);
 
-        Halt(1000);
+        SysHelperHalt(1000);
     }
 
     return 0;

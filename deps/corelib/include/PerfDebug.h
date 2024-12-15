@@ -10,11 +10,11 @@ int PrintAvgPerf_CountMax = 100;
 int PrintAvgPerf_Time = 0;
 void PrintAvgPerf_Start()
 {
-    PrintAvgPerf_TimeStart = GetTime();
+    PrintAvgPerf_TimeStart = SysHelperGetTime();
 }
 void PrintAvgPerf_End()
 {
-    PrintAvgPerf_TimeEnd = GetTime();
+    PrintAvgPerf_TimeEnd = SysHelperGetTime();
 
     PrintAvgPerf_Count++;
     PrintAvgPerf_Time += PrintAvgPerf_TimeEnd - PrintAvgPerf_TimeStart;

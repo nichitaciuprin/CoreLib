@@ -23,16 +23,16 @@ int main()
 
     while (true)
     {
-        long endTime = GetTime() + timeStep;
+        long endTime = SysHelperGetTime() + timeStep;
 
         worldWindow->Render();
         worldWindow->HandleInput();
 
         world->Update(deltaTime);
 
-        long haltTime = endTime - GetTime();
+        long haltTime = endTime - SysHelperGetTime();
         if (haltTime > 0)
-            Halt(haltTime);
+            SysHelperHalt(haltTime);
 
         if (worldWindow->ShouldQuit()) break;
     }

@@ -6,13 +6,13 @@
 extern "C" {
 #endif
 
-uint64_t GetPid();
-int GetCpuUsage();
-long GetTime();
-void GetConsolePosition(int* x, int* y);
-void Halt(unsigned long milliseconds);
-void FixedTimeStart();
-void FixedTimeEnd();
+uint64_t SysHelperGetPid();
+int SysHelperGetCpuUsage();
+long SysHelperGetTime();
+void SysHelperGetConsolePosition(int* x, int* y);
+void SysHelperHalt(unsigned long milliseconds);
+void SysHelperFixedTimeStart();
+void SysHelperFixedTimeEnd();
 
 #ifdef __cplusplus
 }
