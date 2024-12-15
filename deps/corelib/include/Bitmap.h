@@ -583,7 +583,7 @@ void BitmapDrawTriangleWireframeScreenspaceV2(Bitmap* instance, Vector3 v0, Vect
         BitmapDrawLineStep(&__x0, &__y0, &__x1, &__y1, &__err, __dx, __dy, __sx, __sy, &__x);
         // BitmapSetPixel(instance,  x,  y, color);
         // BitmapSetPixel(instance, __x, __y, color);
-        if (x > __x) SwapInt(&x, &_x);
+        if (x > __x) SwapInt(&x, &__x);
         BitmapSetLineZ(instance, y, x, __x, 0, 0, color);
         y++;
     }
