@@ -1,20 +1,12 @@
-#include <stdio.h>
-#include <stdlib.h>
-#include <stdbool.h>
-#include <string.h>
-#include <memory.h>
-#include <time.h>
-#include <math.h>
-
 #include "SysHelper.h"
 #include "SysWindow.h"
 #include "BaseMath.h"
 #include "Bitmap.h"
 #include "BitmapResize.h"
 
-void DrawCube(Bitmap* bitmap, Vector3 position, float time)
+void DrawCube(Bitmap* bitmap, Vector3 position)
 {
-    Vector3 rotation = { 0, time, 0 };
+    Vector3 rotation = { 0, 0, 0 };
     Vector3 scale = { 1, 1, 1 };
 
     BitmapDrawCubeColored(bitmap, position, rotation, scale);
@@ -30,35 +22,32 @@ void DrawPlane(Bitmap* bitmap, Vector3 position)
     Vector3 p3 = { -size, 0, +size }; p3 = Vector3Add(p3, position);
 
     BitmapDrawPoligon(bitmap, p0, p1, p2, p3, COLOR_WHITE);
+    BitmapDrawTriangle(bitmap, p0, p1, p2, COLOR_WHITE);
 }
 void Draw(Bitmap* bitmap, Camera camera)
 {
-    float time = GetTime();
-
     BitmapReset(bitmap);
     BitmapSetView(bitmap, &camera);
 
-    // Vector3 lightPosition = { 0, 10, 0 };
-    // Vector3 lightPosition = { 0, 10, MathPingPong(GetTime()/50, 120) - 10 };
-    Vector3 lightPosition = camera.position;
+    Vector3 position = { 0, 0.5f, 0 };
 
-    DrawPlane(bitmap, (Vector3){ 0, 0, 0 });
-    DrawCube(bitmap, (Vector3){ 0, 0.5f, 0 }, (float)time / 3000);
+    DrawPlane(bitmap, Vector3Zero());
+    DrawCube(bitmap, position);
 
-    DrawPlane(bitmap, (Vector3){ 0, 0, 100 });
-    DrawCube(bitmap, (Vector3){ 0, 0.5f, 100 }, (float)time / 600);
-    DrawCube(bitmap, (Vector3){ 0, 1.5f, 100 }, (float)time / 300);
+    float time = GetTime();
 
-    // bridge
-    {
-        Vector3 p0 = (Vector3){ -1, 0,  2 };
-        Vector3 p1 = (Vector3){ -1, 0, 95 };
-        Vector3 p2 = (Vector3){  1, 0, 95 };
-        Vector3 p3 = (Vector3){  1, 0,  2 };
-        BitmapDrawPoligon(bitmap, p0, p1, p2, p3, COLOR_WHITE);
-    }
+    time /= 1000;
 
-    BitmapApplyLight(bitmap, lightPosition);
+    float x = MathSin(time) * 4;
+    float z = MathCos(time) * 4;
+
+    Vector3 lightPosition = { x, 5, z };
+
+    BitmapApplyLightAndShadows(bitmap, lightPosition);
+
+    Vector3 scale = { 1, 1, 1 };
+
+    BitmapDrawCube(bitmap, lightPosition, Vector3Zero(), scale, COLOR_WHITE);
 }
 
 int main()
