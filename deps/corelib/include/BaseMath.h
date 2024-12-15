@@ -1520,6 +1520,41 @@ static inline bool RaycastTriangle(Vector3 origin, Vector3 dirNorm, Vector3 v0, 
 
     return true;
 }
+static inline bool RaycastTriangle2(Vector3 origin, Vector3 dirNorm, Vector3 v0, Vector3 v1, Vector3 v2)
+{
+    // ignores face direction
+    // refactor
+
+    v0 = Vector3Sub(v0, origin);
+    v1 = Vector3Sub(v1, origin);
+    v2 = Vector3Sub(v2, origin);
+
+    Vector2 vec1 = { dirNorm.x, dirNorm.z };
+    // vec1 = Vector2Normalize(vec1);
+    float yaw = Vector2Rotation(vec1);
+    v0 = Vector3RotateY(v0, yaw);
+    v1 = Vector3RotateY(v1, yaw);
+    v2 = Vector3RotateY(v2, yaw);
+
+    dirNorm = Vector3RotateY(dirNorm, yaw);
+
+    Vector2 vec2 = { dirNorm.y, dirNorm.z };
+    // vec2 = Vector2Normalize(vec2);
+    float pitch = Vector2Rotation(vec2);
+    v0 = Vector3RotateX(v0, -pitch);
+    v1 = Vector3RotateX(v1, -pitch);
+    v2 = Vector3RotateX(v2, -pitch);
+
+    bool isInside = TriangleIsInside(v0, v1, v2, Vector3Zero());
+    if (!isInside)
+        return false;
+
+    float z = Barycentric(v0, v1, v2, 0, 0);
+    if (z < 0)
+        return false;
+
+    return true;
+}
 
 static inline Pose PoseGetLocal(Pose parentWorld, Pose childWorld)
 {
