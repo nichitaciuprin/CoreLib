@@ -1495,20 +1495,14 @@ static inline bool RaycastTriangle(Vector3 origin, Vector3 dirNorm, Vector3 v0, 
     return true;
 }
 
-static inline float TriangleGetArea(Vector3 v0, Vector3 v1, Vector3 v2)
-{
-    int r1 = (int)v0.x * ((int)v1.y - (int)v2.y);
-    int r2 = (int)v1.x * ((int)v2.y - (int)v0.y);
-    int r3 = (int)v2.x * ((int)v0.y - (int)v1.y);
-    return abs((r1 + r2 + r3) / 2.0f);
-}
 static inline bool TriangleIsInside(Vector3 v0, Vector3 v1, Vector3 v2, Vector3 p)
 {
-    float A0 = TriangleGetArea(v0, v1, v2);
-    float A1 = TriangleGetArea( p, v1, v2);
-    float A2 = TriangleGetArea(v0,  p, v2);
-    float A3 = TriangleGetArea(v0, v1,  p);
-    return A0 == (A1 + A2 + A3);
+    float d1 = (p.x - v1.x) * (v0.y - v1.y) - (v0.x - v1.x) * (p.y - v1.y);
+    float d2 = (p.x - v2.x) * (v1.y - v2.y) - (v1.x - v2.x) * (p.y - v2.y);
+    float d3 = (p.x - v0.x) * (v2.y - v0.y) - (v2.x - v0.x) * (p.y - v0.y);
+    bool neg = (d1 < 0) || (d2 < 0) || (d3 < 0);
+    bool pos = (d1 > 0) || (d2 > 0) || (d3 > 0);
+    return !(neg && pos);
 }
 static inline bool TriangleIsClockwise(Vector3 v0, Vector3 v1, Vector3 v2)
 {
