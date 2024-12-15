@@ -11,6 +11,7 @@ if exist %objs% rmdir /S /Q %objs%
 
 set flags=%flags% -Werror -Wall -Wno-missing-braces
 set flags=%flags% -std=c99 -m64
+@REM set flags=%flags% -g3 -Og
 set flags=%flags% -g0 -O3 -D NDEBUG
 
 set mingw=C:\User1\Programs\mingw\x86_64-12.2.0-release-posix-seh-ucrt-rt_v10-rev2\mingw64

@@ -11,6 +11,7 @@ if exist %objs% rmdir /S /Q %objs%
 
 set flags=%flags% -Werror -Wall -Wno-missing-braces
 set flags=%flags% -std=c99 -m64
+@REM set flags=%flags% -g3 -Og
 set flags=%flags% -g0 -O3 -D NDEBUG
 
 gcc %flags% -c %src%\SysHelper.c  -o %objs%\SysHelper.o  -I%include%
