@@ -26,6 +26,7 @@ using namespace std;
 class Projectile;
 
 #include "Projectile.h"
+#include "Subgen.h"
 
 class Magnet
 {

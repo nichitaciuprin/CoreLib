@@ -17,8 +17,8 @@ public:
         bool left, bool up, bool down, bool right,
         bool w, bool a, bool s, bool d, bool e, bool q)
     {
-        UpdateCameraPosition(&camera, deltaTime, w, a, s, d, e, q);
-        UpdateCameraRotation(&camera, deltaTime, left, up, down, right);
+        CameraUpdatePosition(&camera, deltaTime, w, a, s, d, e, q);
+        CameraUpdateRotation(&camera, deltaTime, left, up, down, right);
         boidWorld.Update(deltaTime);
     }
 };
