@@ -34,7 +34,7 @@ void Draw(Bitmap* bitmap, Camera camera)
     DrawPlane(bitmap, Vector3Zero());
     DrawCube(bitmap, position);
 
-    float time = GetTime();
+    float time = SysHelperGetTime();
 
     time /= 1000;
 
@@ -63,7 +63,7 @@ int main()
 
     while (SysWindowExists(window))
     {
-        FixedTimeStart();
+        SysHelperFixedTimeStart();
 
         AdaptBitmapToWindow(&bitmap, window);
 
@@ -87,7 +87,7 @@ int main()
         SysWindowSetPixels(window, bitmap.pixels, bitmap.width, bitmap.height);
         SysWindowUpdate(window);
 
-        FixedTimeEnd();
+        SysHelperFixedTimeEnd();
     }
 
     return 0;

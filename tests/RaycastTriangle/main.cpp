@@ -48,7 +48,7 @@ int main()
 
     while (SysWindowExists(window))
     {
-        FixedTimeStart();
+        SysHelperFixedTimeStart();
 
         AdaptBitmapToWindow(&bitmap, window);
 
@@ -72,7 +72,7 @@ int main()
         SysWindowSetPixels(window, bitmap.pixels, bitmap.width, bitmap.height);
         SysWindowUpdate(window);
 
-        FixedTimeEnd();
+        SysHelperFixedTimeEnd();
     }
 
     return 0;

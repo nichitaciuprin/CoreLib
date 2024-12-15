@@ -14,7 +14,7 @@ int main()
 
     while (Window3DExists())
     {
-        FixedTimeStart();
+        SysHelperFixedTimeStart();
         Window3DDrawStart();
 
         Vector3 v0 = { +5, 0, +5 };
@@ -26,7 +26,7 @@ int main()
         Vector3 p0 = { 0, 0.5f, 0 };
         Window3DDrawCubeColored(p0, Vector3Zero(), Vector3One());
 
-        float time = (float)GetTime() / 1000;
+        float time = (float)SysHelperGetTime() / 1000;
         float x = MathSin(time) * 4;
         float z = MathCos(time) * 4;
         Vector3 lightPosition = { x, 5, z };
@@ -34,7 +34,7 @@ int main()
         Window3DDrawCube(lightPosition, Vector3Zero(), Vector3One(), COLOR_WHITE);
 
         Window3DDrawEnd();
-        FixedTimeEnd();
+        SysHelperFixedTimeEnd();
     }
 
     return 0;
