@@ -1,8 +1,8 @@
-#include "BaseLang.hpp"
 #include "SysHelper.h"
+#include "SysWindow.h"
+#include "BaseLang.hpp"
 #include "BaseMath.hpp"
-#include "Bitmap.hpp"
-#include "SysWindow.hpp"
+#include "Bitmap.h"
 
 int main()
 {

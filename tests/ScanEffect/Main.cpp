@@ -1,22 +1,24 @@
-#include "BaseLang.hpp"
 #include "SysHelper.h"
+#include "SysWindow.h"
+#include "BaseLang.hpp"
+#include "BaseMath.hpp"
+#include "Bitmap.h"
 #include "Subgen.h"
-#include "Bitmap.hpp"
-#include "SysWindow.hpp"
 
 int main()
 {
     auto width = 200;
     auto height = 200;
 
-    auto bitmap = make_unique<BitmapClass>(width, height);
-    auto window = make_unique<Window>(700, 100, width, height);
+    auto _bitmap = BitmapCreate(width, height);
+    auto bitmap = &_bitmap;
+    auto window = SysWindowCreate(700, 100, width, height);
 
     int iteration = 0;
 
     Subgen subgen = SubgenCreate(0);
 
-    while (window->Exists())
+    while (SysWindowExists(window))
     {
         int i1 = iteration;
         int i2 = SubgenNext(&subgen);
@@ -27,9 +29,10 @@ int main()
         bitmap->pixels[i2] = 0;
         iteration++;
 
-        bitmap->FillBorder(COLOR_GREEN);
-        window->SetPixels(bitmap->pixels, bitmap->Width(), bitmap->Height());
-        window->Update();
+        BitmapFillBorder(bitmap, COLOR_GREEN);
+
+        SysWindowSetPixels(window, bitmap->pixels, bitmap->width, bitmap->height);
+        SysWindowUpdate(window);
     }
 
     return 0;

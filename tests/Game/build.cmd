@@ -11,15 +11,16 @@ set flags=%flags% -Werror -Wall -Wno-missing-braces
 set include=
 set include=%include% -I%~dp0src
 set include=%include% -I%deps%\corelib\include
+set include=%include% -I%deps%\sys\include
 set include=%include% -I%deps%\Raylib\include
 set include=%include% -I%deps%\RaylibWrap\include
 set include=%include% -I%deps%\ReactPhysics3D\include
 set include=%include% -I%deps%\ReactPhysics3DWrap\include
 
 set src=
-set src=%src% %deps%\corelib\src\SysHelper.c
-set src=%src% %deps%\corelib\src\SysWindow.c
-set src=%src% %deps%\corelib\src\SysNet.c
+set src=%src% %deps%\Sys\src\SysHelper.c
+set src=%src% %deps%\Sys\src\SysWindow.c
+set src=%src% %deps%\Sys\src\SysNet.c
 set src=%src% %deps%\RaylibWrap\src\RaylibWrap.cpp
 
 set lib=

@@ -1,7 +1,9 @@
+#include "SysHelper.h"
+#include "SysWindow.h"
 #include "BaseLang.hpp"
 #include "BaseMath.hpp"
-#include "Bitmap.hpp"
-#include "SysWindow.hpp"
+#include "Bitmap.h"
+
 #include "Subgen1.h"
 #include "Print.h"
 
@@ -98,14 +100,14 @@ int main()
     auto scale = 10;
 
     auto bitmap = BitmapCreate(width, height);
-    auto window = make_unique<Window>(700, 100, width * scale, height * scale);
+    auto window = SysWindowCreate(700, 100, width * scale, height * scale);
 
     Subgen subgen = SubgenCreate(0);
 
     float zFar = 0;
     float zClose = 0;
 
-    while (window->Exists())
+    while (SysWindowExists(window))
     {
         BitmapReset(&bitmap);
 
@@ -188,8 +190,7 @@ int main()
         // DrawPixelSignal(*bitmap, p1);
         // DrawPixelSignal(*bitmap, p2);
 
-        window->SetPixelsScaled(bitmap.pixels, bitmap.width, bitmap.height, scale);
-
-        window->Update();
+        SysWindowSetPixelsScaled(window, bitmap.pixels, bitmap.width, bitmap.height, scale);
+        SysWindowUpdate(window);
     }
 }

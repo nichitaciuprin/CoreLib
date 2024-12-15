@@ -1,8 +1,8 @@
 #include "SysHelper.h"
+#include "SysWindow.h"
 #include "BaseLang.hpp"
 #include "BaseMath.hpp"
-#include "Bitmap.hpp"
-#include "SysWindow.hpp"
+#include "Bitmap.h"
 
 float scale = 10;
 float t;
@@ -188,16 +188,19 @@ int main()
     auto size = 511;
 
     Bitmap bitmap = BitmapCreate(size, size);
-    auto window = make_unique<Window>(700, 100, size, size);
+    auto window = SysWindowCreate(700, 100, size, size);
 
-    while (window->Exists())
+    while (SysWindowExists(window))
     {
         FixedTimeStart();
 
-        t = MathPingPong((float)clock() / 1000, 3) - 1; t = MathClampFloat(t, 0, 1);
+        t = MathPingPong((float)clock() / 1000, 3) - 1;
+        t = MathClampFloat(t, 0, 1);
+
         Draw(&bitmap, GetTime());
-        window->SetPixels(bitmap.pixels, bitmap.width, bitmap.height);
-        window->Update();
+
+        SysWindowSetPixels(window, bitmap.pixels, bitmap.width, bitmap.height);
+        SysWindowUpdate(window);
 
         FixedTimeEnd();
     }

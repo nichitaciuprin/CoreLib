@@ -12,6 +12,7 @@ set flags=%flags% -Werror -Wall -Wno-missing-braces
 set include=
 set include=%include% -I%deps%\raylib\include
 set include=%include% -I%deps%\corelib\include
+set include=%include% -I%deps%\sys\include
 
 set lib=
 set lib=%lib% -L%deps%\raylib\lib -lraylib
