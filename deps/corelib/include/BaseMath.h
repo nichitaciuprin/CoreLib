@@ -555,6 +555,19 @@ static inline Vector4 Vector4Zero()
     return (Vector4){};
 }
 
+static inline Vector2 Vector2One()
+{
+    return (Vector2){ 1, 1 };
+}
+static inline Vector3 Vector3One()
+{
+    return (Vector3){ 1, 1, 1 };
+}
+static inline Vector4 Vector4One()
+{
+    return (Vector4){ 1, 1, 1, 1 };
+}
+
 static inline Vector2 Vector2Left()
 {
     return (Vector2) { -1, 0 };
