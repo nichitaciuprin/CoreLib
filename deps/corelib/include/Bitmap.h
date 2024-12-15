@@ -91,7 +91,7 @@ void BitmapTrianglesAdd(Bitmap* instance, Vector3 p0, Vector3 p1, Vector3 p2)
     int vertecesCount = instance->vertecesCount;
     int traingleCount = vertecesCount / 3;
 
-    if (traingleCount == 300) return;
+    if (traingleCount == 100) return;
 
     Vector3* verteces = instance->verteces;
 
