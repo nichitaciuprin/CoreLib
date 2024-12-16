@@ -1415,15 +1415,6 @@ static inline Vector3 BoundShortPathIn(Bound* bound, Vector3 point)
     return result;
 }
 
-static inline bool TriangleIsInside(Vector3 v0, Vector3 v1, Vector3 v2, Vector3 p)
-{
-    float d1 = (p.x - v1.x) * (v0.y - v1.y) - (v0.x - v1.x) * (p.y - v1.y);
-    float d2 = (p.x - v2.x) * (v1.y - v2.y) - (v1.x - v2.x) * (p.y - v2.y);
-    float d3 = (p.x - v0.x) * (v2.y - v0.y) - (v2.x - v0.x) * (p.y - v0.y);
-    bool neg = (d1 < 0) || (d2 < 0) || (d3 < 0);
-    bool pos = (d1 > 0) || (d2 > 0) || (d3 > 0);
-    return !(neg && pos);
-}
 static inline bool TriangleIsClockwise(Vector3 v0, Vector3 v1, Vector3 v2)
 {
     Vector3 d0 = Vector3Sub(v1, v0);
@@ -1431,8 +1422,16 @@ static inline bool TriangleIsClockwise(Vector3 v0, Vector3 v1, Vector3 v2)
     float crossZ = d0.x*d1.y - d0.y*d1.x;
     return crossZ < 0;
 }
-
-static inline float Barycentric(Vector3 v0, Vector3 v1, Vector3 v2, float x, float y)
+static inline bool TriangleIsInside(Vector3 v0, Vector3 v1, Vector3 v2, float x, float y)
+{
+    float d1 = (x - v1.x) * (v0.y - v1.y) - (v0.x - v1.x) * (y - v1.y);
+    float d2 = (x - v2.x) * (v1.y - v2.y) - (v1.x - v2.x) * (y - v2.y);
+    float d3 = (x - v0.x) * (v2.y - v0.y) - (v2.x - v0.x) * (y - v0.y);
+    bool neg = (d1 < 0) || (d2 < 0) || (d3 < 0);
+    bool pos = (d1 > 0) || (d2 > 0) || (d3 > 0);
+    return !(neg && pos);
+}
+static inline float TriangleBarycentric(Vector3 v0, Vector3 v1, Vector3 v2, float x, float y)
 {
     float det = (v1.y - v2.y) * (v0.x - v2.x) + (v2.x - v1.x) * (v0.y - v2.y);
     float l1 = ((v1.y - v2.y) * (x - v2.x) + (v2.x - v1.x) * (y - v2.y)) / det;
@@ -1545,11 +1544,11 @@ static inline bool RaycastTriangle2(Vector3 origin, Vector3 dirNorm, Vector3 v0,
     v1 = Vector3RotateX(v1, -pitch);
     v2 = Vector3RotateX(v2, -pitch);
 
-    bool isInside = TriangleIsInside(v0, v1, v2, Vector3Zero());
+    bool isInside = TriangleIsInside(v0, v1, v2, 0, 0);
     if (!isInside)
         return false;
 
-    float z = Barycentric(v0, v1, v2, 0, 0);
+    float z = TriangleBarycentric(v0, v1, v2, 0, 0);
     if (z < 0)
         return false;
 
