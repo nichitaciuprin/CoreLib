@@ -128,7 +128,8 @@
         "helper.h": "c",
         "stdbool.h": "c",
         "BaseLang.hpp": "c",
-        "helperext.h": "c"
+        "helperext.h": "c",
+        "windowdebug.h": "c"
     },
     "C_Cpp.errorSquiggles": "disabled"
 }
