@@ -1462,7 +1462,6 @@ static inline bool RaycastPlane(Vector3 origin, Vector3 dirNorm, Vector3 planePo
     // *rayLength = dot2 / dot1;
     // return *rayLength >= 0;
 }
-
 static inline bool RaycastSphere(Vector3 origin, Vector3 dirNorm, Sphere sphere)
 {
     Vector3 v1 = Vector3Sub(sphere.position, origin);
@@ -1494,7 +1493,6 @@ static inline bool RaycastSphere(Vector3 origin, Vector3 dirNorm, Sphere sphere)
 
     return true;
 }
-
 static inline bool RaycastTriangleV1(Vector3 origin, Vector3 dirNorm, Vector3 v0, Vector3 v1, Vector3 v2)
 {
     Vector3 ab = Vector3Sub(v1, v0);
@@ -1570,10 +1568,58 @@ static inline bool RaycastTriangleV2(Vector3 origin, Vector3 dirNorm, Vector3 v0
 
     return true;
 }
+static inline bool RaycastTriangleV3(Vector3 origin, Vector3 dirNorm, Vector3 v0, Vector3 v1, Vector3 v2)
+{
+    // https://www.scratchapixel.com/lessons/3d-basic-rendering/ray-tracing-rendering-a-triangle/ray-triangle-intersection-geometric-solution.html
+
+    float epsilon = 1e-6;
+
+    Vector3 v0v1 = Vector3Sub(v1, v0);
+    Vector3 v0v2 = Vector3Sub(v2, v0);
+
+    Vector3 normal = Vector3Cross(v0v1, v0v2);
+
+    float dot1 = Vector3Dot(normal, dirNorm);
+
+    // planes are almost parallel
+    if (MathAbs(dot1) < epsilon)
+        return false;
+
+    float dot2 = Vector3Dot(normal, origin);
+    float dot3 = Vector3Dot(normal, v0);
+
+    float rayLenght = (dot3 - dot2) / dot1;
+
+    // triangle is behind ray
+    if (rayLenght < 0)
+        return false;
+
+    Vector3 p = Vector3Add(origin, Vector3Mul(dirNorm, rayLenght));
+
+    // Step 2: Inside-Outside Test
+    Vector3 Ne; // Vector perpendicular to triangle's plane
+
+    Vector3 v0p = Vector3Sub(p, v0);
+    Ne = Vector3Cross(v0v1, v0p);
+    if (Vector3Dot(normal, Ne) < 0) return false;
+
+	Vector3 v2v1 = Vector3Sub(v2, v1);
+    Vector3 v1p  = Vector3Sub(p, v1);
+    Ne = Vector3Cross(v2v1, v1p);
+    if (Vector3Dot(normal, Ne) < 0) return false;
+
+	Vector3 v2v0 = Vector3Sub(v0, v2);
+    Vector3 v2p  = Vector3Sub(p, v2);
+    Ne = Vector3Cross(v2v0, v2p);
+    if (Vector3Dot(normal, Ne) < 0) return false;
+
+    return true; // The ray hits the triangle
+}
 static inline bool RaycastTriangle(Vector3 origin, Vector3 dirNorm, Vector3 v0, Vector3 v1, Vector3 v2)
 {
-    return RaycastTriangleV1(origin, dirNorm, v0, v1, v2);
+    // return RaycastTriangleV1(origin, dirNorm, v0, v1, v2);
     // return RaycastTriangleV2(origin, dirNorm, v0, v1, v2);
+    return RaycastTriangleV3(origin, dirNorm, v0, v1, v2);
 }
 
 static inline Pose PoseGetLocal(Pose parentWorld, Pose childWorld)
