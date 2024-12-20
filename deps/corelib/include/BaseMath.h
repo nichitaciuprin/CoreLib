@@ -1494,7 +1494,8 @@ static inline bool RaycastSphere(Vector3 origin, Vector3 dirNorm, Sphere sphere)
 
     return true;
 }
-static inline bool RaycastTriangle(Vector3 origin, Vector3 dirNorm, Vector3 v0, Vector3 v1, Vector3 v2)
+
+static inline bool RaycastTriangleV1(Vector3 origin, Vector3 dirNorm, Vector3 v0, Vector3 v1, Vector3 v2)
 {
     Vector3 ab = Vector3Sub(v1, v0);
     Vector3 ac = Vector3Sub(v2, v0);
@@ -1534,7 +1535,7 @@ static inline bool RaycastTriangle(Vector3 origin, Vector3 dirNorm, Vector3 v0, 
 
     return true;
 }
-static inline bool RaycastTriangle2(Vector3 origin, Vector3 dirNorm, Vector3 v0, Vector3 v1, Vector3 v2)
+static inline bool RaycastTriangleV2(Vector3 origin, Vector3 dirNorm, Vector3 v0, Vector3 v1, Vector3 v2)
 {
     // ignores face direction
     // refactor
@@ -1568,6 +1569,11 @@ static inline bool RaycastTriangle2(Vector3 origin, Vector3 dirNorm, Vector3 v0,
         return false;
 
     return true;
+}
+static inline bool RaycastTriangle(Vector3 origin, Vector3 dirNorm, Vector3 v0, Vector3 v1, Vector3 v2)
+{
+    return RaycastTriangleV1(origin, dirNorm, v0, v1, v2);
+    // return RaycastTriangleV2(origin, dirNorm, v0, v1, v2);
 }
 
 static inline Pose PoseGetLocal(Pose parentWorld, Pose childWorld)
