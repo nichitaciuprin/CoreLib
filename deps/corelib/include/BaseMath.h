@@ -1456,11 +1456,21 @@ static inline bool TriangleIsInside(Vector3 v0, Vector3 v1, Vector3 v2, float x,
 }
 static inline float TriangleBarycentric(Vector3 v0, Vector3 v1, Vector3 v2, float x, float y)
 {
+    // test
+
     float det = (v1.y - v2.y) * (v0.x - v2.x) + (v2.x - v1.x) * (v0.y - v2.y);
-    float l1 = ((v1.y - v2.y) * (x - v2.x) + (v2.x - v1.x) * (y - v2.y)) / det;
-    float l2 = ((v2.y - v0.y) * (x - v2.x) + (v0.x - v2.x) * (y - v2.y)) / det;
+    float l1 =  (v1.y - v2.y) * (   x - v2.x) + (v2.x - v1.x) * (   y - v2.y);
+    float l2 =  (v2.y - v0.y) * (   x - v2.x) + (v0.x - v2.x) * (   y - v2.y);
+
+    l1 /= det;
+    l2 /= det;
+
     float l3 = 1.0f - l1 - l2;
-    return l1 * v0.z + l2 * v1.z + l3 * v2.z;
+
+    return
+    l1 * v0.z +
+    l2 * v1.z +
+    l3 * v2.z;
 }
 
 static inline bool SpherePointInside(Sphere sphere, Vector3 point)
