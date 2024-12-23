@@ -666,6 +666,7 @@ static inline float Vector2Rotation(Vector2 v)
 static inline float Vector2Cross(Vector2 a, Vector2 b)
 {
     return a.x * b.y - a.y * b.x;
+    // return 0.7071 * 1 - 0.7071 * 0;
 }
 static inline Vector2 Vector2MoveTowards(Vector2 from, Vector2 target, float delta)
 {
@@ -1415,6 +1416,13 @@ static inline Vector3 BoundShortPathIn(Bound* bound, Vector3 point)
     return result;
 }
 
+static inline float TriangleArea(Vector3 v0, Vector3 v1, Vector3 v2)
+{
+    int r1 = v0.x * (v1.y - v2.y);
+    int r2 = v1.x * (v2.y - v0.y);
+    int r3 = v2.x * (v0.y - v1.y);
+    return MathAbs((r1 + r2 + r3) / 2.0f);
+}
 static inline bool TriangleIsClockwise(Vector3 v0, Vector3 v1, Vector3 v2)
 {
     Vector3 d0 = Vector3Sub(v1, v0);
@@ -1424,20 +1432,64 @@ static inline bool TriangleIsClockwise(Vector3 v0, Vector3 v1, Vector3 v2)
 }
 static inline bool TriangleIsInside(Vector3 v0, Vector3 v1, Vector3 v2, float x, float y)
 {
-    float d1 = (x - v1.x) * (v0.y - v1.y) - (v0.x - v1.x) * (y - v1.y);
-    float d2 = (x - v2.x) * (v1.y - v2.y) - (v1.x - v2.x) * (y - v2.y);
-    float d3 = (x - v0.x) * (v2.y - v0.y) - (v2.x - v0.x) * (y - v0.y);
-    bool neg = (d1 < 0) || (d2 < 0) || (d3 < 0);
-    bool pos = (d1 > 0) || (d2 > 0) || (d3 > 0);
-    return !(neg && pos);
+    Vector2 p0 = { x, y };
+
+    Vector2 p1 = { v0.x, v0.y };
+    Vector2 p2 = { v1.x, v1.y };
+    Vector2 p3 = { v2.x, v2.y };
+
+    Vector2 vec0 = Vector2Sub(p2, p1);
+    Vector2 vec1 = Vector2Sub(p0, p1);
+    if (Vector2Cross(vec0, vec1) < 0)
+        return false;
+
+    Vector2 vec2 = Vector2Sub(p3, p2);
+    Vector2 vec3 = Vector2Sub(p0, p2);
+    if (Vector2Cross(vec2, vec3) < 0)
+        return false;
+
+    Vector2 vec4 = Vector2Sub(p1, p3);
+    Vector2 vec5 = Vector2Sub(p0, p3);
+    if (Vector2Cross(vec4, vec5) < 0)
+        return false;
+
+    return true;
+
+    // float d1 = (x - v1.x) * (v0.y - v1.y) - (v0.x - v1.x) * (y - v1.y);
+    // float d2 = (x - v2.x) * (v1.y - v2.y) - (v1.x - v2.x) * (y - v2.y);
+    // float d3 = (x - v0.x) * (v2.y - v0.y) - (v2.x - v0.x) * (y - v0.y);
+    // bool neg = (d1 < 0) || (d2 < 0) || (d3 < 0);
+    // bool pos = (d1 > 0) || (d2 > 0) || (d3 > 0);
+    // return !(neg && pos);
 }
-static inline float TriangleBarycentric(Vector3 v0, Vector3 v1, Vector3 v2, float x, float y)
+static inline float TriangleBarycentric1(Vector3 v0, Vector3 v1, Vector3 v2, float x, float y)
 {
+    // test
     float det = (v1.y - v2.y) * (v0.x - v2.x) + (v2.x - v1.x) * (v0.y - v2.y);
     float l1 = ((v1.y - v2.y) * (x - v2.x) + (v2.x - v1.x) * (y - v2.y)) / det;
     float l2 = ((v2.y - v0.y) * (x - v2.x) + (v0.x - v2.x) * (y - v2.y)) / det;
     float l3 = 1.0f - l1 - l2;
     return l1 * v0.z + l2 * v1.z + l3 * v2.z;
+}
+static inline float TriangleBarycentric2(Vector3 a, Vector3 b, Vector3 c, float x, float y)
+{
+    // test
+
+    Vector3 p = { x, y, 0 };
+
+    float area  = TriangleArea(a, b, c);
+    float area1 = TriangleArea(p, b, c);
+    float area2 = TriangleArea(a, p, c);
+    float area3 = TriangleArea(a, b, p);
+
+    float t1 = area1 / area;
+    float t2  = area2 / area;
+    float t3 = area3 / area;
+
+    return
+    t1 * a.z +
+    t2 * b.z +
+    t3 * c.z;
 }
 
 static inline bool SpherePointInside(Sphere sphere, Vector3 point)
@@ -1562,7 +1614,7 @@ static inline bool RaycastTriangleV2(Vector3 origin, Vector3 dirNorm, Vector3 v0
     if (!isInside)
         return false;
 
-    float z = TriangleBarycentric(v0, v1, v2, 0, 0);
+    float z = TriangleBarycentric1(v0, v1, v2, 0, 0);
     if (z < 0)
         return false;
 
@@ -1571,13 +1623,17 @@ static inline bool RaycastTriangleV2(Vector3 origin, Vector3 dirNorm, Vector3 v0
 static inline bool RaycastTriangleV3(Vector3 origin, Vector3 dirNorm, Vector3 v0, Vector3 v1, Vector3 v2)
 {
     // https://www.scratchapixel.com/lessons/3d-basic-rendering/ray-tracing-rendering-a-triangle/ray-triangle-intersection-geometric-solution.html
+    // https://www.scratchapixel.com/lessons/3d-basic-rendering/rasterization-practical-implementation/rasterization-stage.html
+
+    // origin = Vector3Add(origin, Vector3Div(dirNorm, 10));
 
     float epsilon = 1e-6;
 
-    Vector3 v0v1 = Vector3Sub(v1, v0);
-    Vector3 v0v2 = Vector3Sub(v2, v0);
+    Vector3 v1v0 = Vector3Sub(v1, v0);
+    Vector3 v2v1 = Vector3Sub(v2, v1);
 
-    Vector3 normal = Vector3Cross(v0v1, v0v2);
+    // No need to normalize
+    Vector3 normal = Vector3Cross(v1v0, v2v1);
 
     float dot1 = Vector3Dot(normal, dirNorm);
 
@@ -1594,26 +1650,25 @@ static inline bool RaycastTriangleV3(Vector3 origin, Vector3 dirNorm, Vector3 v0
     if (rayLenght < 0)
         return false;
 
+    // p = origin + dirNorm * rayLenght;
     Vector3 p = Vector3Add(origin, Vector3Mul(dirNorm, rayLenght));
 
-    // Step 2: Inside-Outside Test
-    Vector3 Ne; // Vector perpendicular to triangle's plane
+    // Vector3 v1v0 = Vector3Sub(v1, v0);
+    Vector3 pv0 = Vector3Sub(p, v0);
+    Vector3 n0 = Vector3Cross(v1v0, pv0);
+    if (Vector3Dot(normal, n0) < 0) return false;
 
-    Vector3 v0p = Vector3Sub(p, v0);
-    Ne = Vector3Cross(v0v1, v0p);
-    if (Vector3Dot(normal, Ne) < 0) return false;
+	// Vector3 v2v1 = Vector3Sub(v2, v1);
+    Vector3 pv1 = Vector3Sub(p, v1);
+    Vector3 n1 = Vector3Cross(v2v1, pv1);
+    if (Vector3Dot(normal, n1) < 0) return false;
 
-	Vector3 v2v1 = Vector3Sub(v2, v1);
-    Vector3 v1p  = Vector3Sub(p, v1);
-    Ne = Vector3Cross(v2v1, v1p);
-    if (Vector3Dot(normal, Ne) < 0) return false;
+	Vector3 v0v2 = Vector3Sub(v0, v2);
+    Vector3 pv2 = Vector3Sub(p, v2);
+    Vector3 n2 = Vector3Cross(v0v2, pv2);
+    if (Vector3Dot(normal, n2) < 0) return false;
 
-	Vector3 v2v0 = Vector3Sub(v0, v2);
-    Vector3 v2p  = Vector3Sub(p, v2);
-    Ne = Vector3Cross(v2v0, v2p);
-    if (Vector3Dot(normal, Ne) < 0) return false;
-
-    return true; // The ray hits the triangle
+    return true;
 }
 static inline bool RaycastTriangle(Vector3 origin, Vector3 dirNorm, Vector3 v0, Vector3 v1, Vector3 v2)
 {

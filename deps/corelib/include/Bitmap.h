@@ -600,7 +600,8 @@ void BitmapDrawTriangleScreenspaceV1(Bitmap* instance, Vector3 v0, Vector3 v1, V
     for (int y = minY; y <= maxY; y++)
     {
         if (!TriangleIsInside(v0, v1, v2, x, y)) continue;
-        float z = TriangleBarycentric(v0, v1, v2, x, y);
+        float z = TriangleBarycentric1(v0, v1, v2, x, y);
+        // float z = 0;
         BitmapSetPixelZ(instance, x, y, z, color);
     }
 }
@@ -688,8 +689,8 @@ void BitmapDrawTriangleScreenspaceV2(Bitmap* instance, Vector3 v0, Vector3 v1, V
 }
 void BitmapDrawTriangleScreenspace(Bitmap* instance, Vector3 v0, Vector3 v1, Vector3 v2, Color color)
 {
-    // BitmapDrawTriangleScreenspaceV1(instance, v0, v1, v2, color);
-    BitmapDrawTriangleScreenspaceV2(instance, v0, v1, v2, color);
+    BitmapDrawTriangleScreenspaceV1(instance, v0, v1, v2, color);
+    // BitmapDrawTriangleScreenspaceV2(instance, v0, v1, v2, color);
 }
 void BitmapDrawTriangleNdc(Bitmap* instance, Vector3 v0, Vector3 v1, Vector3 v2, Color color)
 {
