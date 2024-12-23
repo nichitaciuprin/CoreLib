@@ -1546,7 +1546,7 @@ static inline bool RaycastSphere(Vector3 origin, Vector3 dirNorm, Sphere sphere)
 
     return true;
 }
-static inline bool RaycastTriangle(Vector3 origin, Vector3 dirNorm, Vector3 v0, Vector3 v1, Vector3 v2)
+static inline bool RaycastTriangleV1(Vector3 origin, Vector3 dirNorm, Vector3 v0, Vector3 v1, Vector3 v2)
 {
     Vector3 ab = Vector3Sub(v1, v0);
     Vector3 ac = Vector3Sub(v2, v0);
@@ -1586,7 +1586,7 @@ static inline bool RaycastTriangle(Vector3 origin, Vector3 dirNorm, Vector3 v0, 
 
     return true;
 }
-static inline bool RaycastTriangle2(Vector3 origin, Vector3 dirNorm, Vector3 v0, Vector3 v1, Vector3 v2)
+static inline bool RaycastTriangleV2(Vector3 origin, Vector3 dirNorm, Vector3 v0, Vector3 v1, Vector3 v2)
 {
     // ignores face direction
     // refactor
@@ -1620,6 +1620,58 @@ static inline bool RaycastTriangle2(Vector3 origin, Vector3 dirNorm, Vector3 v0,
         return false;
 
     return true;
+}
+static inline bool RaycastTriangleV3(Vector3 origin, Vector3 dirNorm, Vector3 v0, Vector3 v1, Vector3 v2)
+{
+    // https://www.scratchapixel.com/lessons/3d-basic-rendering/ray-tracing-rendering-a-triangle/ray-triangle-intersection-geometric-solution.html
+    // https://www.scratchapixel.com/lessons/3d-basic-rendering/rasterization-practical-implementation/rasterization-stage.html
+
+    float epsilon = 1e-6;
+
+    Vector3 d0 = Vector3Sub(v1, v0);
+    Vector3 d1 = Vector3Sub(v2, v1);
+	Vector3 d2 = Vector3Sub(v0, v2);
+
+    // No need to normalize
+    Vector3 normal = Vector3Cross(d0, d1);
+
+    float dot1 = Vector3Dot(normal, dirNorm);
+
+    // planes are almost parallel
+    if (MathAbs(dot1) < epsilon)
+        return false;
+
+    float dot2 = Vector3Dot(normal, origin);
+    float dot3 = Vector3Dot(normal, v0);
+
+    float rayLenght = (dot3 - dot2) / dot1;
+
+    // triangle is behind ray
+    if (rayLenght < 0)
+        return false;
+
+    // p = origin + dirNorm * rayLenght;
+    Vector3 p = Vector3Add(origin, Vector3Mul(dirNorm, rayLenght));
+
+    Vector3 p0 = Vector3Sub(p, v0);
+    Vector3 n0 = Vector3Cross(d0, p0);
+    if (Vector3Dot(normal, n0) < 0) return false;
+
+    Vector3 p1 = Vector3Sub(p, v1);
+    Vector3 n1 = Vector3Cross(d1, p1);
+    if (Vector3Dot(normal, n1) < 0) return false;
+
+    Vector3 p2 = Vector3Sub(p, v2);
+    Vector3 n2 = Vector3Cross(d2, p2);
+    if (Vector3Dot(normal, n2) < 0) return false;
+
+    return true;
+}
+static inline bool RaycastTriangle(Vector3 origin, Vector3 dirNorm, Vector3 v0, Vector3 v1, Vector3 v2)
+{
+    // return RaycastTriangleV1(origin, dirNorm, v0, v1, v2);
+    // return RaycastTriangleV2(origin, dirNorm, v0, v1, v2);
+    return RaycastTriangleV3(origin, dirNorm, v0, v1, v2);
 }
 
 static inline Pose PoseGetLocal(Pose parentWorld, Pose childWorld)
