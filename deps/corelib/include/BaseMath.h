@@ -1472,6 +1472,26 @@ static inline float TriangleBarycentric(Vector3 v0, Vector3 v1, Vector3 v2, floa
     l2 * v1.z +
     l3 * v2.z;
 }
+static inline float TriangleBarycentric2(Vector3 v0, Vector3 v1, Vector3 v2, float x, float y)
+{
+    // test
+
+    Vector3 p = { x, y, 0 };
+
+    float area  = TriangleArea(v0, v1, v2);
+    float area1 = TriangleArea( p, v1, v2);
+    float area2 = TriangleArea(v0,  p, v2);
+    float area3 = TriangleArea(v0, v1,  p);
+
+    float t1 = area1 / area;
+    float t2 = area2 / area;
+    float t3 = area3 / area;
+
+    return
+    t1 * v0.z +
+    t2 * v1.z +
+    t3 * v2.z;
+}
 
 static inline bool SpherePointInside(Sphere sphere, Vector3 point)
 {
