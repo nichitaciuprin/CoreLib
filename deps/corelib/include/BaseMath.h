@@ -1424,12 +1424,28 @@ static inline bool TriangleIsClockwise(Vector3 v0, Vector3 v1, Vector3 v2)
 }
 static inline bool TriangleIsInside(Vector3 v0, Vector3 v1, Vector3 v2, float x, float y)
 {
-    float d1 = (x - v1.x) * (v0.y - v1.y) - (v0.x - v1.x) * (y - v1.y);
-    float d2 = (x - v2.x) * (v1.y - v2.y) - (v1.x - v2.x) * (y - v2.y);
-    float d3 = (x - v0.x) * (v2.y - v0.y) - (v2.x - v0.x) * (y - v0.y);
-    bool neg = (d1 < 0) || (d2 < 0) || (d3 < 0);
-    bool pos = (d1 > 0) || (d2 > 0) || (d3 > 0);
-    return !(neg && pos);
+    Vector2 p0 = { x, y };
+
+    Vector2 p1 = { v0.x, v0.y };
+    Vector2 p2 = { v1.x, v1.y };
+    Vector2 p3 = { v2.x, v2.y };
+
+    Vector2 vec0 = Vector2Sub(p2, p1);
+    Vector2 vec1 = Vector2Sub(p0, p1);
+    if (Vector2Cross(vec0, vec1) < 0)
+        return false;
+
+    Vector2 vec2 = Vector2Sub(p3, p2);
+    Vector2 vec3 = Vector2Sub(p0, p2);
+    if (Vector2Cross(vec2, vec3) < 0)
+        return false;
+
+    Vector2 vec4 = Vector2Sub(p1, p3);
+    Vector2 vec5 = Vector2Sub(p0, p3);
+    if (Vector2Cross(vec4, vec5) < 0)
+        return false;
+
+    return true;
 }
 static inline float TriangleBarycentric(Vector3 v0, Vector3 v1, Vector3 v2, float x, float y)
 {
