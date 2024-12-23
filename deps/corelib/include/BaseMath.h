@@ -1415,6 +1415,13 @@ static inline Vector3 BoundShortPathIn(Bound* bound, Vector3 point)
     return result;
 }
 
+static inline float TriangleArea(Vector3 v0, Vector3 v1, Vector3 v2)
+{
+    int r1 = v0.x * (v1.y - v2.y);
+    int r2 = v1.x * (v2.y - v0.y);
+    int r3 = v2.x * (v0.y - v1.y);
+    return MathAbs((r1 + r2 + r3) / 2.0f);
+}
 static inline bool TriangleIsClockwise(Vector3 v0, Vector3 v1, Vector3 v2)
 {
     Vector3 d0 = Vector3Sub(v1, v0);
