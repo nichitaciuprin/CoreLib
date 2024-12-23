@@ -1501,6 +1501,20 @@ static inline bool SpherePointInside(Sphere sphere, Vector3 point)
     return diffLengthSquared <= radiusSquared;
 }
 
+static inline bool RaycastPlane(Vector3 origin, Vector3 dirNorm, Vector3 planePosition, Vector3 planeNormal)
+{
+    // https://www.scratchapixel.com/lessons/3d-basic-rendering/minimal-ray-tracer-rendering-simple-shapes/ray-plane-and-ray-disk-intersection.html
+
+    float epsilon = 1e-6;
+    float dot1 = Vector3Dot(dirNorm, planeNormal);
+    if (MathAbs(dot1) < epsilon) return false;
+    Vector3 diff1 = Vector3Sub(planePosition, origin);
+    float dot2 = Vector3Dot(diff1, planeNormal);
+    float rayLenght = dot2 / dot1;
+    return rayLenght >= 0;
+    // *rayLength = dot2 / dot1;
+    // return *rayLength >= 0;
+}
 static inline bool RaycastSphere(Vector3 origin, Vector3 dirNorm, Sphere sphere)
 {
     Vector3 v1 = Vector3Sub(sphere.position, origin);
